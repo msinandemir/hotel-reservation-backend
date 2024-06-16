@@ -1,4 +1,4 @@
-package com.tobeto.hotel_reservation.entities.concretes;
+package com.tobeto.hotel_reservation.entities.enums;
 
 public enum Role {
     ROLE_USER,
