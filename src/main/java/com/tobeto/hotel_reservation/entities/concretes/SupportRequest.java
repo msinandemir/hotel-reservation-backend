@@ -1,9 +1,8 @@
 package com.tobeto.hotel_reservation.entities.concretes;
 
 import com.tobeto.hotel_reservation.entities.abstracts.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.tobeto.hotel_reservation.entities.enums.SupportRequestType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,4 +20,12 @@ public class SupportRequest extends BaseEntity {
 
     @Column(nullable = false)
     private String description;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private SupportRequestType type;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 }

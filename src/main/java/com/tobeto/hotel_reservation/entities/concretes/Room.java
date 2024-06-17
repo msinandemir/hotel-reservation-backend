@@ -2,9 +2,7 @@ package com.tobeto.hotel_reservation.entities.concretes;
 
 import com.tobeto.hotel_reservation.entities.abstracts.BaseEntity;
 import com.tobeto.hotel_reservation.entities.enums.RoomType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,4 +37,11 @@ public class Room extends BaseEntity {
 
     @Column(nullable = false)
     private RoomType type;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hotel_id")
+    private Hotel hotel;
+
+    @OneToOne(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private RoomInfo roomInfo;
 }

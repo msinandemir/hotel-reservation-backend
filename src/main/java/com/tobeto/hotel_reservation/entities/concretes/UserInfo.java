@@ -2,10 +2,7 @@ package com.tobeto.hotel_reservation.entities.concretes;
 
 import com.tobeto.hotel_reservation.entities.abstracts.BaseEntity;
 import com.tobeto.hotel_reservation.entities.enums.Gender;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,4 +20,12 @@ public class UserInfo extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id")
+    private Address address;
 }

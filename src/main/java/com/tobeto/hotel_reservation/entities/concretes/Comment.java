@@ -1,13 +1,13 @@
 package com.tobeto.hotel_reservation.entities.concretes;
 
 import com.tobeto.hotel_reservation.entities.abstracts.BaseComment;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Table(name = "comments")
 @Entity
@@ -33,4 +33,11 @@ public class Comment extends BaseComment {
 
     @Column(nullable = false)
     private double overallRating;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
+    private List<CommentReply> commentReplies;
 }
