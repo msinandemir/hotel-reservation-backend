@@ -1,6 +1,7 @@
 package com.tobeto.hotel_reservation.services.concretes;
 
 import com.tobeto.hotel_reservation.core.exceptions.types.BusinessException;
+import com.tobeto.hotel_reservation.core.utils.MessageSource;
 import com.tobeto.hotel_reservation.services.abstracts.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -35,8 +36,8 @@ public class EmailServiceImpl implements EmailService {
             helper.setSubject(subject);
             helper.setText(htmlBody, true);
             mailSender.send(message);
-        } catch (MessagingException e) {
-            throw new BusinessException(e.getMessage(), language);
+        } catch (RuntimeException | MessagingException e) {
+            throw new BusinessException("email.sendError", language);
         }
 
     }
