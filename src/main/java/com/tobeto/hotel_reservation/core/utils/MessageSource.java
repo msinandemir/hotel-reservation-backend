@@ -17,6 +17,8 @@ public final class MessageSource {
         enMessages.put("validation.size", "The length of the value must be between 5 and 10 characters.");
         enMessages.put("error.runtime", "An unexpected error occurred");
         enMessages.put("email.sendError", "An error occurred while sending the email.");
+        enMessages.put("image.uploadError", "An error occurred while uploading the image.");
+        enMessages.put("image.deleteError", "An error occurred while deleting the image.");
 
         Map<String, String> trMessages = new HashMap<>();
         trMessages.put("exception.businessTitle", "İş Kuralı İhlali!");
@@ -25,6 +27,8 @@ public final class MessageSource {
         trMessages.put("validation.size", "Değerin uzunluğu en az 5, en fazla 10 karakter olmalıdır.");
         trMessages.put("error.runtime", "Beklenmeyen bir hata oluştu");
         trMessages.put("email.sendError", "E-posta gönderilirken bir hata oluştu.");
+        trMessages.put("image.uploadError", "Resim yüklenirken bir hata oluştu.");
+        trMessages.put("image.deleteError", "Resim silinirken bir hata oluştu.");
 
         messages.put("en", enMessages);
         messages.put("tr", trMessages);
