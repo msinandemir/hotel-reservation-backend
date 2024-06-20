@@ -19,6 +19,7 @@ public final class MessageSource {
         enMessages.put("email.sendError", "An error occurred while sending the email.");
         enMessages.put("image.uploadError", "An error occurred while uploading the image.");
         enMessages.put("image.deleteError", "An error occurred while deleting the image.");
+        enMessages.put("error.userNotFound", "User not found.");
 
         Map<String, String> trMessages = new HashMap<>();
         trMessages.put("exception.businessTitle", "İş Kuralı İhlali!");
@@ -29,6 +30,7 @@ public final class MessageSource {
         trMessages.put("email.sendError", "E-posta gönderilirken bir hata oluştu.");
         trMessages.put("image.uploadError", "Resim yüklenirken bir hata oluştu.");
         trMessages.put("image.deleteError", "Resim silinirken bir hata oluştu.");
+        trMessages.put("error.userNotFound", "Kullanıcı bulunamadı.");
 
         messages.put("en", enMessages);
         messages.put("tr", trMessages);
