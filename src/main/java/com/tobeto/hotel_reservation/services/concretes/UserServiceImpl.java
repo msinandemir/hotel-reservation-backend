@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
         return new PageImpl<>(responses, pageable, users.getTotalElements());
     }
 
-    @Cacheable(cacheNames = "user_id", key = "'#root.methodName_' + userId", unless = "#result == null")
+    @Cacheable(cacheNames = "user_id", key = "'#root.methodName_' + #userId", unless = "#result == null")
     @Override
     public GetUserResponse getUserById(Long userId, String language) {
         User foundUser = findUserById(userId, language);
