@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
         return UserMapper.INSTANCE.addResponseFromUser(savedUser);
     }
 
-    @CachePut(cacheNames = "user_id", key = "'getUserById_' + #request.id", unless = "#result == null")
+    @CachePut(cacheNames = "user_id", key = "'getUserById' + #request.id", unless = "#result == null")
     @Override
     public UpdateUserResponse updateUserById(Long userId, UpdateUserRequest request, String language) {
         User foundUser = findUserById(userId, language);
