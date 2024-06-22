@@ -19,4 +19,6 @@ public class GetHotelResponse {
     private int star;
     private String phoneNumber;
     private String description;
+    private Long addressId;
+    private Long userId;
 }

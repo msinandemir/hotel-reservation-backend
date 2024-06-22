@@ -24,4 +24,5 @@ public class GetRoomInfoResponse {
     private boolean airConditioner;
     private boolean workDesk;
     private boolean nonSmoking;
+    private Long roomId;
 }

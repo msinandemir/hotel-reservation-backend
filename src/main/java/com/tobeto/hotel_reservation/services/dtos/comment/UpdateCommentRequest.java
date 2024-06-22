@@ -15,5 +15,5 @@ public class UpdateCommentRequest {
     private int serviceRating;
     private int confortableRating;
     private int priceBalance;
-    private int overallRating;
+    private Long userId;
 }

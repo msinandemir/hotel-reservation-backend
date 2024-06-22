@@ -28,4 +28,5 @@ public class UpdateHotelResponse {
     private boolean steamRoom;
     private boolean beautyRoom;
     private boolean petsAllowed;
+    private Long hotelId;
 }

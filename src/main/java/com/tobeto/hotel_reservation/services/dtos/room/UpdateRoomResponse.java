@@ -24,4 +24,5 @@ public class UpdateRoomResponse {
     private int doubleBed;
     private int bunkBed;
     private RoomType type;
+    private Long hotelId;
 }

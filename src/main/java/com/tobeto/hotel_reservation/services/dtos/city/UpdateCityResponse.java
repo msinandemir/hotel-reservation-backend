@@ -16,4 +16,5 @@ public class UpdateCityResponse {
     private Instant createdAt;
     private Instant updatedAt;
     private String name;
+    private Long countryId;
 }

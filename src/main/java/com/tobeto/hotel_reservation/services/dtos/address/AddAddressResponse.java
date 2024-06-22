@@ -18,6 +18,6 @@ public class AddAddressResponse {
     private Instant updatedAt;
     private String title;
     private String addressLine;
-    private City city;
+    private Long cityId;
 
 }

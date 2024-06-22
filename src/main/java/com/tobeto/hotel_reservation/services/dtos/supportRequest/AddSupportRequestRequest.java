@@ -15,4 +15,5 @@ public class AddSupportRequestRequest {
     private String title;
     private String description;
     private SupportRequestType type;
+    private Long userId;
 }

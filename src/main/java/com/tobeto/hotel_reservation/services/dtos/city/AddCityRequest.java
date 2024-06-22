@@ -11,4 +11,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AddCityRequest {
     private String name;
+    private Long countryId;
 }

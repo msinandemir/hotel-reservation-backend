@@ -20,4 +20,5 @@ public class AddRoomRequest {
     private int doubleBed;
     private int bunkBed;
     private RoomType type;
+    private Long hotelId;
 }

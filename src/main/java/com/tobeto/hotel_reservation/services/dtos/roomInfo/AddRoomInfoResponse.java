@@ -24,4 +24,5 @@ public class AddRoomInfoResponse {
     private boolean airConditioner;
     private boolean workDesk;
     private boolean nonSmoking;
+    private Long roomId;
 }

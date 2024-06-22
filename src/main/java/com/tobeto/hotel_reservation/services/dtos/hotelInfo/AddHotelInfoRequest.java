@@ -23,4 +23,5 @@ public class AddHotelInfoRequest {
     private boolean steamRoom;
     private boolean beautyRoom;
     private boolean petsAllowed;
+    private Long hotelId;
 }

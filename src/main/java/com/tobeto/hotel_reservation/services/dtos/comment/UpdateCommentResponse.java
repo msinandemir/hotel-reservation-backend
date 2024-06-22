@@ -21,4 +21,5 @@ public class UpdateCommentResponse {
     private int confortableRating;
     private int priceBalance;
     private int overallRating;
+    private Long userId;
 }

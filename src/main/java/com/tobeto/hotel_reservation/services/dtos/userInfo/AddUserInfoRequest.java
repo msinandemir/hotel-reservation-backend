@@ -14,4 +14,6 @@ public class AddUserInfoRequest {
     private String phoneNumber;
     private int age;
     private Gender gender;
+    private Long userId;
+    private Long addressId;
 }
