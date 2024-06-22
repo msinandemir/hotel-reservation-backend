@@ -6,11 +6,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetAddressResponse {
+    private Long id;
+    private Instant createdAt;
+    private Instant updatedAt;
     private String title;
     private String addressLine;
     private City city;
