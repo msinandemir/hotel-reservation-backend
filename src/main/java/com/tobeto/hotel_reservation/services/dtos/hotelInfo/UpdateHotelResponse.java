@@ -5,11 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateHotelResponse {
+    private Long id;
+    private Instant createdAt;
+    private Instant updatedAt;
     private boolean openAirSwimmingPool;
     private boolean nextToDoSeaShore;
     private boolean electricCarCharger;
