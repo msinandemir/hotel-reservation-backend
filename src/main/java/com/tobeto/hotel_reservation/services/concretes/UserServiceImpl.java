@@ -1,6 +1,7 @@
 package com.tobeto.hotel_reservation.services.concretes;
 
 import com.tobeto.hotel_reservation.core.exceptions.types.BusinessException;
+import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
 import com.tobeto.hotel_reservation.entities.concretes.User;
 import com.tobeto.hotel_reservation.repositories.UserRepository;
 import com.tobeto.hotel_reservation.services.abstracts.UserService;
@@ -20,17 +21,21 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
-    @Cacheable(cacheNames = "users", key = "#root.methodName", unless = "#result == null")
+   @Cacheable(cacheNames = "users", key = "#root.methodName + #pageNumber + '_' + #pageSize", unless = "#result == null")
     @Override
-    public Page<GetUserResponse> getAllUsersWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection) {
+    public EntityWithPagination getAllUsersWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection) {
         Sort sorting = Sort.by(sortDirection, "createdAt");
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
         Page<User> users = userRepository.findAll(pageable);
 
+        EntityWithPagination pagination = new EntityWithPagination();
+        pagination.mappedFromPageWithoutContent(users);
+
         List<GetUserResponse> responses = users.stream()
                 .map(UserMapper.INSTANCE::getResponseFromUser)
                 .toList();
-        return new PageImpl<>(responses, pageable, users.getTotalElements());
+        pagination.setContent(responses);
+        return pagination;
     }
 
     @Cacheable(cacheNames = "user_id", key = "#root.methodName + #userId", unless = "#result == null")
