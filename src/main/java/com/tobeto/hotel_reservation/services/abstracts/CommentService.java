@@ -5,7 +5,7 @@ import com.tobeto.hotel_reservation.services.dtos.comment.*;
 import org.springframework.data.domain.Sort;
 
 public interface CommentService {
-    EntityWithPagination getAllUsersWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection);
+    EntityWithPagination getAllCommentsWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection);
 
     GetCommentResponse getCommentById(Long commentId, String language);
 

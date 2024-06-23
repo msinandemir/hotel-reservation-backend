@@ -5,7 +5,7 @@ import com.tobeto.hotel_reservation.services.dtos.photo.*;
 import org.springframework.data.domain.Sort;
 
 public interface PhotoService {
-    EntityWithPagination getAllUsersWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection);
+    EntityWithPagination getAllPhotosWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection);
 
     GetPhotoResponse getPhotoById(Long photoId, String language);
 

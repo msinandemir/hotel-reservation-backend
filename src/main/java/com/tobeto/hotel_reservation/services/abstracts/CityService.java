@@ -9,7 +9,7 @@ import com.tobeto.hotel_reservation.services.dtos.user.UpdateUserRequest;
 import org.springframework.data.domain.Sort;
 
 public interface CityService {
-    EntityWithPagination getAllUsersWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection);
+    EntityWithPagination getAllCitiesWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection);
 
     GetCityResponse getCityById(Long cityId, String language);
 

@@ -4,7 +4,6 @@ import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
 import com.tobeto.hotel_reservation.services.abstracts.UserService;
 import com.tobeto.hotel_reservation.services.dtos.user.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

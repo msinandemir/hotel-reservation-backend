@@ -5,7 +5,7 @@ import com.tobeto.hotel_reservation.services.dtos.roomInfo.*;
 import org.springframework.data.domain.Sort;
 
 public interface RoomInfoService {
-    EntityWithPagination getAllUsersWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection);
+    EntityWithPagination getAllRoomInfosWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection);
 
     GetRoomInfoResponse getRoomInfoById(Long roomInfoId, String language);
 

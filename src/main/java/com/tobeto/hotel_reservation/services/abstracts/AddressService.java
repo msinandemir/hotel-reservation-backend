@@ -1,6 +1,7 @@
 package com.tobeto.hotel_reservation.services.abstracts;
 
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
+import com.tobeto.hotel_reservation.entities.concretes.Address;
 import com.tobeto.hotel_reservation.services.dtos.address.AddAddressRequest;
 import com.tobeto.hotel_reservation.services.dtos.address.AddAddressResponse;
 import com.tobeto.hotel_reservation.services.dtos.address.GetAddressResponse;
@@ -14,4 +15,5 @@ public interface AddressService {
     AddAddressResponse addAddress(AddAddressRequest request);
     UpdateAddressResponse updateAddressById(Long addressId, UpdateUserRequest request, String language);
     void deleteAddressById(Long addressId, String language);
+    Address findAddressById(Long addressId, String language);
 }

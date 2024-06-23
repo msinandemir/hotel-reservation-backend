@@ -5,7 +5,7 @@ import com.tobeto.hotel_reservation.services.dtos.supportRequest.*;
 import org.springframework.data.domain.Sort;
 
 public interface SupportRequestService {
-    EntityWithPagination getAllUsersWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection);
+    EntityWithPagination getAllSupportRequestsWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection);
 
     GetSupportRequestResponse getSupportRequestById(Long supportRequestId, String language);
 

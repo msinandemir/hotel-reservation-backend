@@ -21,7 +21,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
-   @Cacheable(cacheNames = "users", key = "#root.methodName + #pageNumber + '_' + #pageSize", unless = "#result == null")
+    @Cacheable(cacheNames = "users", key = "#root.methodName + #pageNumber + '_' + #pageSize", unless = "#result == null")
     @Override
     public EntityWithPagination getAllUsersWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection) {
         Sort sorting = Sort.by(sortDirection, "createdAt");
@@ -71,7 +71,8 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(foundUser.getId());
     }
 
-    private User findUserById(Long userId, String language) {
+    @Override
+    public User findUserById(Long userId, String language) {
         return userRepository.findById(userId).orElseThrow(() -> new BusinessException("error.userNotFound", language));
     }
 }

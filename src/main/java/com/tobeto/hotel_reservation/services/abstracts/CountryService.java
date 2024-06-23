@@ -9,7 +9,7 @@ import com.tobeto.hotel_reservation.services.dtos.country.UpdateCountryResponse;
 import org.springframework.data.domain.Sort;
 
 public interface CountryService {
-    EntityWithPagination getAllUsersWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection);
+    EntityWithPagination getAllCountriesWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection);
 
     GetCountryResponse getCountryById(Long countryId, String language);
 
