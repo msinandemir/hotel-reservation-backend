@@ -2,10 +2,7 @@ package com.tobeto.hotel_reservation.entities.concretes;
 
 import com.tobeto.hotel_reservation.entities.abstracts.BaseComment;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -32,6 +29,7 @@ public class Comment extends BaseComment {
     private int priceBalance;
 
     @Column(nullable = false)
+    @Setter(AccessLevel.NONE)
     private double overallRating;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -40,4 +38,11 @@ public class Comment extends BaseComment {
 
     @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
     private List<CommentReply> commentReplies;
+
+    @PrePersist
+    @PreUpdate
+    private void calculate(){
+        int totalRating = this.cleanRating + this.locationRating + this.serviceRating + this.confortableRating + this.priceBalance;
+        this.overallRating = (double) totalRating / 5;
+    }
 }
