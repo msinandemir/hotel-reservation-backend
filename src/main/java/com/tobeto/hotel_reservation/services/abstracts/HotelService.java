@@ -1,4 +1,17 @@
 package com.tobeto.hotel_reservation.services.abstracts;
 
+import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
+import com.tobeto.hotel_reservation.services.dtos.hotel.*;
+import org.springframework.data.domain.Sort;
+
 public interface HotelService {
+    EntityWithPagination getAllUsersWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection);
+
+    GetHotelResponse getHotelById(Long hotelId, String language);
+
+    AddHotelResponse addHotel(AddHotelRequest request);
+
+    UpdateHotelResponse updateHotelById(Long hotelId, UpdateHotelRequest request, String language);
+
+    void deleteHotelById(Long hotelId, String language);
 }
