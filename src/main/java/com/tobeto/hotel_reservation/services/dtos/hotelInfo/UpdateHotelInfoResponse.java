@@ -11,7 +11,7 @@ import java.time.Instant;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateHotelResponse {
+public class UpdateHotelInfoResponse {
     private Long id;
     private Instant createdAt;
     private Instant updatedAt;

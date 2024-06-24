@@ -9,7 +9,7 @@ public interface SupportRequestService {
 
     GetSupportRequestResponse getSupportRequestById(Long supportRequestId, String language);
 
-    AddSupportRequestResponse addSupportRequest(AddSupportRequestRequest request);
+    AddSupportRequestResponse addSupportRequest(AddSupportRequestRequest request, String language);
 
     UpdateSupportRequestResponse updateSupportRequestById(Long supportRequestId, UpdateSupportRequestRequest request, String language);
 

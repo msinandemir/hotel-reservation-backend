@@ -22,6 +22,11 @@ public final class MessageSource {
         enMessages.put("error.userNotFound", "User not found.");
         enMessages.put("error.userInfoNotFound", "User info not found.");
         enMessages.put("error.addressNotFound", "Address not found.");
+        enMessages.put("error.supportRequestNotFound", "Support request not found.");
+        enMessages.put("error.roomNotFound", "Room not found.");
+        enMessages.put("error.hotelNotFound", "Hotel not found.");
+        enMessages.put("error.roomInfoNotFound", "Room info not found.");
+        enMessages.put("error.hotelInfoNotFound", "Hotel info not found.");
 
         Map<String, String> trMessages = new HashMap<>();
         trMessages.put("exception.businessTitle", "İş Kuralı İhlali!");
@@ -35,6 +40,11 @@ public final class MessageSource {
         trMessages.put("error.userNotFound", "Kullanıcı bulunamadı.");
         trMessages.put("error.userInfoNotFound", "Kullanıcı bilgisi bulunamadı.");
         trMessages.put("error.addressNotFound", "Adres bulunamadı.");
+        trMessages.put("error.supportRequestNotFound", "Destek isteği bulunamadı.");
+        trMessages.put("error.roomNotFound", "Oda bulunamadı.");
+        trMessages.put("error.hotelNotFound", "Otel bulunamadı.");
+        trMessages.put("error.roomInfoNotFound", "Oda bilgisi bulunamadı.");
+        trMessages.put("error.hotelInfoNotFound", "Otel bilgisi bulunamadı.");
 
         messages.put("en", enMessages);
         messages.put("tr", trMessages);
