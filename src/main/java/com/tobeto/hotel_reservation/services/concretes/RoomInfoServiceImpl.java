@@ -79,6 +79,6 @@ public class RoomInfoServiceImpl implements RoomInfoService {
     }
 
     private RoomInfo findRoomInfoById(Long roomInfoId, String language) {
-        return roomInfoRepository.findById(roomInfoId).orElseThrow(() -> new BusinessException("roomInfoNotFound", language));
+        return roomInfoRepository.findById(roomInfoId).orElseThrow(() -> new BusinessException("error.roomInfoNotFound", language));
     }
 }

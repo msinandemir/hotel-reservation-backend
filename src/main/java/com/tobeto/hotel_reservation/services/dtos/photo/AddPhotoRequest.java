@@ -10,6 +10,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddPhotoRequest {
-    private String url;
     private Long hotelId;
 }

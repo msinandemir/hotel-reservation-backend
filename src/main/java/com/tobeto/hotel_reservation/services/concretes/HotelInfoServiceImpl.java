@@ -79,6 +79,6 @@ public class HotelInfoServiceImpl implements HotelInfoService {
     }
 
     private HotelInfo findHotelInfoById(Long hotelInfoId, String language) {
-        return hotelInfoRepository.findById(hotelInfoId).orElseThrow(() -> new BusinessException("hotelInfoNotFound", language));
+        return hotelInfoRepository.findById(hotelInfoId).orElseThrow(() -> new BusinessException("error.hotelInfoNotFound", language));
     }
 }

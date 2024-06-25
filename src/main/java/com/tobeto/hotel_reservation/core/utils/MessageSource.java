@@ -27,6 +27,11 @@ public final class MessageSource {
         enMessages.put("error.hotelNotFound", "Hotel not found.");
         enMessages.put("error.roomInfoNotFound", "Room info not found.");
         enMessages.put("error.hotelInfoNotFound", "Hotel info not found.");
+        enMessages.put("error.photoNotFound", "Photo not found.");
+        enMessages.put("error.commentNotFound", "Comment not found.");
+        enMessages.put("error.commentReplyNotFound", "Comment reply not found.");
+        enMessages.put("error.countryNotFound", "Country not found.");
+        enMessages.put("error.cityNotFound", "City not found.");
 
         Map<String, String> trMessages = new HashMap<>();
         trMessages.put("exception.businessTitle", "İş Kuralı İhlali!");
@@ -45,6 +50,11 @@ public final class MessageSource {
         trMessages.put("error.hotelNotFound", "Otel bulunamadı.");
         trMessages.put("error.roomInfoNotFound", "Oda bilgisi bulunamadı.");
         trMessages.put("error.hotelInfoNotFound", "Otel bilgisi bulunamadı.");
+        trMessages.put("error.photoNotFound", "Fotoğraf bulunamadı.");
+        trMessages.put("error.commentNotFound", "Yorum bulunamadı.");
+        trMessages.put("error.commentReplyNotFound", "Yorum yanıtı bulunamadı.");
+        trMessages.put("error.countryNotFound", "Ülke bulunamadı.");
+        trMessages.put("error.cityNotFound", "Şehir bulunamadı.");
 
         messages.put("en", enMessages);
         messages.put("tr", trMessages);

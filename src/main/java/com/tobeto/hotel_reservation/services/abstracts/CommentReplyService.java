@@ -7,11 +7,11 @@ import org.springframework.data.domain.Sort;
 public interface CommentReplyService {
     EntityWithPagination getAllCommentRepliesWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection);
 
-    GetCommentReplyResponse getCommentById(Long commentReplyId, String language);
+    GetCommentReplyResponse getCommentReplyById(Long commentReplyId, String language);
 
-    AddCommentReplyResponse addComment(AddCommentReplyRequest request);
+    AddCommentReplyResponse addCommentReply(AddCommentReplyRequest request, String language);
 
-    UpdateCommentReplyResponse updateCommentById(Long commentReplyId, UpdateCommentReplyRequest request, String language);
+    UpdateCommentReplyResponse updateCommentReplyById(Long commentReplyId, UpdateCommentReplyRequest request, String language);
 
-    void deleteCommentById(Long commentReplyId, String language);
+    void deleteCommentReplyById(Long commentReplyId, String language);
 }

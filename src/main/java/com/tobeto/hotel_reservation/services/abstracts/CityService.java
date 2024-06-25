@@ -1,21 +1,20 @@
 package com.tobeto.hotel_reservation.services.abstracts;
 
-import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
-import com.tobeto.hotel_reservation.services.dtos.city.AddCityRequest;
-import com.tobeto.hotel_reservation.services.dtos.city.AddCityResponse;
-import com.tobeto.hotel_reservation.services.dtos.city.GetCityResponse;
-import com.tobeto.hotel_reservation.services.dtos.city.UpdateCityResponse;
-import com.tobeto.hotel_reservation.services.dtos.user.UpdateUserRequest;
-import org.springframework.data.domain.Sort;
+import com.tobeto.hotel_reservation.entities.concretes.City;
+import com.tobeto.hotel_reservation.services.dtos.city.*;
+
+import java.util.List;
 
 public interface CityService {
-    EntityWithPagination getAllCitiesWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection);
+    List<GetCityResponse> getAllCities();
 
     GetCityResponse getCityById(Long cityId, String language);
 
-    AddCityResponse addCity(AddCityRequest request);
+    AddCityResponse addCity(AddCityRequest request, String language);
 
-    UpdateCityResponse updateCityById(Long cityId, UpdateUserRequest request, String language);
+    UpdateCityResponse updateCityById(Long cityId, UpdateCityRequest request, String language);
 
     void deleteCityById(Long cityId, String language);
+
+    City findCityById(Long cityId, String language);
 }
