@@ -11,7 +11,7 @@ public interface CommentReplyMapper {
     CommentReplyMapper INSTANCE = Mappers.getMapper(CommentReplyMapper.class);
 
     @Mapping(source = "user.id", target = "userId")
-    @Mapping(source = "comment.id", target = "userId")
+    @Mapping(source = "comment.id", target = "commentId")
     GetCommentReplyResponse getResponseFromCommentReply(CommentReply commentReply);
 
     @Mapping(target = "user.id", source = "userId")
@@ -19,7 +19,7 @@ public interface CommentReplyMapper {
     CommentReply commentReplyFromAddRequest(AddCommentReplyRequest request);
 
     @Mapping(source = "user.id", target = "userId")
-    @Mapping(source = "comment.id", target = "userId")
+    @Mapping(source = "comment.id", target = "commentId")
     AddCommentReplyResponse addResponseFromCommentReply(CommentReply commentReply);
 
     @Mapping(target = "user.id", source = "userId")
@@ -27,6 +27,6 @@ public interface CommentReplyMapper {
     CommentReply commentReplyFromUpdateRequest(UpdateCommentReplyRequest request);
 
     @Mapping(source = "user.id", target = "userId")
-    @Mapping(source = "comment.id", target = "userId")
+    @Mapping(source = "comment.id", target = "commentId")
     UpdateCommentReplyResponse updateResponseFromCommentReply(CommentReply commentReply);
 }

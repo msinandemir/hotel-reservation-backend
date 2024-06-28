@@ -10,7 +10,7 @@ import org.mapstruct.factory.Mappers;
 public interface HotelInfoMapper {
     HotelInfoMapper INSTANCE = Mappers.getMapper(HotelInfoMapper.class);
 
-    @Mapping(source = "hotel.id", target = "hotel.id")
+    @Mapping(source = "hotel.id", target = "hotelId")
     GetHotelInfoResponse getResponseFromHotelInfo(HotelInfo hotelInfo);
 
     @Mapping(target = "hotel.id", source = "hotelId")
