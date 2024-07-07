@@ -1,7 +1,5 @@
 package com.tobeto.hotel_reservation.services.concretes;
 
-import com.tobeto.hotel_reservation.core.exceptions.types.BusinessException;
-import com.tobeto.hotel_reservation.services.abstracts.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -13,11 +11,10 @@ import org.thymeleaf.context.Context;
 
 @Service
 @RequiredArgsConstructor
-public class EmailServiceImpl implements EmailService {
+public class GoogleEmailService {
     private final JavaMailSender mailSender;
     private final TemplateEngine templateEngine;
 
-    @Override
     public boolean sendWelcomeEmail(String to, String subject, String language) throws MessagingException {
         String templateName = "welcomeEmailTemplate";
         Context context = new Context();
