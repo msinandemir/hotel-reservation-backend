@@ -18,8 +18,7 @@ public class EmailServiceImpl implements EmailService {
     private final TemplateEngine templateEngine;
 
     @Override
-    public boolean sendWelcomeEmail(String to,String subject, String language) {
-
+    public boolean sendWelcomeEmail(String to, String subject, String language) throws MessagingException {
         String templateName = "welcomeEmailTemplate";
         Context context = new Context();
         context.setVariable("title", "email title");
@@ -27,19 +26,13 @@ public class EmailServiceImpl implements EmailService {
 
         MimeMessage message = mailSender.createMimeMessage();
 
-        try {
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-            String htmlBody = templateEngine.process(templateName, context);
-
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(htmlBody, true);
-            mailSender.send(message);
-
-            return true;
-        } catch (RuntimeException | MessagingException e) {
-            throw new BusinessException("email.sendError", language);
-        }
+        String htmlBody = templateEngine.process(templateName, context);
+        helper.setTo(to);
+        helper.setSubject(subject);
+        helper.setText(htmlBody, true);
+        mailSender.send(message);
+        return true;
     }
 }

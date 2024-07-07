@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("api/v1/photos")
 @RequiredArgsConstructor
@@ -27,7 +29,7 @@ public class PhotoController {
     }
 
     @PostMapping
-    ResponseEntity<AddPhotoResponse> addPhoto(@RequestBody AddPhotoRequest request, @RequestPart MultipartFile file, @RequestHeader(defaultValue = "en") String lang) {
+    ResponseEntity<AddPhotoResponse> addPhoto(@RequestBody AddPhotoRequest request, @RequestPart MultipartFile file, @RequestHeader(defaultValue = "en") String lang) throws IOException {
         return new ResponseEntity<>(photoService.addPhoto(request, file, lang), HttpStatus.CREATED);
     }
 
@@ -37,7 +39,7 @@ public class PhotoController {
     }
 
     @DeleteMapping("{photoId}")
-    void deletePhotoById(@PathVariable Long photoId, @RequestHeader(defaultValue = "en") String lang) {
+    void deletePhotoById(@PathVariable Long photoId, @RequestHeader(defaultValue = "en") String lang) throws IOException {
         photoService.deletePhotoById(photoId, lang);
     }
 }

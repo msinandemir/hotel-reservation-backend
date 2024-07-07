@@ -20,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -54,7 +55,7 @@ public class PhotoServiceImpl implements PhotoService {
 
     @CacheEvict(cacheNames = {"photo_id"}, allEntries = true)
     @Override
-    public AddPhotoResponse addPhoto(AddPhotoRequest request, MultipartFile file, String language) {
+    public AddPhotoResponse addPhoto(AddPhotoRequest request, MultipartFile file, String language) throws IOException {
         hotelService.findHotelById(request.getHotelId(), language);
         String url = cloudinaryService.saveImage(file, language);
         Photo photo = PhotoMapper.INSTANCE.photoFromAddRequest(request);
@@ -77,7 +78,7 @@ public class PhotoServiceImpl implements PhotoService {
 
     @CacheEvict(cacheNames = {"photo_id"}, allEntries = true)
     @Override
-    public void deletePhotoById(Long photoId, String language) {
+    public void deletePhotoById(Long photoId, String language) throws IOException {
         Photo foundPhoto = findPhotoById(photoId, language);
         cloudinaryService.deleteImageByUrl(foundPhoto.getUrl(), language);
         photoRepository.deleteById(foundPhoto.getId());
