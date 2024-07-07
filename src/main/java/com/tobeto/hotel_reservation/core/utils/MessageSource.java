@@ -33,6 +33,7 @@ public final class MessageSource {
         enMessages.put("error.commentReplyNotFound", "Comment reply not found.");
         enMessages.put("error.countryNotFound", "Country not found.");
         enMessages.put("error.cityNotFound", "City not found.");
+        enMessages.put("error.reservationNotFound", "Reservation not found.");
 
         Map<String, String> trMessages = new HashMap<>();
         trMessages.put("exception.businessTitle", "İş Kuralı İhlali!");
@@ -57,6 +58,7 @@ public final class MessageSource {
         trMessages.put("error.commentReplyNotFound", "Yorum yanıtı bulunamadı.");
         trMessages.put("error.countryNotFound", "Ülke bulunamadı.");
         trMessages.put("error.cityNotFound", "Şehir bulunamadı.");
+        trMessages.put("error.reservationNotFound", "Rezervasyon bulunamadı.");
 
         messages.put("en", enMessages);
         messages.put("tr", trMessages);
