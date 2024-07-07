@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("api/v1/cities")
 @RequiredArgsConstructor
 public class CityController {
-    private CityService cityService;
+    private final CityService cityService;
 
     @GetMapping
     ResponseEntity<List<GetCityResponse>> getAllCities() {

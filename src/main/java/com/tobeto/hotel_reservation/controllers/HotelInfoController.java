@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1/hotelInfos")
 @RequiredArgsConstructor
 public class HotelInfoController {
-    private HotelInfoService hotelInfoService;
+    private final HotelInfoService hotelInfoService;
 
     @GetMapping
     ResponseEntity<EntityWithPagination> getAllHotelInfosWithPagination(@RequestParam int pageNumber, @RequestParam int pageSize) {

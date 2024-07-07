@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("api/v1/countries")
 @RequiredArgsConstructor
 public class CountryController {
-    private CountryService countryService;
+    private final CountryService countryService;
 
     @GetMapping
     ResponseEntity<List<GetCountryResponse>> getAllCountries() {

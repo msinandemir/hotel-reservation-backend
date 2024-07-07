@@ -2,6 +2,7 @@ package com.tobeto.hotel_reservation.services.concretes;
 
 import com.tobeto.hotel_reservation.core.exceptions.types.BusinessException;
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
+import com.tobeto.hotel_reservation.entities.concretes.Address;
 import com.tobeto.hotel_reservation.entities.concretes.Hotel;
 import com.tobeto.hotel_reservation.repositories.HotelRepository;
 import com.tobeto.hotel_reservation.services.abstracts.AddressService;

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1/commentReplies")
 @RequiredArgsConstructor
 public class CommentReplyController {
-    private CommentReplyService commentReplyService;
+    private final CommentReplyService commentReplyService;
 
     @GetMapping
     ResponseEntity<EntityWithPagination> getAllCommentRepliesWithPagination(@RequestParam int pageNumber, @RequestParam int pageSize) {

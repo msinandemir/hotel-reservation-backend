@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1/supportRequests")
 @RequiredArgsConstructor
 public class SupportRequestController {
-    private SupportRequestService supportRequestService;
+    private final SupportRequestService supportRequestService;
 
     @GetMapping
     ResponseEntity<EntityWithPagination> getAllSupportRequestsWithPagination(@RequestParam int pageNumber, @RequestParam int pageSize) {

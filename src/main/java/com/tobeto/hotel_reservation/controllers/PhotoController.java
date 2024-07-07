@@ -16,7 +16,7 @@ import java.io.IOException;
 @RequestMapping("api/v1/photos")
 @RequiredArgsConstructor
 public class PhotoController {
-    private PhotoService photoService;
+    private final PhotoService photoService;
 
     @GetMapping
     ResponseEntity<EntityWithPagination> getAllPhotosWithPagination(@RequestParam int pageNumber, @RequestParam int pageSize) {

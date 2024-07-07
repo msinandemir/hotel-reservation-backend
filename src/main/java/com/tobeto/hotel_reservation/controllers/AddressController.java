@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1/addresses")
 @RequiredArgsConstructor
 public class AddressController {
-    private AddressService addressService;
+    private final AddressService addressService;
 
     @GetMapping
     ResponseEntity<EntityWithPagination> getAllAddressWithPagination(@RequestParam int pageNumber, @RequestParam int pageSize) {

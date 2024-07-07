@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1/comments")
 @RequiredArgsConstructor
 public class CommentController {
-    private CommentService commentService;
+    private final CommentService commentService;
 
     @GetMapping
     ResponseEntity<EntityWithPagination> getAllCommentsWithPagination(@RequestParam int pageNumber, @RequestParam int pageSize) {
