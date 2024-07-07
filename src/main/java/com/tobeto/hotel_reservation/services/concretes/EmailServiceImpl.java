@@ -2,7 +2,6 @@ package com.tobeto.hotel_reservation.services.concretes;
 
 import com.tobeto.hotel_reservation.core.exceptions.types.BusinessException;
 import com.tobeto.hotel_reservation.services.abstracts.EmailService;
-import com.tobeto.hotel_reservation.services.dtos.email.SendEmailRequest;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,7 @@ public class EmailServiceImpl implements EmailService {
     private final TemplateEngine templateEngine;
 
     @Override
-    public boolean sendWelcomeEmail(SendEmailRequest sendEmailRequest, String language) {
+    public boolean sendWelcomeEmail(String to,String subject, String language) {
 
         String templateName = "welcomeEmailTemplate";
         Context context = new Context();
@@ -33,8 +32,8 @@ public class EmailServiceImpl implements EmailService {
 
             String htmlBody = templateEngine.process(templateName, context);
 
-            helper.setTo(sendEmailRequest.getTo());
-            helper.setSubject(sendEmailRequest.getSubject());
+            helper.setTo(to);
+            helper.setSubject(subject);
             helper.setText(htmlBody, true);
             mailSender.send(message);
 
