@@ -26,8 +26,8 @@ public class UserController {
     }
 
     @PostMapping
-    ResponseEntity<AddUserResponse> addUser(@RequestBody AddUserRequest request) {
-        return new ResponseEntity<>(userService.addUser(request), HttpStatus.CREATED);
+    ResponseEntity<AddUserResponse> addUser(@RequestBody AddUserRequest request, @RequestHeader(defaultValue = "en") String lang) {
+        return new ResponseEntity<>(userService.addUser(request, lang), HttpStatus.CREATED);
     }
 
     @PutMapping("{userId}")

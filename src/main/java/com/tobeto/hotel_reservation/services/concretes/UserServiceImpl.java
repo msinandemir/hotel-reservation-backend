@@ -47,7 +47,8 @@ public class UserServiceImpl implements UserService {
 
     @CacheEvict(cacheNames = {"user_id", "users"}, allEntries = true)
     @Override
-    public AddUserResponse addUser(AddUserRequest request) {
+    public AddUserResponse addUser(AddUserRequest request, String language) {
+        checkUserExistsByEmail(request.getEmail(), language);
         User user = UserMapper.INSTANCE.userFromAddRequest(request);
         User savedUser = userRepository.save(user);
         return UserMapper.INSTANCE.addResponseFromUser(savedUser);
@@ -56,6 +57,7 @@ public class UserServiceImpl implements UserService {
     @CachePut(cacheNames = "user_id", key = "'getUserById' + #userId", unless = "#result == null")
     @Override
     public UpdateUserResponse updateUserById(Long userId, UpdateUserRequest request, String language) {
+        checkUserExistsByEmail(request.getEmail(), language);
         User foundUser = findUserById(userId, language);
         User updatedUser = UserMapper.INSTANCE.userFromUpdateRequest(request);
         updatedUser.setId(foundUser.getId());
@@ -74,5 +76,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserById(Long userId, String language) {
         return userRepository.findById(userId).orElseThrow(() -> new BusinessException("error.userNotFound", language));
+    }
+
+    private void checkUserExistsByEmail(String email, String language) {
+        boolean result = userRepository.existsByEmail(email);
+        if (result)
+            throw new BusinessException("error.emailExists", language);
     }
 }

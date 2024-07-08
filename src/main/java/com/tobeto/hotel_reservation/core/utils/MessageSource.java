@@ -34,6 +34,7 @@ public final class MessageSource {
         enMessages.put("error.countryNotFound", "Country not found.");
         enMessages.put("error.cityNotFound", "City not found.");
         enMessages.put("error.reservationNotFound", "Reservation not found.");
+        enMessages.put("error.emailExists","There is a user registered with this email.");
 
         Map<String, String> trMessages = new HashMap<>();
         trMessages.put("exception.businessTitle", "İş Kuralı İhlali!");
@@ -59,6 +60,7 @@ public final class MessageSource {
         trMessages.put("error.countryNotFound", "Ülke bulunamadı.");
         trMessages.put("error.cityNotFound", "Şehir bulunamadı.");
         trMessages.put("error.reservationNotFound", "Rezervasyon bulunamadı.");
+        trMessages.put("error.emailExists", "Bu e-posta ile kayıtlı kullanıcı var.");
 
         messages.put("en", enMessages);
         messages.put("tr", trMessages);

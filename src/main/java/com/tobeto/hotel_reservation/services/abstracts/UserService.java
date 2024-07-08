@@ -10,7 +10,7 @@ public interface UserService {
 
     GetUserResponse getUserById(Long userId, String language);
 
-    AddUserResponse addUser(AddUserRequest request);
+    AddUserResponse addUser(AddUserRequest request, String language);
 
     UpdateUserResponse updateUserById(Long userId, UpdateUserRequest request, String language);
 

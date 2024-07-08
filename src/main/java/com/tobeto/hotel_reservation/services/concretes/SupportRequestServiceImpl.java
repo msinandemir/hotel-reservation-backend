@@ -50,6 +50,38 @@ public class SupportRequestServiceImpl implements SupportRequestService {
         return SupportRequestMapper.INSTANCE.getResponseFromSupportRequest(foundSupportRequest);
     }
 
+    @Override
+    public EntityWithPagination getSupportRequestByUserIdWithPagination(Long userId, int pageNumber, int pageSize, Sort.Direction sortDirection) {
+        Sort sorting = Sort.by(sortDirection, "createdAt");
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
+        Page<SupportRequest> supportRequests = supportRequestRepository.findByUserId(userId, pageable);
+
+        EntityWithPagination pagination = new EntityWithPagination();
+        pagination.mappedFromPageWithoutContent(supportRequests);
+
+        List<GetSupportRequestResponse> responses = supportRequests.stream()
+                .map(SupportRequestMapper.INSTANCE::getResponseFromSupportRequest)
+                .toList();
+        pagination.setContent(responses);
+        return pagination;
+    }
+
+    @Override
+    public EntityWithPagination getSupportRequestByHotelIdWithPagination(Long hotelId, int pageNumber, int pageSize, Sort.Direction sortDirection) {
+        Sort sorting = Sort.by(sortDirection, "createdAt");
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
+        Page<SupportRequest> supportRequests = supportRequestRepository.findByHotelId(hotelId, pageable);
+
+        EntityWithPagination pagination = new EntityWithPagination();
+        pagination.mappedFromPageWithoutContent(supportRequests);
+
+        List<GetSupportRequestResponse> responses = supportRequests.stream()
+                .map(SupportRequestMapper.INSTANCE::getResponseFromSupportRequest)
+                .toList();
+        pagination.setContent(responses);
+        return pagination;
+    }
+
     @CacheEvict(cacheNames = {"support_request_id", "support_requests"}, allEntries = true)
     @Override
     public AddSupportRequestResponse addSupportRequest(AddSupportRequestRequest request, String language) {
