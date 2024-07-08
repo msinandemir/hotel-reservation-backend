@@ -1,3 +1,4 @@
+
 package com.tobeto.hotel_reservation.entities.concretes;
 
 import com.tobeto.hotel_reservation.entities.abstracts.BaseEntity;

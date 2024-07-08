@@ -30,11 +30,6 @@ public class SupportRequestController {
         return ResponseEntity.ok(supportRequestService.getSupportRequestByUserIdWithPagination(userId, pageNumber, pageSize, Sort.Direction.DESC));
     }
 
-    @GetMapping("supportRequestsByHotelId/{hotelId}")
-    ResponseEntity<EntityWithPagination> getSupportRequestByHotelIdWithPagination(@PathVariable Long hotelId, @RequestParam int pageNumber, @RequestParam int pageSize) {
-        return ResponseEntity.ok(supportRequestService.getSupportRequestByHotelIdWithPagination(hotelId, pageNumber, pageSize, Sort.Direction.DESC));
-    }
-
     @PostMapping
     ResponseEntity<AddSupportRequestResponse> addSupportRequest(@RequestBody AddSupportRequestRequest request, @RequestHeader(defaultValue = "en") String lang) {
         return new ResponseEntity<>(supportRequestService.addSupportRequest(request, lang), HttpStatus.CREATED);

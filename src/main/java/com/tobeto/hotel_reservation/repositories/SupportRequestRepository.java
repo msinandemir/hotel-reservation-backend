@@ -9,6 +9,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SupportRequestRepository extends JpaRepository<SupportRequest, Long> {
     Page<SupportRequest> findByUserId(Long userId, Pageable pageable);
-
-    Page<SupportRequest> findByHotelId(Long hotelId, Pageable pageable);
 }

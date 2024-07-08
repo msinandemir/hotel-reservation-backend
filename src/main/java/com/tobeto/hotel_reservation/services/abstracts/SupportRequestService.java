@@ -11,8 +11,6 @@ public interface SupportRequestService {
 
     EntityWithPagination getSupportRequestByUserIdWithPagination(Long userId, int pageNumber, int pageSize, Sort.Direction sortDirection);
 
-    EntityWithPagination getSupportRequestByHotelIdWithPagination(Long hotelId, int pageNumber, int pageSize, Sort.Direction sortDirection);
-
     AddSupportRequestResponse addSupportRequest(AddSupportRequestRequest request, String language);
 
     UpdateSupportRequestResponse updateSupportRequestById(Long supportRequestId, UpdateSupportRequestRequest request, String language);
