@@ -39,6 +39,10 @@ public class Comment extends BaseComment {
     @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
     private List<CommentReply> commentReplies;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hotel_id")
+    private Hotel hotel;
+
     @PrePersist
     @PreUpdate
     private void calculate(){

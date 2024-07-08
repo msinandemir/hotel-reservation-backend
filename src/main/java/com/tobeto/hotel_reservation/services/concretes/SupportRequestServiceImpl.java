@@ -50,6 +50,7 @@ public class SupportRequestServiceImpl implements SupportRequestService {
         return SupportRequestMapper.INSTANCE.getResponseFromSupportRequest(foundSupportRequest);
     }
 
+    @Cacheable(cacheNames = "support_requests_user_id", key = "#root.methodName + #userId + '_' + #pageNumber + '_' + #pageSize", unless = "#result == null")
     @Override
     public EntityWithPagination getSupportRequestByUserIdWithPagination(Long userId, int pageNumber, int pageSize, Sort.Direction sortDirection) {
         Sort sorting = Sort.by(sortDirection, "createdAt");

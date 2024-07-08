@@ -50,7 +50,41 @@ public class CommentServiceImpl implements CommentService {
         return CommentMapper.INSTANCE.getResponseFromComment(foundComment);
     }
 
-    @CacheEvict(cacheNames = {"comments", "comment_id"}, allEntries = true)
+    @Cacheable(cacheNames = "comments_user_id", key = "#root.methodName + #userId + '_' + #pageNumber + '_' + #pageSize", unless = "#result == null")
+    @Override
+    public EntityWithPagination getCommentsByUserIdWithPagination(Long userId, int pageNumber, int pageSize, Sort.Direction sortDirection) {
+        Sort sorting = Sort.by(sortDirection, "createdAt");
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
+        Page<Comment> comments = commentRepository.findByUserId(userId, pageable);
+
+        EntityWithPagination pagination = new EntityWithPagination();
+        pagination.mappedFromPageWithoutContent(comments);
+
+        List<GetCommentResponse> responses = comments.stream()
+                .map(CommentMapper.INSTANCE::getResponseFromComment)
+                .toList();
+        pagination.setContent(responses);
+        return pagination;
+    }
+
+    @Cacheable(cacheNames = "comments_hotel_id", key = "#root.methodName + #hotelId + '_' + #pageNumber + '_' + #pageSize", unless = "#result == null")
+    @Override
+    public EntityWithPagination getCommentsByHotelIdWithPagination(Long hotelId, int pageNumber, int pageSize, Sort.Direction sortDirection) {
+        Sort sorting = Sort.by(sortDirection, "createdAt");
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
+        Page<Comment> comments = commentRepository.findByHotelId(hotelId, pageable);
+
+        EntityWithPagination pagination = new EntityWithPagination();
+        pagination.mappedFromPageWithoutContent(comments);
+
+        List<GetCommentResponse> responses = comments.stream()
+                .map(CommentMapper.INSTANCE::getResponseFromComment)
+                .toList();
+        pagination.setContent(responses);
+        return pagination;
+    }
+
+    @CacheEvict(cacheNames = {"comments", "comment_id", "comments_user_id", "comments_hotel_id"}, allEntries = true)
     @Override
     public AddCommentResponse addComment(AddCommentRequest request, String language) {
         userService.findUserById(request.getUserId(), language);
@@ -71,7 +105,7 @@ public class CommentServiceImpl implements CommentService {
         return CommentMapper.INSTANCE.updateResponseFromComment(savedComment);
     }
 
-    @CacheEvict(cacheNames = {"comments", "comment_id"}, allEntries = true)
+    @CacheEvict(cacheNames = {"comments", "comment_id", "comments_user_id", "comments_hotel_id"}, allEntries = true)
     @Override
     public void deleteCommentById(Long commentId, String language) {
         Comment foundComment = findCommentById(commentId, language);

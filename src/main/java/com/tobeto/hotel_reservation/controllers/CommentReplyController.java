@@ -26,6 +26,11 @@ public class CommentReplyController {
         return ResponseEntity.ok(commentReplyService.getCommentReplyById(commentReplyId, lang));
     }
 
+    @GetMapping("commentRepliesByUserId/{userId}")
+    ResponseEntity<EntityWithPagination> getCommentRepliesByUserIdWithPagination(@PathVariable Long userId, @RequestParam int pageNumber, @RequestParam int pageSize) {
+        return ResponseEntity.ok(commentReplyService.getCommentRepliesByUserIdWithPagination(userId, pageNumber, pageSize, Sort.Direction.DESC));
+    }
+
     @PostMapping
     ResponseEntity<AddCommentReplyResponse> addCommentReply(@RequestBody AddCommentReplyRequest request, @RequestHeader(defaultValue = "en") String lang) {
         return new ResponseEntity<>(commentReplyService.addCommentReply(request, lang), HttpStatus.CREATED);

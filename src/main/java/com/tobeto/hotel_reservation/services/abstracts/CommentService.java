@@ -10,6 +10,10 @@ public interface CommentService {
 
     GetCommentResponse getCommentById(Long commentId, String language);
 
+    EntityWithPagination getCommentsByUserIdWithPagination(Long userId, int pageNumber, int pageSize, Sort.Direction sortDirection);
+
+    EntityWithPagination getCommentsByHotelIdWithPagination(Long hotelId, int pageNumber, int pageSize, Sort.Direction sortDirection);
+
     AddCommentResponse addComment(AddCommentRequest request, String language);
 
     UpdateCommentResponse updateCommentById(Long commentId, UpdateCommentRequest request, String language);

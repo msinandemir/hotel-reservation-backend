@@ -9,6 +9,8 @@ public interface CommentReplyService {
 
     GetCommentReplyResponse getCommentReplyById(Long commentReplyId, String language);
 
+    EntityWithPagination getCommentRepliesByUserIdWithPagination(Long userId, int pageNumber, int pageSize, Sort.Direction sortDirection);
+
     AddCommentReplyResponse addCommentReply(AddCommentReplyRequest request, String language);
 
     UpdateCommentReplyResponse updateCommentReplyById(Long commentReplyId, UpdateCommentReplyRequest request, String language);

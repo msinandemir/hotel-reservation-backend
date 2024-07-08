@@ -25,6 +25,16 @@ public class CommentController {
         return ResponseEntity.ok(commentService.getCommentById(commentId, lang));
     }
 
+    @GetMapping("commentsByUserId/{userId}")
+    ResponseEntity<EntityWithPagination> getCommentsByUserIdWithPagination(@PathVariable Long userId, @RequestParam int pageNumber, @RequestParam int pageSize) {
+        return ResponseEntity.ok(commentService.getCommentsByUserIdWithPagination(userId, pageNumber, pageSize, Sort.Direction.DESC));
+    }
+
+    @GetMapping("commentsByHotelId/{hotelId}")
+    ResponseEntity<EntityWithPagination> getCommentsByHotelIdWithPagination(@PathVariable Long hotelId, @RequestParam int pageNumber, @RequestParam int pageSize) {
+        return ResponseEntity.ok(commentService.getCommentsByHotelIdWithPagination(hotelId, pageNumber, pageSize, Sort.Direction.DESC));
+    }
+
     @PostMapping
     ResponseEntity<AddCommentResponse> addComment(@RequestBody AddCommentRequest request, @RequestHeader(defaultValue = "en") String lang) {
         return new ResponseEntity<>(commentService.addComment(request, lang), HttpStatus.CREATED);

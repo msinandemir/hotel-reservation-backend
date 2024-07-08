@@ -52,7 +52,24 @@ public class CommentReplyServiceImpl implements CommentReplyService {
         return CommentReplyMapper.INSTANCE.getResponseFromCommentReply(foundCommentReply);
     }
 
-    @CacheEvict(cacheNames = {"comment_replies", "comment_reply_id"}, allEntries = true)
+    @Cacheable(cacheNames = "comment_replies_user_id", key = "#root.methodName + #userId + '_' + #pageNumber + '_' + #pageSize", unless = "#result == null")
+    @Override
+    public EntityWithPagination getCommentRepliesByUserIdWithPagination(Long userId, int pageNumber, int pageSize, Sort.Direction sortDirection) {
+        Sort sorting = Sort.by(sortDirection, "createdAt");
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
+        Page<CommentReply> commentReplies = commentReplyRepository.findByUserId(userId, pageable);
+
+        EntityWithPagination pagination = new EntityWithPagination();
+        pagination.mappedFromPageWithoutContent(commentReplies);
+
+        List<GetCommentReplyResponse> responses = commentReplies.stream()
+                .map(CommentReplyMapper.INSTANCE::getResponseFromCommentReply)
+                .toList();
+        pagination.setContent(responses);
+        return pagination;
+    }
+
+    @CacheEvict(cacheNames = {"comment_replies", "comment_reply_id", "comment_replies_user_id"}, allEntries = true)
     @Override
     public AddCommentReplyResponse addCommentReply(AddCommentReplyRequest request, String language) {
         commentService.findCommentById(request.getCommentId(), language);
@@ -75,7 +92,7 @@ public class CommentReplyServiceImpl implements CommentReplyService {
         return CommentReplyMapper.INSTANCE.updateResponseFromCommentReply(savedCommentReply);
     }
 
-    @CacheEvict(cacheNames = {"comment_replies", "comment_reply_id"}, allEntries = true)
+    @CacheEvict(cacheNames = {"comment_replies", "comment_reply_id", "comment_replies_user_id"}, allEntries = true)
     @Override
     public void deleteCommentReplyById(Long commentReplyId, String language) {
         CommentReply foundCommentReply = findCommentReplyById(commentReplyId, language);
