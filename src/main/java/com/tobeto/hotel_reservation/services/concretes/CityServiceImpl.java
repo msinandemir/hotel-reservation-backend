@@ -46,7 +46,7 @@ public class CityServiceImpl implements CityService {
         return CityMapper.INSTANCE.addResponseFromCity(savedCity);
     }
 
-    @CachePut(cacheNames = "city_id", key = "getCityById + #request.id", unless = "#result == null")
+    @CachePut(cacheNames = "city_id", key = "'getCityById' + #cityId", unless = "#result == null")
     @Override
     public UpdateCityResponse updateCityById(Long cityId, UpdateCityRequest request, String language) {
         countryService.findCountryById(request.getCountryId(), language);

@@ -59,7 +59,7 @@ public class HotelInfoServiceImpl implements HotelInfoService {
         return HotelInfoMapper.INSTANCE.addResponseFromHotelInfo(savedHotelInfo);
     }
 
-    @CachePut(cacheNames = "hotel_info_id", key = "getHotelInfoById + #request.id", unless = "#result == null")
+    @CachePut(cacheNames = "hotel_info_id", key = "'getHotelInfoById' + #hotelInfoId", unless = "#result == null")
     @Override
     public UpdateHotelInfoResponse updateHotelInfoById(Long hotelInfoId, UpdateHotelInfoRequest request, String language) {
         hotelService.findHotelById(request.getHotelId(), language);

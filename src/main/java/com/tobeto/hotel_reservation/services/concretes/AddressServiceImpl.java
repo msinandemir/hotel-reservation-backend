@@ -59,7 +59,7 @@ public class AddressServiceImpl implements AddressService {
         return AddressMapper.INSTANCE.addResponseFromAddress(savedAddress);
     }
 
-    @CachePut(cacheNames = "address_id", key = "getAddressById + #request.id", unless = "#result == null")
+    @CachePut(cacheNames = "address_id", key = "'getAddressById' + #addressId", unless = "#result == null")
     @Override
     public UpdateAddressResponse updateAddressById(Long addressId, UpdateAddressRequest request, String language) {
         cityService.findCityById(request.getCityId(), language);

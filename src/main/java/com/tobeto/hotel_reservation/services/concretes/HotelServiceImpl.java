@@ -63,7 +63,7 @@ public class HotelServiceImpl implements HotelService {
         return HotelMapper.INSTANCE.addResponseFromHotel(savedHotel);
     }
 
-    @CachePut(cacheNames = "hotel_id", key = "getHotelById + #request.id", unless = "#result == null")
+    @CachePut(cacheNames = "hotel_id", key = "'getHotelById' + #hotelId", unless = "#result == null")
     @Override
     public UpdateHotelResponse updateHotelById(Long hotelId, UpdateHotelRequest request, String language) {
         userService.findUserById(request.getUserId(), language);

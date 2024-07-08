@@ -64,7 +64,7 @@ public class PhotoServiceImpl implements PhotoService {
         Photo savedPhoto = photoRepository.save(photo);
         return PhotoMapper.INSTANCE.addResponseFromPhoto(savedPhoto);
     }
-    @CachePut(cacheNames = "photo_id", key = "getPhotoById + #request.id", unless = "#result == null")
+    @CachePut(cacheNames = "photo_id", key = "'getPhotoById' + #photoId", unless = "#result == null")
     @Override
     public UpdatePhotoResponse updatePhotoById(Long photoId, UpdatePhotoRequest request, String language) {
         hotelService.findHotelById(request.getHotelId(), language);

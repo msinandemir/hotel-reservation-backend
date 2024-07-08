@@ -59,7 +59,7 @@ public class RoomServiceImpl implements RoomService {
         return RoomMapper.INSTANCE.addResponseFromRoom(savedRoom);
     }
 
-    @CachePut(cacheNames = "room_id", key = "getRoomById + #request.id", unless = "#result == null")
+    @CachePut(cacheNames = "room_id", key = "'getRoomById' + #roomId", unless = "#result == null")
     @Override
     public UpdateRoomResponse updateRoomById(Long roomId, UpdateRoomRequest request, String language) {
         hotelService.findHotelById(request.getHotelId(), language);

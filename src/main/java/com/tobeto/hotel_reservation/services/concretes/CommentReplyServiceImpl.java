@@ -62,7 +62,7 @@ public class CommentReplyServiceImpl implements CommentReplyService {
         return CommentReplyMapper.INSTANCE.addResponseFromCommentReply(savedCommentReply);
     }
 
-    @CachePut(cacheNames = "comment_reply_id", key = "getCommentReplyById + #request.id", unless = "#result == null")
+    @CachePut(cacheNames = "comment_reply_id", key = "'getCommentReplyById' + #commentReplyId", unless = "#result == null")
     @Override
     public UpdateCommentReplyResponse updateCommentReplyById(Long commentReplyId, UpdateCommentReplyRequest request, String language) {
         commentService.findCommentById(request.getCommentId(), language);

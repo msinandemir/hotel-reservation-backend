@@ -59,7 +59,7 @@ public class SupportRequestServiceImpl implements SupportRequestService {
         return SupportRequestMapper.INSTANCE.addResponseFromSupportRequest(savedSupportRequest);
     }
 
-    @CachePut(cacheNames = "support_request_id", key = "getSupportRequestById + #request.id", unless = "#result == null")
+    @CachePut(cacheNames = "support_request_id", key = "'getSupportRequestById' + #supportRequestId", unless = "#result == null")
     @Override
     public UpdateSupportRequestResponse updateSupportRequestById(Long supportRequestId, UpdateSupportRequestRequest request, String language) {
         userService.findUserById(request.getUserId(), language);

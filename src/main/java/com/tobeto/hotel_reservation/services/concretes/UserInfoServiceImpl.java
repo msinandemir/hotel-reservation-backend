@@ -62,7 +62,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         return UserInfoMapper.INSTANCE.addResponseFromUserInfo(savedUserInfo);
     }
 
-    @CachePut(cacheNames = "user_info_id", key = "getUserInfoById + #request.id", unless = "#result == null")
+    @CachePut(cacheNames = "user_info_id", key = "'getUserInfoById' + #userInfoId", unless = "#result == null")
     @Override
     public UpdateUserInfoResponse updateUserInfoById(Long userInfoId, UpdateUserInfoRequest request, String language) {
         userService.findUserById(request.getUserId(), language);

@@ -44,7 +44,7 @@ public class CountryServiceImpl implements CountryService {
         return CountryMapper.INSTANCE.addResponseFromCountry(savedCountry);
     }
 
-    @CachePut(cacheNames = "country_id", key = "getCountryById + #request.id", unless = "#result == null")
+    @CachePut(cacheNames = "country_id", key = "'getCountryById' + #countryId", unless = "#result == null")
     @Override
     public UpdateCountryResponse updateCountryById(Long countryId, UpdateCountryRequest request, String language) {
         Country foundCountry = findCountryById(countryId, language);
