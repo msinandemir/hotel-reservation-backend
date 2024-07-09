@@ -1,6 +1,7 @@
 package com.tobeto.hotel_reservation.controllers;
 
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
+import com.tobeto.hotel_reservation.entities.enums.RoomType;
 import com.tobeto.hotel_reservation.services.abstracts.RoomService;
 import com.tobeto.hotel_reservation.services.dtos.room.*;
 import jakarta.validation.Valid;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("api/v1/rooms")
@@ -27,6 +30,11 @@ public class RoomController {
     @GetMapping("{roomId}")
     ResponseEntity<GetRoomResponse> getRoomById(@PathVariable @Valid @Positive(message = "validation.positive") Long roomId, @RequestHeader(defaultValue = "en") String lang) {
         return ResponseEntity.ok(roomService.getRoomById(roomId, lang));
+    }
+
+    @GetMapping("findAvailableRoomByTypeAndDate")
+    ResponseEntity<GetRoomResponse> getFindAvailableRoomsByTypeAndDate(@RequestBody @Valid FindAvailableRoomsByTypeAndDateRequest request, @RequestHeader(defaultValue = "en") String lang){
+        return ResponseEntity.ok(roomService.getFindAvailableRoomsByTypeAndDate(request, lang));
     }
 
     @PostMapping

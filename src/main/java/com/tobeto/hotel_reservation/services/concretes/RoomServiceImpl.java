@@ -3,6 +3,7 @@ package com.tobeto.hotel_reservation.services.concretes;
 import com.tobeto.hotel_reservation.core.exceptions.types.BusinessException;
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
 import com.tobeto.hotel_reservation.entities.concretes.Room;
+import com.tobeto.hotel_reservation.entities.enums.RoomType;
 import com.tobeto.hotel_reservation.repositories.RoomRepository;
 import com.tobeto.hotel_reservation.services.abstracts.HotelService;
 import com.tobeto.hotel_reservation.services.abstracts.RoomService;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -48,6 +50,13 @@ public class RoomServiceImpl implements RoomService {
     public GetRoomResponse getRoomById(Long roomId, String language) {
         Room foundRoom = findRoomById(roomId, language);
         return RoomMapper.INSTANCE.getResponseFromRoom(foundRoom);
+    }
+
+    @Override
+    public GetRoomResponse getFindAvailableRoomsByTypeAndDate(FindAvailableRoomsByTypeAndDateRequest request, String language) {
+        List<Room> availableRooms = roomRepository.findAvailableRoomsByTypeAndDate(request.getType(), request.getCheckIn(), request.getCheckOut());
+        Room getFirstRoom = getFirstRoomInAvailableRooms(availableRooms, language);
+        return RoomMapper.INSTANCE.getResponseFromRoom(getFirstRoom);
     }
 
     @CacheEvict(cacheNames = {"room_id", "rooms"}, allEntries = true)
@@ -81,5 +90,12 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public Room findRoomById(Long roomId, String language) {
         return roomRepository.findById(roomId).orElseThrow(() -> new BusinessException("error.roomNotFound", language));
+    }
+
+    private Room getFirstRoomInAvailableRooms(List<Room> availableRooms, String language) {
+        if (availableRooms.isEmpty())
+            throw new BusinessException("error.availableRoom", language);
+        else
+            return availableRooms.getFirst();
     }
 }

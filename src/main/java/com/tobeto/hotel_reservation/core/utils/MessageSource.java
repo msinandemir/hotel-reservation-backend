@@ -38,6 +38,7 @@ public final class MessageSource {
         enMessages.put("error.cityNotFound", "City not found.");
         enMessages.put("error.reservationNotFound", "Reservation not found.");
         enMessages.put("error.emailExists", "There is a user registered with this email.");
+        enMessages.put("error.availableRoom", "No available rooms found. Please select a different date or room type.");
 
         Map<String, String> trMessages = new HashMap<>();
         trMessages.put("exception.businessTitle", "İş Kuralı İhlali!");
@@ -67,6 +68,7 @@ public final class MessageSource {
         trMessages.put("error.cityNotFound", "Şehir bulunamadı.");
         trMessages.put("error.reservationNotFound", "Rezervasyon bulunamadı.");
         trMessages.put("error.emailExists", "Bu e-posta ile kayıtlı kullanıcı var.");
+        trMessages.put("error.availableRoom", "Müsait oda bulunamadı. Lütfen başka bir tarih veya oda tipi seçin.");
 
         messages.put("en", enMessages);
         messages.put("tr", trMessages);
