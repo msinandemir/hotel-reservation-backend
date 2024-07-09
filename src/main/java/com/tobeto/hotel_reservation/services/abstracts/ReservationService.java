@@ -14,7 +14,7 @@ public interface ReservationService {
 
     UpdateReservationResponse updateReservationById(Long reservationId, UpdateReservationRequest request, String language);
 
-    ChangeReservationStatusResponse changeReservationStatus(Long reservationId, ReservationStatus status, String language);
+    ChangeReservationStatusResponse changeReservationStatusById(Long reservationId, ReservationStatus status, String language);
 
     void deleteReservationById(Long reservationId, String language);
 }

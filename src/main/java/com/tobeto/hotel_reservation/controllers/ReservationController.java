@@ -42,7 +42,7 @@ public class ReservationController {
 
     @PatchMapping("{reservationId}")
     ResponseEntity<ChangeReservationStatusResponse> changeReservationStatusById(@PathVariable @Valid @Positive(message = "validation.positive") Long reservationId, @RequestBody ReservationStatus status, @RequestHeader(defaultValue = "en") String lang) {
-        return ResponseEntity.ok(reservationService.changeReservationStatus(reservationId, status, lang));
+        return ResponseEntity.ok(reservationService.changeReservationStatusById(reservationId, status, lang));
     }
 
     @DeleteMapping("{reservationId}")
