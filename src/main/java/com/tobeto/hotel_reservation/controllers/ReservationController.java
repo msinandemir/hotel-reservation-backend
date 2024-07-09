@@ -30,6 +30,11 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.getReservationById(reservationId, lang));
     }
 
+    @GetMapping("reservationsByUserId/{userId}")
+    ResponseEntity<EntityWithPagination> getReservationsByUserId(@PathVariable @Valid @Positive(message = "validation.positive") Long userId, @RequestParam @Valid @Positive(message = "validation.positive") int pageNumber, @RequestParam @Valid @Positive(message = "validation.positive") int pageSize) {
+        return ResponseEntity.ok(reservationService.getReservationsByUserId(userId, pageNumber, pageSize, Sort.Direction.DESC));
+    }
+
     @PostMapping
     ResponseEntity<AddReservationResponse> addReservation(@RequestBody @Valid AddReservationRequest request, @RequestHeader(defaultValue = "en") String lang) {
         return new ResponseEntity<>(reservationService.addReservation(request, lang), HttpStatus.CREATED);

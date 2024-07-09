@@ -10,6 +10,8 @@ public interface ReservationService {
 
     GetReservationResponse getReservationById(Long reservationId, String language);
 
+    EntityWithPagination getReservationsByUserId(Long userId, int pageNumber, int pageSize, Sort.Direction sortDirection);
+
     AddReservationResponse addReservation(AddReservationRequest request, String language);
 
     UpdateReservationResponse updateReservationById(Long reservationId, UpdateReservationRequest request, String language);

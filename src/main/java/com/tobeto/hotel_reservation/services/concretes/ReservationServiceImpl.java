@@ -53,6 +53,23 @@ public class ReservationServiceImpl implements ReservationService {
         return ReservationMapper.INSTANCE.getResponseFromReservation(foundReservation);
     }
 
+    @Cacheable(cacheNames = "reservation_user_id", key = "#root.methodName + #userId + '_' + #pageNumber + '_' #pageSize", unless = "#result == null")
+    @Override
+    public EntityWithPagination getReservationsByUserId(Long userId, int pageNumber, int pageSize, Sort.Direction sortDirection) {
+        Sort sorting = Sort.by(sortDirection, "createdAt");
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
+        Page<Reservation> reservations = reservationRepository.findByUserId(userId, pageable);
+
+        EntityWithPagination pagination = new EntityWithPagination();
+        pagination.mappedFromPageWithoutContent(reservations);
+
+        List<GetReservationResponse> responses = reservations.stream()
+                .map(ReservationMapper.INSTANCE::getResponseFromReservation)
+                .toList();
+        pagination.setContent(responses);
+        return pagination;
+    }
+
     @CacheEvict(cacheNames = {"reservations", "reservation_id"}, allEntries = true)
     @Override
     public AddReservationResponse addReservation(AddReservationRequest request, String language) {
