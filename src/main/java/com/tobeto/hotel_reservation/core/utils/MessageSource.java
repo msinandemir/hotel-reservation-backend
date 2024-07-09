@@ -15,9 +15,12 @@ public final class MessageSource {
         enMessages.put("exception.validationTitle", "Validation Rule Violation!");
         enMessages.put("exception.validationDetail", "One or More Validation Error(s)!");
         enMessages.put("exception.messagingTitle", "Messaging Rule Violation!");
-        enMessages.put("exception.ioTitle","IO Rule Violation!");
-        enMessages.put("exception.ioDetail","An error occurred during the input/output operation.");
+        enMessages.put("exception.ioTitle", "IO Rule Violation!");
+        enMessages.put("exception.ioDetail", "An error occurred during the input/output operation.");
         enMessages.put("validation.size", "The length of the value must be between 5 and 10 characters.");
+        enMessages.put("validation.notNull", "This field cannot be null.");
+        enMessages.put("validation.positive", "This field must be a positive value.");
+        enMessages.put("validation.email", "Please enter a valid email address.");
         enMessages.put("error.runtime", "An unexpected error occurred");
         enMessages.put("email.sendError", "An error occurred while sending the email.");
         enMessages.put("error.userNotFound", "User not found.");
@@ -34,16 +37,19 @@ public final class MessageSource {
         enMessages.put("error.countryNotFound", "Country not found.");
         enMessages.put("error.cityNotFound", "City not found.");
         enMessages.put("error.reservationNotFound", "Reservation not found.");
-        enMessages.put("error.emailExists","There is a user registered with this email.");
+        enMessages.put("error.emailExists", "There is a user registered with this email.");
 
         Map<String, String> trMessages = new HashMap<>();
         trMessages.put("exception.businessTitle", "İş Kuralı İhlali!");
         trMessages.put("exception.validationTitle", "Doğrulama Kuralı İhlali!");
         trMessages.put("exception.validationDetail", "Bir veya Daha Fazla Doğrulama Hatası!");
         trMessages.put("exception.messagingTitle", "Mesaj Kuralı İhlali!");
-        trMessages.put("exception.ioTitle","Dosya İşlem İhlali");
-        trMessages.put("exception.ioDetail","Dosya işlemi sırasında bir hata oluştu.");
+        trMessages.put("exception.ioTitle", "Dosya İşlem İhlali");
+        trMessages.put("exception.ioDetail", "Dosya işlemi sırasında bir hata oluştu.");
         trMessages.put("validation.size", "Değerin uzunluğu en az 5, en fazla 10 karakter olmalıdır.");
+        trMessages.put("validation.notNull", "Bu alan boş bırakılamaz.");
+        trMessages.put("validation.positive", "Bu alan pozitif bir değer olmalıdır.");
+        trMessages.put("validation.email", "Geçerli bir e-posta adresi giriniz.");
         trMessages.put("error.runtime", "Beklenmeyen bir hata oluştu");
         trMessages.put("email.sendError", "E-posta gönderilirken bir hata oluştu.");
         trMessages.put("error.userNotFound", "Kullanıcı bulunamadı.");

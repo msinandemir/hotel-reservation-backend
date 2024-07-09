@@ -13,10 +13,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddCityRequest {
-    @NotNull(message = "validation.NotNull")
-    @Size(min = 5, max = 10, message = "validation.size")
+    @NotNull(message = "validation.notNull")
+    @Size(min = 2, max = 15, message = "validation.size")
     private String name;
-    @NotNull(message = "validation.NotNull")
-    @Positive
+
+    @NotNull(message = "validation.notNull")
+    @Positive(message = "validation.positive")
     private Long countryId;
 }

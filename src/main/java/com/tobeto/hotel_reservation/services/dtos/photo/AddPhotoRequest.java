@@ -6,13 +6,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddPhotoRequest {
-    @NotNull(message = "validation.NotNull")
-    @Positive
+    @NotNull(message = "validation.notNull")
+    private MultipartFile file;
+
+    @NotNull(message = "validation.notNull")
+    @Positive(message = "validation.positive")
     private Long hotelId;
 }

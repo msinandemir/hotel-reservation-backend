@@ -15,26 +15,33 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddRoomRequest {
-    @NotNull(message = "validation.NotNull")
-    @Positive
+    @NotNull(message = "validation.notNull")
+    @Positive(message = "validation.positive")
     private int capacity;
-    @NotNull(message = "validation.NotNull")
-    @Positive
+
+    @NotNull(message = "validation.notNull")
+    @Positive(message = "validation.positive")
     private BigDecimal price;
-    @NotNull(message = "validation.NotNull")
+
+    @NotNull(message = "validation.notNull")
     private boolean availability;
-    @NotNull(message = "validation.NotNull")
-    @Positive
+
+    @NotNull(message = "validation.notNull")
+    @Positive(message = "validation.positive")
     private int singleBed;
-    @NotNull(message = "validation.NotNull")
-    @Positive
+
+    @NotNull(message = "validation.notNull")
+    @Positive(message = "validation.positive")
     private int doubleBed;
-    @NotNull(message = "validation.NotNull")
-    @Positive
+
+    @NotNull(message = "validation.notNull")
+    @Positive(message = "validation.positive")
     private int bunkBed;
-    @NotNull(message = "validation.NotNull")
+
+    @NotNull(message = "validation.notNull")
     private RoomType type;
-    @NotNull(message = "validation.NotNull")
-    @Positive
+
+    @NotNull(message = "validation.notNull")
+    @Positive(message = "validation.positive")
     private Long hotelId;
 }

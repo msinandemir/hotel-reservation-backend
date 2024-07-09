@@ -14,18 +14,18 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateUserInfoRequest {
-    @NotNull(message = "validation.NotNull")
-    @Size(min = 5, max = 10, message = "validation.size")
     private String phoneNumber;
-    @NotNull(message = "validation.NotNull")
-    @Positive
+
+    @Positive(message = "validation.positive")
+    @Size(min = 18, max = 150, message = "validation.size")
     private int age;
-    @NotNull(message = "validation.NotNull")
     private Gender gender;
-    @NotNull(message = "validation.NotNull")
-    @Positive
+
+    @NotNull(message = "validation.notNull")
+    @Positive(message = "validation.positive")
     private Long userId;
-    @NotNull(message = "validation.NotNull")
-    @Positive
+
+    @NotNull(message = "validation.notNull")
+    @Positive(message = "validation.positive")
     private Long addressId;
 }

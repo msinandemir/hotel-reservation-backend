@@ -15,13 +15,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateAddressRequest {
-    @NotNull(message = "validation.NotNull")
-    @Size(min = 5, max = 10, message = "validation.size")
+    @NotNull(message = "validation.notNull")
+    @Size(min = 3, max = 15, message = "validation.size")
     private String title;
-    @NotNull(message = "validation.NotNull")
-    @Size(min = 5, max = 10, message = "validation.size")
+
+    @NotNull(message = "validation.notNull")
+    @Size(min = 5, max = 255, message = "validation.size")
     private String addressLine;
-    @NotNull(message = "validation.NotNull")
-    @Positive
+
+    @NotNull(message = "validation.notNull")
+    @Positive(message = "validation.positive")
     private Long cityId;
 }
