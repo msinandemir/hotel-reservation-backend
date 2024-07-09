@@ -3,6 +3,7 @@ package com.tobeto.hotel_reservation.services.concretes;
 import com.tobeto.hotel_reservation.core.exceptions.types.BusinessException;
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
 import com.tobeto.hotel_reservation.entities.concretes.Reservation;
+import com.tobeto.hotel_reservation.entities.enums.ReservationStatus;
 import com.tobeto.hotel_reservation.repositories.ReservationRepository;
 import com.tobeto.hotel_reservation.services.abstracts.ReservationService;
 import com.tobeto.hotel_reservation.services.abstracts.RoomService;
@@ -58,6 +59,7 @@ public class ReservationServiceImpl implements ReservationService {
         userService.findUserById(request.getUserId(), language);
         roomService.findRoomById(request.getRoomId(), language);
         Reservation reservation = ReservationMapper.INSTANCE.reservationFromAddRequest(request);
+        reservation.setStatus(ReservationStatus.PENDING);
         Reservation savedReservation = reservationRepository.save(reservation);
         return ReservationMapper.INSTANCE.addResponseFromReservation(savedReservation);
     }
@@ -75,14 +77,24 @@ public class ReservationServiceImpl implements ReservationService {
         return ReservationMapper.INSTANCE.updateResponseFromReservation(savedReservation);
     }
 
+    @CachePut(cacheNames = "reservation_id", key = "'getReservationById' + #reservationId", unless = "#result == null")
+    @Override
+    public ChangeReservationStatusResponse changeReservationStatusById(Long reservationId, ReservationStatus status, String language) {
+        Reservation foundReservation = findReservationById(reservationId, language);
+        foundReservation.setStatus(status);
+
+        Reservation savedReservation = reservationRepository.save(foundReservation);
+        return ReservationMapper.INSTANCE.changeStatusResponseFromReservation(savedReservation);
+    }
+
     @CacheEvict(cacheNames = {"reservations", "reservation_id"}, allEntries = true)
     @Override
     public void deleteReservationById(Long reservationId, String language) {
-    Reservation foundReservation = findReservationById(reservationId, language);
-    reservationRepository.deleteById(foundReservation.getId());
+        Reservation foundReservation = findReservationById(reservationId, language);
+        reservationRepository.deleteById(foundReservation.getId());
     }
 
-    private Reservation findReservationById(Long reservationId, String language){
-        return reservationRepository.findById(reservationId).orElseThrow(() -> new BusinessException("error.reservationNotFound",language));
+    private Reservation findReservationById(Long reservationId, String language) {
+        return reservationRepository.findById(reservationId).orElseThrow(() -> new BusinessException("error.reservationNotFound", language));
     }
 }

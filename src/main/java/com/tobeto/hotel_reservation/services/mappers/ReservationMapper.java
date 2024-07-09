@@ -29,4 +29,8 @@ public interface ReservationMapper {
     @Mapping(source = "room.id", target = "roomId")
     @Mapping(source = "user.id", target = "userId")
     UpdateReservationResponse updateResponseFromReservation(Reservation reservation);
+
+    @Mapping(source = "room.id", target = "roomId")
+    @Mapping(source = "user.id", target = "userId")
+    ChangeReservationStatusResponse changeStatusResponseFromReservation(Reservation reservation);
 }

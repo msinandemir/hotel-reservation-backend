@@ -1,6 +1,7 @@
 package com.tobeto.hotel_reservation.controllers;
 
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
+import com.tobeto.hotel_reservation.entities.enums.ReservationStatus;
 import com.tobeto.hotel_reservation.services.abstracts.ReservationService;
 import com.tobeto.hotel_reservation.services.dtos.reservation.*;
 import jakarta.validation.Valid;
@@ -37,6 +38,11 @@ public class ReservationController {
     @PutMapping("{reservationId}")
     ResponseEntity<UpdateReservationResponse> updateReservationById(@PathVariable @Valid @Positive(message = "validation.positive") Long reservationId, @RequestBody @Valid UpdateReservationRequest request, @RequestHeader(defaultValue = "en") String lang) {
         return ResponseEntity.ok(reservationService.updateReservationById(reservationId, request, lang));
+    }
+
+    @PatchMapping("{reservationId}")
+    ResponseEntity<ChangeReservationStatusResponse> changeReservationStatusById(@PathVariable @Valid @Positive(message = "validation.positive") Long reservationId, @RequestBody ReservationStatus status, @RequestHeader(defaultValue = "en") String lang) {
+        return ResponseEntity.ok(reservationService.changeReservationStatus(reservationId, status, lang));
     }
 
     @DeleteMapping("{reservationId}")

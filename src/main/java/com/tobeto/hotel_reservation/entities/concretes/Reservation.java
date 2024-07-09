@@ -1,6 +1,7 @@
 package com.tobeto.hotel_reservation.entities.concretes;
 
 import com.tobeto.hotel_reservation.entities.abstracts.BaseEntity;
+import com.tobeto.hotel_reservation.entities.enums.ReservationStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -21,6 +22,7 @@ import java.time.LocalDate;
 public class Reservation extends BaseEntity {
     private LocalDate checkIn;
     private LocalDate checkOut;
+    private ReservationStatus status;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
