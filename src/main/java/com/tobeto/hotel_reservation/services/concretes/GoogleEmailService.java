@@ -32,4 +32,40 @@ public class GoogleEmailService {
         mailSender.send(message);
         return true;
     }
+
+    public boolean sendReservationCancellationEmail(String to, String subject, String language) throws MessagingException {
+        String templateName = "reservationCancellation";
+        Context context = new Context();
+        context.setVariable("title", "email title");
+        context.setVariable("message", "email message");
+
+        MimeMessage message = mailSender.createMimeMessage();
+
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+        String htmlBody = templateEngine.process(templateName, context);
+        helper.setTo(to);
+        helper.setSubject(subject);
+        helper.setText(htmlBody, true);
+        mailSender.send(message);
+        return true;
+    }
+
+    public boolean senReservationConfirmationEmail(String to, String subject, String language) throws MessagingException {
+        String templateName = "reservationConfirmation";
+        Context context = new Context();
+        context.setVariable("title", "email title");
+        context.setVariable("message", "email message");
+
+        MimeMessage message = mailSender.createMimeMessage();
+
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+        String htmlBody = templateEngine.process(templateName, context);
+        helper.setTo(to);
+        helper.setSubject(subject);
+        helper.setText(htmlBody, true);
+        mailSender.send(message);
+        return true;
+    }
 }

@@ -14,4 +14,14 @@ public class GoogleEmailAdapter implements EmailGateway {
     public boolean sendWelcomeEmail(String to, String subject, String language) throws MessagingException {
         return googleEmailService.sendWelcomeEmail(to, subject, language);
     }
+
+    @Override
+    public boolean sendReservationCancellationEmail(String to, String subject, String language) throws MessagingException {
+        return googleEmailService.sendReservationCancellationEmail(to, subject, language);
+    }
+
+    @Override
+    public boolean sendReservationConfirmationEmail(String to, String subject, String language) throws MessagingException {
+        return googleEmailService.senReservationConfirmationEmail(to, subject, language);
+    }
 }

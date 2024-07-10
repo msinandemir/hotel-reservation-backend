@@ -5,11 +5,13 @@ import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
 import com.tobeto.hotel_reservation.entities.concretes.Reservation;
 import com.tobeto.hotel_reservation.entities.enums.ReservationStatus;
 import com.tobeto.hotel_reservation.repositories.ReservationRepository;
+import com.tobeto.hotel_reservation.services.abstracts.EmailGateway;
 import com.tobeto.hotel_reservation.services.abstracts.ReservationService;
 import com.tobeto.hotel_reservation.services.abstracts.RoomService;
 import com.tobeto.hotel_reservation.services.abstracts.UserService;
 import com.tobeto.hotel_reservation.services.dtos.reservation.*;
 import com.tobeto.hotel_reservation.services.mappers.ReservationMapper;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -28,6 +30,7 @@ public class ReservationServiceImpl implements ReservationService {
     private final ReservationRepository reservationRepository;
     private final UserService userService;
     private final RoomService roomService;
+    private final EmailGateway emailGateway;
 
     @Cacheable(cacheNames = "reservations", key = "#root.methodName + #pageNumber + '_' + #pageSize", unless = "#result == null")
     @Override
@@ -118,6 +121,32 @@ public class ReservationServiceImpl implements ReservationService {
         foundReservation.setStatus(status);
 
         Reservation savedReservation = reservationRepository.save(foundReservation);
+        return ReservationMapper.INSTANCE.changeStatusResponseFromReservation(savedReservation);
+    }
+
+    @CachePut(cacheNames = "reservation_id", key = "'getReservationById' + #reservationId", unless = "#result == null")
+    @Override
+    public ChangeReservationStatusResponse confirmReservationById(Long reservationId, String language) throws MessagingException {
+        Reservation foundReservation = findReservationById(reservationId, language);
+        foundReservation.setStatus(ReservationStatus.CONFIRMED);
+
+        Reservation savedReservation = reservationRepository.save(foundReservation);
+        //TODO: multilanguage
+        emailGateway.sendReservationConfirmationEmail(savedReservation.getUser().getEmail(),"subject", language);
+        emailGateway.sendReservationConfirmationEmail(savedReservation.getRoom().getHotel().getUser().getEmail(), "subject", language);
+        return ReservationMapper.INSTANCE.changeStatusResponseFromReservation(savedReservation);
+    }
+
+    @CachePut(cacheNames = "reservation_id", key = "'getReservationById' + #reservationId", unless = "#result == null")
+    @Override
+    public ChangeReservationStatusResponse cancelReservationById(Long reservationId, String language) throws MessagingException {
+        Reservation foundReservation = findReservationById(reservationId, language);
+        foundReservation.setStatus(ReservationStatus.CANCELLED);
+
+        Reservation savedReservation = reservationRepository.save(foundReservation);
+        //TODO: multilanguage
+        emailGateway.sendReservationCancellationEmail(savedReservation.getUser().getEmail(),"subject", language);
+        emailGateway.sendReservationCancellationEmail(savedReservation.getRoom().getHotel().getUser().getEmail(),"subject", language);
         return ReservationMapper.INSTANCE.changeStatusResponseFromReservation(savedReservation);
     }
 

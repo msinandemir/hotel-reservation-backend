@@ -4,6 +4,7 @@ import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
 import com.tobeto.hotel_reservation.entities.enums.ReservationStatus;
 import com.tobeto.hotel_reservation.services.abstracts.ReservationService;
 import com.tobeto.hotel_reservation.services.dtos.reservation.*;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
@@ -53,6 +54,16 @@ public class ReservationController {
     @PatchMapping("{reservationId}")
     ResponseEntity<ChangeReservationStatusResponse> changeReservationStatusById(@PathVariable @Valid @Positive(message = "validation.positive") Long reservationId, @RequestBody ReservationStatus status, @RequestHeader(defaultValue = "en") String lang) {
         return ResponseEntity.ok(reservationService.changeReservationStatusById(reservationId, status, lang));
+    }
+
+    @PatchMapping("confirmReservationById/{reservationId}")
+    ResponseEntity<ChangeReservationStatusResponse> confirmReservationById(@PathVariable @Valid @Positive(message = "validation.positive") Long reservationId, @RequestHeader(defaultValue = "en") String lang) throws MessagingException {
+        return ResponseEntity.ok(reservationService.confirmReservationById(reservationId, lang));
+    }
+
+    @PatchMapping("cancelReservationById/{reservationId}")
+    ResponseEntity<ChangeReservationStatusResponse> cancelReservationById(@PathVariable @Valid @Positive(message = "validation.positive") Long reservationId, @RequestHeader(defaultValue = "en") String lang) throws MessagingException {
+        return ResponseEntity.ok(reservationService.cancelReservationById(reservationId, lang));
     }
 
     @DeleteMapping("{reservationId}")
