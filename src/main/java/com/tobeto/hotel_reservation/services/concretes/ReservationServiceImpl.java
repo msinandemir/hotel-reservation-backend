@@ -2,6 +2,8 @@ package com.tobeto.hotel_reservation.services.concretes;
 
 import com.tobeto.hotel_reservation.core.exceptions.types.BusinessException;
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
+import com.tobeto.hotel_reservation.core.models.ReservationCancelEmail;
+import com.tobeto.hotel_reservation.core.models.ReservationConfirmEmail;
 import com.tobeto.hotel_reservation.entities.concretes.Reservation;
 import com.tobeto.hotel_reservation.entities.enums.ReservationStatus;
 import com.tobeto.hotel_reservation.repositories.ReservationRepository;
@@ -10,6 +12,7 @@ import com.tobeto.hotel_reservation.services.abstracts.ReservationService;
 import com.tobeto.hotel_reservation.services.abstracts.RoomService;
 import com.tobeto.hotel_reservation.services.abstracts.UserService;
 import com.tobeto.hotel_reservation.services.dtos.reservation.*;
+import com.tobeto.hotel_reservation.services.mappers.EmailMapper;
 import com.tobeto.hotel_reservation.services.mappers.ReservationMapper;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -131,9 +134,8 @@ public class ReservationServiceImpl implements ReservationService {
         foundReservation.setStatus(ReservationStatus.CONFIRMED);
 
         Reservation savedReservation = reservationRepository.save(foundReservation);
-        //TODO: multilanguage
-        emailGateway.sendReservationConfirmationEmail(savedReservation.getUser().getEmail(),"subject", language);
-        emailGateway.sendReservationConfirmationEmail(savedReservation.getRoom().getHotel().getUser().getEmail(), "subject", language);
+
+        sendReservationConfirmEmailToUserAndManager(savedReservation, language);
         return ReservationMapper.INSTANCE.changeStatusResponseFromReservation(savedReservation);
     }
 
@@ -144,9 +146,8 @@ public class ReservationServiceImpl implements ReservationService {
         foundReservation.setStatus(ReservationStatus.CANCELLED);
 
         Reservation savedReservation = reservationRepository.save(foundReservation);
-        //TODO: multilanguage
-        emailGateway.sendReservationCancellationEmail(savedReservation.getUser().getEmail(),"subject", language);
-        emailGateway.sendReservationCancellationEmail(savedReservation.getRoom().getHotel().getUser().getEmail(),"subject", language);
+
+        sendReservationCancelledEmailToUserAndManager(savedReservation, language);
         return ReservationMapper.INSTANCE.changeStatusResponseFromReservation(savedReservation);
     }
 
@@ -159,5 +160,21 @@ public class ReservationServiceImpl implements ReservationService {
 
     private Reservation findReservationById(Long reservationId, String language) {
         return reservationRepository.findById(reservationId).orElseThrow(() -> new BusinessException("error.reservationNotFound", language));
+    }
+
+    private void sendReservationCancelledEmailToUserAndManager(Reservation reservation, String language) throws MessagingException {
+        ReservationCancelEmail toUser = EmailMapper.INSTANCE.reservationCancelEmailToUserFromReservation(reservation);
+        ReservationCancelEmail toManager = EmailMapper.INSTANCE.reservationCancelEmailToManagerFromReservation(reservation);
+
+        emailGateway.sendReservationCancellationEmail(toUser, language);
+        emailGateway.sendReservationCancellationEmail(toManager, language);
+    }
+
+    private void sendReservationConfirmEmailToUserAndManager(Reservation reservation, String language) throws MessagingException{
+        ReservationConfirmEmail toUser = EmailMapper.INSTANCE.reservationConfirmEmailToUserFromReservation(reservation);
+        ReservationConfirmEmail toManager = EmailMapper.INSTANCE.reservationConfirmEmailToManagerFromReservation(reservation);
+
+        emailGateway.sendReservationConfirmationEmail(toUser, language);
+        emailGateway.sendReservationConfirmationEmail(toManager, language);
     }
 }

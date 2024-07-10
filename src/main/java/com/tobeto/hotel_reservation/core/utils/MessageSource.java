@@ -39,6 +39,24 @@ public final class MessageSource {
         enMessages.put("error.reservationNotFound", "Reservation not found.");
         enMessages.put("error.emailExists", "There is a user registered with this email.");
         enMessages.put("error.availableRoom", "No available rooms found. Please select a different date or room type.");
+        enMessages.put("welcomeEmail.title", "Welcome!");
+        enMessages.put("welcomeEmail.message", "Welcome to our site! We are very pleased to meet you. " +
+                "You can easily make your reservations and enjoy a pleasant stay.\n\n" +
+                "If you have any questions, please do not hesitate to contact us.\n\n" +
+                "Best regards.");
+        enMessages.put("reservationCancelEmail.title", "Reservation Cancellation Notification.");
+        enMessages.put("reservation.message", "We are sorry, we would like to inform you that your reservation has been cancelled.");
+        enMessages.put("reservationCancelEmail.reservationDetailsTitle", "Reservation Details");
+        enMessages.put("reservationDetail.checkInTitle", "Check-In");
+        enMessages.put("reservationDetail.checkOutTitle", "Check-Out");
+        enMessages.put("reservationDetail.roomTypeTitle", "Room Type");
+        enMessages.put("reservationDetail.hotelNameTitle", "Hotel");
+        enMessages.put("reservationDetail.hotelPhoneNumberTitle", "Phone Number");
+        enMessages.put("reservationCancelEmail.footerMessage", "If you would like to make another reservation or answer your questions, please contact us.\n" +
+                "\n" +
+                "We hope to welcome you again.\n" +
+                "\n" +
+                "Regards.");
 
         Map<String, String> trMessages = new HashMap<>();
         trMessages.put("exception.businessTitle", "İş Kuralı İhlali!");
@@ -69,6 +87,33 @@ public final class MessageSource {
         trMessages.put("error.reservationNotFound", "Rezervasyon bulunamadı.");
         trMessages.put("error.emailExists", "Bu e-posta ile kayıtlı kullanıcı var.");
         trMessages.put("error.availableRoom", "Müsait oda bulunamadı. Lütfen başka bir tarih veya oda tipi seçin.");
+        trMessages.put("welcomeEmail.title", "Hoş Geldiniz!");
+        trMessages.put("welcomeEmail.message", "Sitemize hoş geldiniz! Sizinle tanıştığımıza çok memnunuz. " +
+                "Rezervasyon işlemlerinizi kolayca yapabilir ve keyifli bir konaklama deneyimi yaşayabilirsiniz.\n\n" +
+                "Herhangi bir sorunuz olursa, bizimle iletişime geçmekten çekinmeyin.\n\n" +
+                "İyi günler dileriz.");
+        trMessages.put("reservationCancelEmail.title", "Rezervasyon İptali Bildirimi.");
+        trMessages.put("reservationCancelEmail.message", "Üzgünüz, rezervasyonunuzun iptal edildiğini bildirmek istiyoruz.");
+        trMessages.put("reservationCancelEmail.reservationDetailsTitle", "Rezervasyon Detayları");
+        trMessages.put("reservationDetail.checkInTitle", "Giriş Tarihi");
+        trMessages.put("reservationDetail.checkOutTitle", "Çıkış Tarihi");
+        trMessages.put("reservationDetail.roomTypeTitle", "Oda Tipi");
+        trMessages.put("reservationDetail.hotelNameTitle", "Otel");
+        trMessages.put("reservationDetail.hotelPhoneNumberTitle", "Telefon Numarası");
+        trMessages.put("reservationCancelEmail.footerMessage", "Eğer başka bir rezervasyon yapmak veya sorularınızı yanıtlamak için, lütfen bize ulaşın.\n" +
+                "\n" +
+                "Sizi tekrar ağırlamayı umuyoruz.\n" +
+                "\n" +
+                "Saygılarımızla.");
+
+
+        trMessages.put("reservationConfirmEmail.title", "Otel Rezervasyonunuzun Onayı.");
+        trMessages.put("reservationConfirmEmail.message","Konaklamanız için bizi seçtiğiniz için teşekkür ederiz! Rezervasyonunuzu onaylamaktan mutluluk duyuyoruz.");
+        trMessages.put("reservationConfirm.footerMessage", "Herhangi bir sorunuz varsa veya rezervasyonunuzla ilgili değişiklik yapmanız gerekiyorsa lütfen bizimle iletişime geçin.\n" +
+                "\n" +
+                "Sizi ağırlamayı sabırsızlıkla bekliyoruz ve harika bir konaklama geçirmenizi umuyoruz!\n" +
+                "\n" +
+                "Saygılarımızla.");
 
         messages.put("en", enMessages);
         messages.put("tr", trMessages);

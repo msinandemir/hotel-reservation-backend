@@ -19,6 +19,8 @@
         }
         .content {
             margin-top: 20px;
+            text-align: center;
+
         }
     </style>
 </head>
@@ -28,7 +30,8 @@
         <h1 th:text="${title}">Default Title</h1>
     </div>
     <div class="content">
-        <p th:text="${message}">Default Message</p>
+        <span th:text="${userName}">Default User Name</span>
+        <span th:text="${message}">Default Message</span>
     </div>
 </div>
 </body>

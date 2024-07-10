@@ -2,11 +2,15 @@ package com.tobeto.hotel_reservation.services.concretes;
 
 import com.tobeto.hotel_reservation.core.exceptions.types.BusinessException;
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
+import com.tobeto.hotel_reservation.core.models.WelcomeEmail;
 import com.tobeto.hotel_reservation.entities.concretes.User;
 import com.tobeto.hotel_reservation.repositories.UserRepository;
+import com.tobeto.hotel_reservation.services.abstracts.EmailGateway;
 import com.tobeto.hotel_reservation.services.abstracts.UserService;
 import com.tobeto.hotel_reservation.services.dtos.user.*;
+import com.tobeto.hotel_reservation.services.mappers.EmailMapper;
 import com.tobeto.hotel_reservation.services.mappers.UserMapper;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -20,6 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final EmailGateway emailGateway;
 
     @Cacheable(cacheNames = "users", key = "#root.methodName + #pageNumber + '_' + #pageSize", unless = "#result == null")
     @Override
@@ -47,10 +52,12 @@ public class UserServiceImpl implements UserService {
 
     @CacheEvict(cacheNames = {"user_id", "users"}, allEntries = true)
     @Override
-    public AddUserResponse addUser(AddUserRequest request, String language) {
+    public AddUserResponse addUser(AddUserRequest request, String language) throws MessagingException {
         checkUserExistsByEmail(request.getEmail(), language);
         User user = UserMapper.INSTANCE.userFromAddRequest(request);
         User savedUser = userRepository.save(user);
+
+        sendWelcomeEmail(language, savedUser);
         return UserMapper.INSTANCE.addResponseFromUser(savedUser);
     }
 
@@ -82,5 +89,10 @@ public class UserServiceImpl implements UserService {
         boolean result = userRepository.existsByEmail(email);
         if (result)
             throw new BusinessException("error.emailExists", language);
+    }
+
+    private void sendWelcomeEmail(String language, User savedUser) throws MessagingException {
+        WelcomeEmail welcomeEmail = EmailMapper.INSTANCE.welcomeEmailFromUser(savedUser);
+        emailGateway.sendWelcomeEmail(welcomeEmail, language);
     }
 }

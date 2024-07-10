@@ -19,6 +19,13 @@
         }
         .content {
             margin-top: 20px;
+            text-align: center;
+        }
+        .reservation-details {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
     </style>
 </head>
@@ -28,7 +35,23 @@
         <h1 th:text="${title}">Default Title</h1>
     </div>
     <div class="content">
+        <p th:text="${dear}"><b>Default Dear</b> <span th:text="${userName}">Default Username</span></p>
         <p th:text="${message}">Default Message</p>
+        <div class="reservation-details">
+            <h3 th:text="${reservationDetailsTitle}">Default Reservation Details Title</h3>
+            <ul>
+                <li><span th:text="${checkInTitle}">Default Check In</span>: <span th:text="${checkIn}"></span></li>
+                <li><span th:text="${checkOutTitle}">Default Check Out</span>: <span th:text="${checkOut}"></span></li>
+                <li><span th:text="${roomTypeTitle}">Default Room Type</span>: <span th:text="${roomType}"></span></li>
+                <li><span th:text="${hotelNameTitle}">Default Hotel Name</span>: <span th:text="${hotelName}"></span>
+                </li>
+                <li><span th:text="${hotelPhoneNumberTitle}">Default Hotel Name</span>: <span
+                        th:text="${hotelPhoneNumber}"></span></li>
+            </ul>
+        </div>
+        <div class="footer">
+            <p th:text="${footerMessage}">Default Footer Message</p>
+        </div>
     </div>
 </div>
 </body>

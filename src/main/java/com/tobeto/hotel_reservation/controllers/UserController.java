@@ -3,6 +3,7 @@ package com.tobeto.hotel_reservation.controllers;
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
 import com.tobeto.hotel_reservation.services.abstracts.UserService;
 import com.tobeto.hotel_reservation.services.dtos.user.*;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ public class UserController {
     }
 
     @PostMapping
-    ResponseEntity<AddUserResponse> addUser(@RequestBody @Valid AddUserRequest request, @RequestHeader(defaultValue = "en") String lang) {
+    ResponseEntity<AddUserResponse> addUser(@RequestBody @Valid AddUserRequest request, @RequestHeader(defaultValue = "en") String lang) throws MessagingException {
         return new ResponseEntity<>(userService.addUser(request, lang), HttpStatus.CREATED);
     }
 
