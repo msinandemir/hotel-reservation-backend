@@ -3,7 +3,6 @@ package com.tobeto.hotel_reservation.services.concretes;
 import com.tobeto.hotel_reservation.core.exceptions.types.BusinessException;
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
 import com.tobeto.hotel_reservation.entities.concretes.Room;
-import com.tobeto.hotel_reservation.entities.enums.RoomType;
 import com.tobeto.hotel_reservation.repositories.RoomRepository;
 import com.tobeto.hotel_reservation.services.abstracts.HotelService;
 import com.tobeto.hotel_reservation.services.abstracts.RoomService;
@@ -18,8 +17,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -96,6 +93,6 @@ public class RoomServiceImpl implements RoomService {
         if (availableRooms.isEmpty())
             throw new BusinessException("error.availableRoom", language);
         else
-            return availableRooms.getFirst();
+            return availableRooms.get(0);
     }
 }
