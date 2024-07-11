@@ -103,7 +103,24 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationRepository.findTotalRevenueByOwnerId(userId);
     }
 
-    @CacheEvict(cacheNames = {"reservations", "reservation_id", "reservation_total_revenue_user_id"}, allEntries = true)
+    @Cacheable(value = "past_reservation_user_id", key = "#root.methodName + #userId + '_' + #pageNumber + '_' + #pageSize", unless = "#result == null")
+    @Override
+    public EntityWithPagination getPastReservationsByUserId(Long userId, int pageNumber, int pageSize, Sort.Direction sortDirection) {
+        Sort sorting = Sort.by(sortDirection, "createdAt");
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
+        Page<Reservation> reservations = reservationRepository.findPastReservationsByUserId(userId, LocalDate.now(), pageable);
+
+        EntityWithPagination pagination = new EntityWithPagination();
+        pagination.mappedFromPageWithoutContent(reservations);
+
+        List<GetReservationResponse> responses = reservations.stream()
+                .map(ReservationMapper.INSTANCE::getResponseFromReservation)
+                .toList();
+        pagination.setContent(responses);
+        return pagination;
+    }
+
+    @CacheEvict(cacheNames = {"reservations", "reservation_id", "reservation_total_revenue_user_id", "past_reservation_user_id"}, allEntries = true)
     @Override
     public AddReservationResponse addReservation(AddReservationRequest request, String language) {
         userService.findUserById(request.getUserId(), language);
@@ -170,7 +187,7 @@ public class ReservationServiceImpl implements ReservationService {
         return ReservationMapper.INSTANCE.changeStatusResponseFromReservation(savedReservation);
     }
 
-    @CacheEvict(cacheNames = {"reservations", "reservation_id", "reservation_total_revenue_user_id"}, allEntries = true)
+    @CacheEvict(cacheNames = {"reservations", "reservation_id", "reservation_total_revenue_user_id", "past_reservation_user_id"}, allEntries = true)
     @Override
     public void deleteReservationById(Long reservationId, String language) {
         Reservation foundReservation = findReservationById(reservationId, language);

@@ -19,6 +19,8 @@ public interface ReservationService {
 
     BigDecimal getTotalRevenueByUserId(Long userId);
 
+    EntityWithPagination getPastReservationsByUserId(Long userId, int pageNumber, int pageSize, Sort.Direction sortDirection);
+
     AddReservationResponse addReservation(AddReservationRequest request, String language);
 
     UpdateReservationResponse updateReservationById(Long reservationId, UpdateReservationRequest request, String language);

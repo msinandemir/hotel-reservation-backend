@@ -44,8 +44,13 @@ public class ReservationController {
     }
 
     @GetMapping("totalRevenue/{userId}")
-    ResponseEntity<BigDecimal> getTotalRevenueByUserId(@PathVariable @Valid @Positive(message = "validation.positive") Long userId){
+    ResponseEntity<BigDecimal> getTotalRevenueByUserId(@PathVariable @Valid @Positive(message = "validation.positive") Long userId) {
         return ResponseEntity.ok(reservationService.getTotalRevenueByUserId(userId));
+    }
+
+    @GetMapping("pastReservations/{userId}")
+    ResponseEntity<EntityWithPagination> getPastReservationsByUserId(@PathVariable @Valid @Positive(message = "validation.positive") Long userId, @RequestParam @Valid @Positive(message = "validation.positive") int pageNumber, @RequestParam @Valid @Positive(message = "validation.positive") int pageSize) {
+        return ResponseEntity.ok(reservationService.getPastReservationsByUserId(userId, pageNumber, pageSize, Sort.Direction.DESC));
     }
 
     @PostMapping

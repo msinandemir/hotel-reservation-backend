@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 
 @Repository
@@ -25,4 +26,11 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             "WHERE r.status = com.tobeto.hotel_reservation.entities.enums.ReservationStatus.CONFIRMED " +
             "AND u.id = :userId")
     BigDecimal findTotalRevenueByOwnerId(@Param("userId") Long userId);
+
+    @Query("SELECT r FROM Reservation r " +
+            "JOIN r.user u " +
+            "WHERE r.status = com.tobeto.hotel_reservation.entities.enums.ReservationStatus.CONFIRMED " +
+            "AND u.id = :userId " +
+            "AND r.checkOut < :today")
+    Page<Reservation> findPastReservationsByUserId(@Param("userId") Long userId, @Param("today") LocalDate today, Pageable pageable);
 }
