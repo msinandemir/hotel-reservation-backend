@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +55,17 @@ public class PhotoServiceImpl implements PhotoService {
         return PhotoMapper.INSTANCE.getResponseFromPhoto(foundPhoto);
     }
 
-    @CacheEvict(cacheNames = {"photo_id"}, allEntries = true)
+    @Cacheable(cacheNames = "photos_hotel_id", key = "#root.methodName + #hotelId", unless = "#result == null")
+    @Override
+    public List<GetPhotoResponse> getPhotosByHotelId(Long hotelId, String language) {
+        hotelService.findHotelById(hotelId, language);
+        List<Photo> getPhotos = photoRepository.findByHotelId(hotelId);
+        return getPhotos.stream()
+                .map(PhotoMapper.INSTANCE::getResponseFromPhoto)
+                .collect(Collectors.toList());
+    }
+
+    @CacheEvict(cacheNames = {"photo_id", "photos_hotel_id"}, allEntries = true)
     @Override
     public AddPhotoResponse addPhoto(AddPhotoRequest request, MultipartFile file, String language) throws IOException {
         hotelService.findHotelById(request.getHotelId(), language);
@@ -78,7 +89,7 @@ public class PhotoServiceImpl implements PhotoService {
         return PhotoMapper.INSTANCE.updateResponseFromPhoto(savedPhoto);
     }
 
-    @CacheEvict(cacheNames = {"photo_id"}, allEntries = true)
+    @CacheEvict(cacheNames = {"photo_id", "photos_hotel_id"}, allEntries = true)
     @Override
     public void deletePhotoById(Long photoId, String language) throws IOException {
         Photo foundPhoto = findPhotoById(photoId, language);
