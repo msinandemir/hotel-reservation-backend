@@ -1,15 +1,15 @@
 package com.tobeto.hotel_reservation.services.abstracts;
 
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
+import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.services.dtos.supportRequest.*;
-import org.springframework.data.domain.Sort;
 
 public interface SupportRequestService {
-    EntityWithPagination getAllSupportRequestsWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection);
+    EntityWithPagination getAllSupportRequestsWithPagination(PaginationRequest paginationRequest);
 
     GetSupportRequestResponse getSupportRequestById(Long supportRequestId, String language);
 
-    EntityWithPagination getSupportRequestByUserIdWithPagination(Long userId, int pageNumber, int pageSize, Sort.Direction sortDirection);
+    EntityWithPagination getSupportRequestByUserIdWithPagination(Long userId, PaginationRequest paginationRequest);
 
     AddSupportRequestResponse addSupportRequest(AddSupportRequestRequest request, String language);
 

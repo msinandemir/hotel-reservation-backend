@@ -1,13 +1,13 @@
 package com.tobeto.hotel_reservation.controllers;
 
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
+import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.services.abstracts.UserService;
 import com.tobeto.hotel_reservation.services.dtos.user.*;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -21,8 +21,8 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    ResponseEntity<EntityWithPagination> getAllUsersWithPagination(@RequestParam @Valid @Positive(message = "validation.positive") int pageNumber, @RequestParam @Valid @Positive(message = "validation.positive") int pageSize) {
-        return ResponseEntity.ok(userService.getAllUsersWithPagination(pageNumber, pageSize, Sort.Direction.DESC));
+    ResponseEntity<EntityWithPagination> getAllUsersWithPagination(@RequestBody @Valid PaginationRequest paginationRequest) {
+        return ResponseEntity.ok(userService.getAllUsersWithPagination(paginationRequest));
     }
 
     @GetMapping("{userId}")

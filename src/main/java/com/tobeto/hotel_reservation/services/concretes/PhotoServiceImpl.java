@@ -2,6 +2,7 @@ package com.tobeto.hotel_reservation.services.concretes;
 
 import com.tobeto.hotel_reservation.core.exceptions.types.BusinessException;
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
+import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.entities.concretes.Photo;
 import com.tobeto.hotel_reservation.repositories.PhotoRepository;
 import com.tobeto.hotel_reservation.services.abstracts.CloudinaryService;
@@ -31,9 +32,9 @@ public class PhotoServiceImpl implements PhotoService {
     private final HotelService hotelService;
 
     @Override
-    public EntityWithPagination getAllPhotosWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection) {
-        Sort sorting = Sort.by(sortDirection, "createdAt");
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
+    public EntityWithPagination getAllPhotosWithPagination(PaginationRequest paginationRequest) {
+        Sort sorting = Sort.by(paginationRequest.getSortDirection(), paginationRequest.getSortBy());
+        Pageable pageable = PageRequest.of(paginationRequest.getPageNumber(), paginationRequest.getPageSize(), sorting);
         Page<Photo> photos = photoRepository.findAll(pageable);
 
         EntityWithPagination pagination = new EntityWithPagination();
@@ -64,6 +65,7 @@ public class PhotoServiceImpl implements PhotoService {
         Photo savedPhoto = photoRepository.save(photo);
         return PhotoMapper.INSTANCE.addResponseFromPhoto(savedPhoto);
     }
+
     @CachePut(cacheNames = "photo_id", key = "'getPhotoById' + #photoId", unless = "#result == null")
     @Override
     public UpdatePhotoResponse updatePhotoById(Long photoId, UpdatePhotoRequest request, String language) {

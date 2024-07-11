@@ -1,12 +1,12 @@
 package com.tobeto.hotel_reservation.controllers;
 
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
+import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.services.abstracts.CommentService;
 import com.tobeto.hotel_reservation.services.dtos.comment.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,8 +20,8 @@ public class CommentController {
     private final CommentService commentService;
 
     @GetMapping
-    ResponseEntity<EntityWithPagination> getAllCommentsWithPagination(@RequestParam @Valid @Positive(message = "validation.positive") int pageNumber, @RequestParam @Valid @Positive(message = "validation.positive") int pageSize) {
-        return ResponseEntity.ok(commentService.getAllCommentsWithPagination(pageNumber, pageSize, Sort.Direction.DESC));
+    ResponseEntity<EntityWithPagination> getAllCommentsWithPagination(@RequestBody @Valid PaginationRequest paginationRequest) {
+        return ResponseEntity.ok(commentService.getAllCommentsWithPagination(paginationRequest));
     }
 
     @GetMapping("{commentId}")
@@ -30,13 +30,13 @@ public class CommentController {
     }
 
     @GetMapping("commentsByUserId/{userId}")
-    ResponseEntity<EntityWithPagination> getCommentsByUserIdWithPagination(@PathVariable @Valid @Positive(message = "validation.positive") Long userId, @RequestParam @Valid @Positive(message = "validation.positive") int pageNumber, @RequestParam @Valid @Positive(message = "validation.positive") int pageSize) {
-        return ResponseEntity.ok(commentService.getCommentsByUserIdWithPagination(userId, pageNumber, pageSize, Sort.Direction.DESC));
+    ResponseEntity<EntityWithPagination> getCommentsByUserIdWithPagination(@PathVariable @Valid @Positive(message = "validation.positive") Long userId, @RequestBody @Valid PaginationRequest paginationRequest) {
+        return ResponseEntity.ok(commentService.getCommentsByUserIdWithPagination(userId, paginationRequest));
     }
 
     @GetMapping("commentsByHotelId/{hotelId}")
-    ResponseEntity<EntityWithPagination> getCommentsByHotelIdWithPagination(@PathVariable @Valid @Positive(message = "validation.positive") Long hotelId, @RequestParam @Valid @Positive(message = "validation.positive") int pageNumber, @RequestParam @Valid @Positive(message = "validation.positive") int pageSize) {
-        return ResponseEntity.ok(commentService.getCommentsByHotelIdWithPagination(hotelId, pageNumber, pageSize, Sort.Direction.DESC));
+    ResponseEntity<EntityWithPagination> getCommentsByHotelIdWithPagination(@PathVariable @Valid @Positive(message = "validation.positive") Long hotelId, @RequestBody @Valid PaginationRequest paginationRequest) {
+        return ResponseEntity.ok(commentService.getCommentsByHotelIdWithPagination(hotelId, paginationRequest));
     }
 
     @PostMapping

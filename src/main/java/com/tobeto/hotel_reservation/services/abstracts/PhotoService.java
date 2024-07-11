@@ -1,14 +1,14 @@
 package com.tobeto.hotel_reservation.services.abstracts;
 
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
+import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.services.dtos.photo.*;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
 public interface PhotoService {
-    EntityWithPagination getAllPhotosWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection);
+    EntityWithPagination getAllPhotosWithPagination(PaginationRequest paginationRequest);
 
     GetPhotoResponse getPhotoById(Long photoId, String language);
 

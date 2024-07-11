@@ -1,15 +1,15 @@
 package com.tobeto.hotel_reservation.services.abstracts;
 
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
+import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.services.dtos.commentReply.*;
-import org.springframework.data.domain.Sort;
 
 public interface CommentReplyService {
-    EntityWithPagination getAllCommentRepliesWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection);
+    EntityWithPagination getAllCommentRepliesWithPagination(PaginationRequest paginationRequest);
 
     GetCommentReplyResponse getCommentReplyById(Long commentReplyId, String language);
 
-    EntityWithPagination getCommentRepliesByUserIdWithPagination(Long userId, int pageNumber, int pageSize, Sort.Direction sortDirection);
+    EntityWithPagination getCommentRepliesByUserIdWithPagination(Long userId, PaginationRequest paginationRequest);
 
     AddCommentReplyResponse addCommentReply(AddCommentReplyRequest request, String language);
 

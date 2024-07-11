@@ -1,15 +1,13 @@
 package com.tobeto.hotel_reservation.services.abstracts;
 
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
+import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.entities.concretes.Room;
-import com.tobeto.hotel_reservation.entities.enums.RoomType;
 import com.tobeto.hotel_reservation.services.dtos.room.*;
-import org.springframework.data.domain.Sort;
 
-import java.time.LocalDate;
 
 public interface RoomService {
-    EntityWithPagination getAllRoomsWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection);
+    EntityWithPagination getAllRoomsWithPagination(PaginationRequest paginationRequest);
 
     GetRoomResponse getRoomById(Long roomId, String language);
 

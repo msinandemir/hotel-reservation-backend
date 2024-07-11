@@ -2,6 +2,7 @@ package com.tobeto.hotel_reservation.services.concretes;
 
 import com.tobeto.hotel_reservation.core.exceptions.types.BusinessException;
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
+import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.core.models.WelcomeEmail;
 import com.tobeto.hotel_reservation.entities.concretes.User;
 import com.tobeto.hotel_reservation.repositories.UserRepository;
@@ -28,9 +29,9 @@ public class UserServiceImpl implements UserService {
 
     @Cacheable(cacheNames = "users", key = "#root.methodName + #pageNumber + '_' + #pageSize", unless = "#result == null")
     @Override
-    public EntityWithPagination getAllUsersWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection) {
-        Sort sorting = Sort.by(sortDirection, "createdAt");
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
+    public EntityWithPagination getAllUsersWithPagination(PaginationRequest paginationRequest) {
+        Sort sorting = Sort.by(paginationRequest.getSortDirection(), paginationRequest.getSortBy());
+        Pageable pageable = PageRequest.of(paginationRequest.getPageNumber(), paginationRequest.getPageSize(), sorting);
         Page<User> users = userRepository.findAll(pageable);
 
         EntityWithPagination pagination = new EntityWithPagination();

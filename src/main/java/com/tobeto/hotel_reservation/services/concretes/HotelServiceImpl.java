@@ -2,7 +2,7 @@ package com.tobeto.hotel_reservation.services.concretes;
 
 import com.tobeto.hotel_reservation.core.exceptions.types.BusinessException;
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
-import com.tobeto.hotel_reservation.entities.concretes.Address;
+import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.entities.concretes.Hotel;
 import com.tobeto.hotel_reservation.repositories.HotelRepository;
 import com.tobeto.hotel_reservation.services.abstracts.AddressService;
@@ -31,9 +31,9 @@ public class HotelServiceImpl implements HotelService {
 
     @Cacheable(cacheNames = "hotels", key = "#root.methodName + #pageNumber + '_' + #pageSize", unless = "#result == null")
     @Override
-    public EntityWithPagination getAllHotelsWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection) {
-        Sort sorting = Sort.by(sortDirection, "createdAt");
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
+    public EntityWithPagination getAllHotelsWithPagination(PaginationRequest paginationRequest) {
+        Sort sorting = Sort.by(paginationRequest.getSortDirection(), paginationRequest.getSortBy());
+        Pageable pageable = PageRequest.of(paginationRequest.getPageNumber(), paginationRequest.getPageSize(), sorting);
         Page<Hotel> hotels = hotelRepository.findAll(pageable);
 
         EntityWithPagination pagination = new EntityWithPagination();

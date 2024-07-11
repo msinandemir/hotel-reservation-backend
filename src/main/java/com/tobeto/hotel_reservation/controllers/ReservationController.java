@@ -1,6 +1,7 @@
 package com.tobeto.hotel_reservation.controllers;
 
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
+import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.entities.enums.ReservationStatus;
 import com.tobeto.hotel_reservation.services.abstracts.ReservationService;
 import com.tobeto.hotel_reservation.services.dtos.reservation.*;
@@ -8,7 +9,6 @@ import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -24,8 +24,8 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @GetMapping
-    ResponseEntity<EntityWithPagination> getAllReservationWithPagination(@RequestParam @Valid @Positive(message = "validation.positive") int pageNumber, @RequestParam @Valid @Positive(message = "validation.positive") int pageSize) {
-        return ResponseEntity.ok(reservationService.getAllReservationWithPagination(pageNumber, pageSize, Sort.Direction.DESC));
+    ResponseEntity<EntityWithPagination> getAllReservationWithPagination(@RequestBody @Valid PaginationRequest paginationRequest) {
+        return ResponseEntity.ok(reservationService.getAllReservationWithPagination(paginationRequest));
     }
 
     @GetMapping("{reservationId}")
@@ -34,13 +34,13 @@ public class ReservationController {
     }
 
     @GetMapping("reservationsByUserId/{userId}")
-    ResponseEntity<EntityWithPagination> getReservationsByUserId(@PathVariable @Valid @Positive(message = "validation.positive") Long userId, @RequestParam @Valid @Positive(message = "validation.positive") int pageNumber, @RequestParam @Valid @Positive(message = "validation.positive") int pageSize) {
-        return ResponseEntity.ok(reservationService.getReservationsByUserId(userId, pageNumber, pageSize, Sort.Direction.DESC));
+    ResponseEntity<EntityWithPagination> getReservationsByUserId(@PathVariable @Valid @Positive(message = "validation.positive") Long userId, @RequestBody @Valid PaginationRequest paginationRequest) {
+        return ResponseEntity.ok(reservationService.getReservationsByUserId(userId, paginationRequest));
     }
 
     @GetMapping("reservationsByHotelId/{hotelId}")
-    ResponseEntity<EntityWithPagination> getReservationsByHotelId(@PathVariable @Valid @Positive(message = "validation.positive") Long hotelId, @RequestParam @Valid @Positive(message = "validation.positive") int pageNumber, @RequestParam @Valid @Positive(message = "validation.positive") int pageSize) {
-        return ResponseEntity.ok(reservationService.getReservationsByHotelId(hotelId, pageNumber, pageSize, Sort.Direction.DESC));
+    ResponseEntity<EntityWithPagination> getReservationsByHotelId(@PathVariable @Valid @Positive(message = "validation.positive") Long hotelId, @RequestBody @Valid PaginationRequest paginationRequest) {
+        return ResponseEntity.ok(reservationService.getReservationsByHotelId(hotelId, paginationRequest));
     }
 
     @GetMapping("totalRevenue/{userId}")
@@ -49,8 +49,8 @@ public class ReservationController {
     }
 
     @GetMapping("pastReservations/{userId}")
-    ResponseEntity<EntityWithPagination> getPastReservationsByUserId(@PathVariable @Valid @Positive(message = "validation.positive") Long userId, @RequestParam @Valid @Positive(message = "validation.positive") int pageNumber, @RequestParam @Valid @Positive(message = "validation.positive") int pageSize) {
-        return ResponseEntity.ok(reservationService.getPastReservationsByUserId(userId, pageNumber, pageSize, Sort.Direction.DESC));
+    ResponseEntity<EntityWithPagination> getPastReservationsByUserId(@PathVariable @Valid @Positive(message = "validation.positive") Long userId, @RequestBody @Valid PaginationRequest paginationRequest) {
+        return ResponseEntity.ok(reservationService.getPastReservationsByUserId(userId, paginationRequest));
     }
 
     @PostMapping

@@ -2,6 +2,7 @@ package com.tobeto.hotel_reservation.services.concretes;
 
 import com.tobeto.hotel_reservation.core.exceptions.types.BusinessException;
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
+import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.entities.concretes.SupportRequest;
 import com.tobeto.hotel_reservation.repositories.SupportRequestRepository;
 import com.tobeto.hotel_reservation.services.abstracts.SupportRequestService;
@@ -28,9 +29,9 @@ public class SupportRequestServiceImpl implements SupportRequestService {
 
     @Cacheable(cacheNames = "support_requests", key = "#root.methodName + #pageNumber + '_' #pageSize", unless = "#result == null")
     @Override
-    public EntityWithPagination getAllSupportRequestsWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection) {
-        Sort sorting = Sort.by(sortDirection, "createdAt");
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
+    public EntityWithPagination getAllSupportRequestsWithPagination(PaginationRequest paginationRequest) {
+        Sort sorting = Sort.by(paginationRequest.getSortDirection(), paginationRequest.getSortBy());
+        Pageable pageable = PageRequest.of(paginationRequest.getPageNumber(), paginationRequest.getPageSize(), sorting);
         Page<SupportRequest> supportRequests = supportRequestRepository.findAll(pageable);
 
         EntityWithPagination pagination = new EntityWithPagination();
@@ -52,9 +53,9 @@ public class SupportRequestServiceImpl implements SupportRequestService {
 
     @Cacheable(cacheNames = "support_requests_user_id", key = "#root.methodName + #userId + '_' + #pageNumber + '_' + #pageSize", unless = "#result == null")
     @Override
-    public EntityWithPagination getSupportRequestByUserIdWithPagination(Long userId, int pageNumber, int pageSize, Sort.Direction sortDirection) {
-        Sort sorting = Sort.by(sortDirection, "createdAt");
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
+    public EntityWithPagination getSupportRequestByUserIdWithPagination(Long userId, PaginationRequest paginationRequest) {
+        Sort sorting = Sort.by(paginationRequest.getSortDirection(), paginationRequest.getSortBy());
+        Pageable pageable = PageRequest.of(paginationRequest.getPageNumber(), paginationRequest.getPageSize(), sorting);
         Page<SupportRequest> supportRequests = supportRequestRepository.findByUserId(userId, pageable);
 
         EntityWithPagination pagination = new EntityWithPagination();

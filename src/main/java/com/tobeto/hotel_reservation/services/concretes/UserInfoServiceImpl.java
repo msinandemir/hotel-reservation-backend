@@ -2,6 +2,7 @@ package com.tobeto.hotel_reservation.services.concretes;
 
 import com.tobeto.hotel_reservation.core.exceptions.types.BusinessException;
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
+import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.entities.concretes.UserInfo;
 import com.tobeto.hotel_reservation.repositories.UserInfoRepository;
 import com.tobeto.hotel_reservation.services.abstracts.AddressService;
@@ -30,17 +31,15 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Cacheable(cacheNames = "user_infos", key = "#root.methodName + #pageNumber + '_' + #pageSize", unless = "#result == null")
     @Override
-    public EntityWithPagination getAllUserInfosWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection) {
-        Sort sorting = Sort.by(sortDirection, "createdAt");
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
+    public EntityWithPagination getAllUserInfosWithPagination(PaginationRequest paginationRequest) {
+        Sort sorting = Sort.by(paginationRequest.getSortDirection(), paginationRequest.getSortBy());
+        Pageable pageable = PageRequest.of(paginationRequest.getPageNumber(), paginationRequest.getPageSize(), sorting);
         Page<UserInfo> userInfos = userInfoRepository.findAll(pageable);
 
         EntityWithPagination pagination = new EntityWithPagination();
         pagination.mappedFromPageWithoutContent(userInfos);
 
-        List<GetUserInfoResponse> responses = userInfos.stream()
-                .map(UserInfoMapper.INSTANCE::getResponseFromUserInfo)
-                .toList();
+        List<GetUserInfoResponse> responses = userInfos.stream().map(UserInfoMapper.INSTANCE::getResponseFromUserInfo).toList();
         pagination.setContent(responses);
         return pagination;
     }

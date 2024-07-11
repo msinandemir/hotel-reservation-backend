@@ -2,6 +2,7 @@ package com.tobeto.hotel_reservation.services.concretes;
 
 import com.tobeto.hotel_reservation.core.exceptions.types.BusinessException;
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
+import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.entities.concretes.CommentReply;
 import com.tobeto.hotel_reservation.repositories.CommentReplyRepository;
 import com.tobeto.hotel_reservation.services.abstracts.CommentReplyService;
@@ -30,9 +31,9 @@ public class CommentReplyServiceImpl implements CommentReplyService {
 
     @Cacheable(cacheNames = "comment_replies", key = "#root.methodName + #pageNumber + '_' + #pageSize", unless = "#result == null")
     @Override
-    public EntityWithPagination getAllCommentRepliesWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection) {
-        Sort sorting = Sort.by(sortDirection, "createdAt");
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
+    public EntityWithPagination getAllCommentRepliesWithPagination(PaginationRequest paginationRequest) {
+        Sort sorting = Sort.by(paginationRequest.getSortDirection(), paginationRequest.getSortBy());
+        Pageable pageable = PageRequest.of(paginationRequest.getPageNumber(), paginationRequest.getPageSize(), sorting);
         Page<CommentReply> commentReplies = commentReplyRepository.findAll(pageable);
 
         EntityWithPagination pagination = new EntityWithPagination();
@@ -54,9 +55,9 @@ public class CommentReplyServiceImpl implements CommentReplyService {
 
     @Cacheable(cacheNames = "comment_replies_user_id", key = "#root.methodName + #userId + '_' + #pageNumber + '_' + #pageSize", unless = "#result == null")
     @Override
-    public EntityWithPagination getCommentRepliesByUserIdWithPagination(Long userId, int pageNumber, int pageSize, Sort.Direction sortDirection) {
-        Sort sorting = Sort.by(sortDirection, "createdAt");
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
+    public EntityWithPagination getCommentRepliesByUserIdWithPagination(Long userId, PaginationRequest paginationRequest) {
+        Sort sorting = Sort.by(paginationRequest.getSortDirection(), paginationRequest.getSortBy());
+        Pageable pageable = PageRequest.of(paginationRequest.getPageNumber(), paginationRequest.getPageSize(), sorting);
         Page<CommentReply> commentReplies = commentReplyRepository.findByUserId(userId, pageable);
 
         EntityWithPagination pagination = new EntityWithPagination();

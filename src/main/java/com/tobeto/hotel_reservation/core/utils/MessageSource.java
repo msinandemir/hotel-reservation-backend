@@ -21,6 +21,7 @@ public final class MessageSource {
         enMessages.put("validation.notNull", "This field cannot be null.");
         enMessages.put("validation.positive", "This field must be a positive value.");
         enMessages.put("validation.email", "Please enter a valid email address.");
+        enMessages.put("validation.positiveOrZero","This field must be a positive value or zero.");
         enMessages.put("error.runtime", "An unexpected error occurred");
         enMessages.put("email.sendError", "An error occurred while sending the email.");
         enMessages.put("error.userNotFound", "User not found.");
@@ -69,6 +70,7 @@ public final class MessageSource {
         trMessages.put("validation.notNull", "Bu alan boş bırakılamaz.");
         trMessages.put("validation.positive", "Bu alan pozitif bir değer olmalıdır.");
         trMessages.put("validation.email", "Geçerli bir e-posta adresi giriniz.");
+        trMessages.put("validation.positiveOrZero", "Bu alan pozitif bir değer veya 0 olmalıdır.");
         trMessages.put("error.runtime", "Beklenmeyen bir hata oluştu");
         trMessages.put("email.sendError", "E-posta gönderilirken bir hata oluştu.");
         trMessages.put("error.userNotFound", "Kullanıcı bulunamadı.");

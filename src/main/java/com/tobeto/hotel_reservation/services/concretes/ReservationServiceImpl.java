@@ -2,6 +2,7 @@ package com.tobeto.hotel_reservation.services.concretes;
 
 import com.tobeto.hotel_reservation.core.exceptions.types.BusinessException;
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
+import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.core.models.ReservationCancelEmail;
 import com.tobeto.hotel_reservation.core.models.ReservationConfirmEmail;
 import com.tobeto.hotel_reservation.entities.concretes.Reservation;
@@ -41,9 +42,9 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Cacheable(cacheNames = "reservations", key = "#root.methodName + #pageNumber + '_' + #pageSize", unless = "#result == null")
     @Override
-    public EntityWithPagination getAllReservationWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection) {
-        Sort sorting = Sort.by(sortDirection, "createdAt");
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
+    public EntityWithPagination getAllReservationWithPagination(PaginationRequest paginationRequest) {
+        Sort sorting = Sort.by(paginationRequest.getSortDirection(), paginationRequest.getSortBy());
+        Pageable pageable = PageRequest.of(paginationRequest.getPageNumber(), paginationRequest.getPageSize(), sorting);
         Page<Reservation> reservations = reservationRepository.findAll(pageable);
 
         EntityWithPagination pagination = new EntityWithPagination();
@@ -65,9 +66,9 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Cacheable(cacheNames = "reservation_user_id", key = "#root.methodName + #userId + '_' + #pageNumber + '_' #pageSize", unless = "#result == null")
     @Override
-    public EntityWithPagination getReservationsByUserId(Long userId, int pageNumber, int pageSize, Sort.Direction sortDirection) {
-        Sort sorting = Sort.by(sortDirection, "createdAt");
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
+    public EntityWithPagination getReservationsByUserId(Long userId, PaginationRequest paginationRequest) {
+        Sort sorting = Sort.by(paginationRequest.getSortDirection(), paginationRequest.getSortBy());
+        Pageable pageable = PageRequest.of(paginationRequest.getPageNumber(), paginationRequest.getPageSize(), sorting);
         Page<Reservation> reservations = reservationRepository.findByUserId(userId, pageable);
 
         EntityWithPagination pagination = new EntityWithPagination();
@@ -82,9 +83,9 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Cacheable(cacheNames = "reservation_user_id", key = "#root.methodName + #hotelId + '_' + #pageNumber + '_' #pageSize", unless = "#result == null")
     @Override
-    public EntityWithPagination getReservationsByHotelId(Long hotelId, int pageNumber, int pageSize, Sort.Direction sortDirection) {
-        Sort sorting = Sort.by(sortDirection, "createdAt");
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
+    public EntityWithPagination getReservationsByHotelId(Long hotelId, PaginationRequest paginationRequest) {
+        Sort sorting = Sort.by(paginationRequest.getSortDirection(), paginationRequest.getSortBy());
+        Pageable pageable = PageRequest.of(paginationRequest.getPageNumber(), paginationRequest.getPageSize(), sorting);
         Page<Reservation> reservations = reservationRepository.findByHotelId(hotelId, pageable);
 
         EntityWithPagination pagination = new EntityWithPagination();
@@ -105,9 +106,9 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Cacheable(value = "past_reservation_user_id", key = "#root.methodName + #userId + '_' + #pageNumber + '_' + #pageSize", unless = "#result == null")
     @Override
-    public EntityWithPagination getPastReservationsByUserId(Long userId, int pageNumber, int pageSize, Sort.Direction sortDirection) {
-        Sort sorting = Sort.by(sortDirection, "createdAt");
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
+    public EntityWithPagination getPastReservationsByUserId(Long userId, PaginationRequest paginationRequest) {
+        Sort sorting = Sort.by(paginationRequest.getSortDirection(), paginationRequest.getSortBy());
+        Pageable pageable = PageRequest.of(paginationRequest.getPageNumber(), paginationRequest.getPageSize(), sorting);
         Page<Reservation> reservations = reservationRepository.findPastReservationsByUserId(userId, LocalDate.now(), pageable);
 
         EntityWithPagination pagination = new EntityWithPagination();

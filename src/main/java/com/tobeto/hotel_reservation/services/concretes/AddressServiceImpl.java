@@ -2,6 +2,7 @@ package com.tobeto.hotel_reservation.services.concretes;
 
 import com.tobeto.hotel_reservation.core.exceptions.types.BusinessException;
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
+import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.entities.concretes.Address;
 import com.tobeto.hotel_reservation.repositories.AddressRepository;
 import com.tobeto.hotel_reservation.services.abstracts.AddressService;
@@ -28,9 +29,9 @@ public class AddressServiceImpl implements AddressService {
 
     @Cacheable(cacheNames = "addresses", key = "#root.methodName + #pageNumber + '_' + #pageSize", unless = "#result == null")
     @Override
-    public EntityWithPagination getAllAddressWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection) {
-        Sort sorting = Sort.by(sortDirection, "createdAt");
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
+    public EntityWithPagination getAllAddressWithPagination(PaginationRequest paginationRequest) {
+        Sort sorting = Sort.by(paginationRequest.getSortDirection(), paginationRequest.getSortBy());
+        Pageable pageable = PageRequest.of(paginationRequest.getPageNumber(), paginationRequest.getPageSize(), sorting);
         Page<Address> addresses = addressRepository.findAll(pageable);
 
         EntityWithPagination pagination = new EntityWithPagination();
@@ -79,7 +80,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Address findAddressById(Long addressId, String language){
+    public Address findAddressById(Long addressId, String language) {
         return addressRepository.findById(addressId).orElseThrow(() -> new BusinessException("error.addressNotFound", language));
     }
 }

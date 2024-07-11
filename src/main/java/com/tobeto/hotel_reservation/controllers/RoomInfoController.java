@@ -1,12 +1,12 @@
 package com.tobeto.hotel_reservation.controllers;
 
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
+import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.services.abstracts.RoomInfoService;
 import com.tobeto.hotel_reservation.services.dtos.roomInfo.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,8 +20,8 @@ public class RoomInfoController {
     private final RoomInfoService roomInfoService;
 
     @GetMapping
-    ResponseEntity<EntityWithPagination> getAllRoomInfosWithPagination(@RequestParam @Valid @Positive(message = "validation.positive") int pageNumber, @RequestParam @Valid @Positive(message = "validation.positive") int pageSize) {
-        return ResponseEntity.ok(roomInfoService.getAllRoomInfosWithPagination(pageNumber, pageSize, Sort.Direction.DESC));
+    ResponseEntity<EntityWithPagination> getAllRoomInfosWithPagination(@RequestBody @Valid PaginationRequest paginationRequest) {
+        return ResponseEntity.ok(roomInfoService.getAllRoomInfosWithPagination(paginationRequest));
     }
 
     @GetMapping("{roomInfoId}")

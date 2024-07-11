@@ -2,6 +2,7 @@ package com.tobeto.hotel_reservation.services.concretes;
 
 import com.tobeto.hotel_reservation.core.exceptions.types.BusinessException;
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
+import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.entities.concretes.Comment;
 import com.tobeto.hotel_reservation.repositories.CommentRepository;
 import com.tobeto.hotel_reservation.services.abstracts.CommentService;
@@ -28,9 +29,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Cacheable(cacheNames = "comments", key = "#root.methodName + #pageNumber + '_' + #pageSize", unless = "#result == null")
     @Override
-    public EntityWithPagination getAllCommentsWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection) {
-        Sort sorting = Sort.by(sortDirection, "createdAt");
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
+    public EntityWithPagination getAllCommentsWithPagination(PaginationRequest paginationRequest) {
+        Sort sorting = Sort.by(paginationRequest.getSortDirection(), paginationRequest.getSortBy());
+        Pageable pageable = PageRequest.of(paginationRequest.getPageNumber(), paginationRequest.getPageSize(), sorting);
         Page<Comment> comments = commentRepository.findAll(pageable);
 
         EntityWithPagination pagination = new EntityWithPagination();
@@ -52,9 +53,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Cacheable(cacheNames = "comments_user_id", key = "#root.methodName + #userId + '_' + #pageNumber + '_' + #pageSize", unless = "#result == null")
     @Override
-    public EntityWithPagination getCommentsByUserIdWithPagination(Long userId, int pageNumber, int pageSize, Sort.Direction sortDirection) {
-        Sort sorting = Sort.by(sortDirection, "createdAt");
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
+    public EntityWithPagination getCommentsByUserIdWithPagination(Long userId, PaginationRequest paginationRequest) {
+        Sort sorting = Sort.by(paginationRequest.getSortDirection(), paginationRequest.getSortBy());
+        Pageable pageable = PageRequest.of(paginationRequest.getPageNumber(), paginationRequest.getPageSize(), sorting);
         Page<Comment> comments = commentRepository.findByUserId(userId, pageable);
 
         EntityWithPagination pagination = new EntityWithPagination();
@@ -69,9 +70,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Cacheable(cacheNames = "comments_hotel_id", key = "#root.methodName + #hotelId + '_' + #pageNumber + '_' + #pageSize", unless = "#result == null")
     @Override
-    public EntityWithPagination getCommentsByHotelIdWithPagination(Long hotelId, int pageNumber, int pageSize, Sort.Direction sortDirection) {
-        Sort sorting = Sort.by(sortDirection, "createdAt");
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
+    public EntityWithPagination getCommentsByHotelIdWithPagination(Long hotelId, PaginationRequest paginationRequest) {
+        Sort sorting = Sort.by(paginationRequest.getSortDirection(), paginationRequest.getSortBy());
+        Pageable pageable = PageRequest.of(paginationRequest.getPageNumber(), paginationRequest.getPageSize(), sorting);
         Page<Comment> comments = commentRepository.findByHotelId(hotelId, pageable);
 
         EntityWithPagination pagination = new EntityWithPagination();
