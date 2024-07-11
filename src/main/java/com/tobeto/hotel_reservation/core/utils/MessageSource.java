@@ -58,6 +58,7 @@ public final class MessageSource {
                 "We hope to welcome you again.\n" +
                 "\n" +
                 "Regards.");
+        enMessages.put("email.dear", "Dear");
 
         Map<String, String> trMessages = new HashMap<>();
         trMessages.put("exception.businessTitle", "İş Kuralı İhlali!");
@@ -107,8 +108,6 @@ public final class MessageSource {
                 "Sizi tekrar ağırlamayı umuyoruz.\n" +
                 "\n" +
                 "Saygılarımızla.");
-
-
         trMessages.put("reservationConfirmEmail.title", "Otel Rezervasyonunuzun Onayı.");
         trMessages.put("reservationConfirmEmail.message","Konaklamanız için bizi seçtiğiniz için teşekkür ederiz! Rezervasyonunuzu onaylamaktan mutluluk duyuyoruz.");
         trMessages.put("reservationConfirm.footerMessage", "Herhangi bir sorunuz varsa veya rezervasyonunuzla ilgili değişiklik yapmanız gerekiyorsa lütfen bizimle iletişime geçin.\n" +
@@ -116,6 +115,7 @@ public final class MessageSource {
                 "Sizi ağırlamayı sabırsızlıkla bekliyoruz ve harika bir konaklama geçirmenizi umuyoruz!\n" +
                 "\n" +
                 "Saygılarımızla.");
+        trMessages.put("email.dear", "Sayın");
 
         messages.put("en", enMessages);
         messages.put("tr", trMessages);

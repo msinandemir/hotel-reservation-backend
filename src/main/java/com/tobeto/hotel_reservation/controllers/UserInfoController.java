@@ -30,7 +30,7 @@ public class UserInfoController {
     }
 
     @GetMapping("userInfoByUserId/{userId}")
-    ResponseEntity<GetUserInfoResponse> getUserInfoResponseResponseEntity(@PathVariable @Valid @Positive(message = "validation.positive") Long userId, @RequestHeader(defaultValue = "en") String lang) {
+    ResponseEntity<GetUserInfoResponse> getUserInfoByUserId(@PathVariable @Valid @Positive(message = "validation.positive") Long userId, @RequestHeader(defaultValue = "en") String lang) {
         return ResponseEntity.ok(userInfoService.getUserInfoByUserId(userId, lang));
     }
 

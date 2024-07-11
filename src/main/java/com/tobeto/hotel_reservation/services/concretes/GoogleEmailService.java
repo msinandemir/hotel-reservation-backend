@@ -45,6 +45,7 @@ public class GoogleEmailService {
         Context context = new Context();
         context.setVariable("title", MessageSource.getMessage(language, "reservationCancelEmail.title"));
         context.setVariable("message", MessageSource.getMessage(language, "reservation.message"));
+        context.setVariable("dear", MessageSource.getMessage(language, "email.dear"));
         context.setVariable("reservationDetailsTitle", "reservationCancelEmail.reservationDetailsTitle");
         context.setVariable("checkInTitle",MessageSource.getMessage(language, "reservationDetail.checkInTitle"));
         context.setVariable("checkOutTitle",MessageSource.getMessage(language, "reservationDetail.checkOutTitle"));
@@ -75,6 +76,7 @@ public class GoogleEmailService {
         Context context = new Context();
         context.setVariable("title", MessageSource.getMessage(language, "reservationConfirmEmail.title"));
         context.setVariable("message", MessageSource.getMessage(language, "reservationConfirmEmail.message"));
+        context.setVariable("dear", MessageSource.getMessage(language, "email.dear"));
         context.setVariable("reservationDetailsTitle", "reservationCancelEmail.reservationDetailsTitle");
         context.setVariable("checkInTitle",MessageSource.getMessage(language, "reservationDetail.checkInTitle"));
         context.setVariable("checkOutTitle",MessageSource.getMessage(language, "reservationDetail.checkOutTitle"));
