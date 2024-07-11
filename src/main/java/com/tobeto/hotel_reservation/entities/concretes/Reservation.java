@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Table(name = "reservations")
@@ -23,6 +24,7 @@ public class Reservation extends BaseEntity {
     private LocalDate checkIn;
     private LocalDate checkOut;
     private ReservationStatus status;
+    private BigDecimal totalPrice;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

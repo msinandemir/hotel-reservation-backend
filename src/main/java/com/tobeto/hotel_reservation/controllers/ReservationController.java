@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequestMapping("api/v1/reservations")
 @RequiredArgsConstructor
@@ -39,6 +41,11 @@ public class ReservationController {
     @GetMapping("reservationsByHotelId/{hotelId}")
     ResponseEntity<EntityWithPagination> getReservationsByHotelId(@PathVariable @Valid @Positive(message = "validation.positive") Long hotelId, @RequestParam @Valid @Positive(message = "validation.positive") int pageNumber, @RequestParam @Valid @Positive(message = "validation.positive") int pageSize) {
         return ResponseEntity.ok(reservationService.getReservationsByHotelId(hotelId, pageNumber, pageSize, Sort.Direction.DESC));
+    }
+
+    @GetMapping("totalRevenue/{userId}")
+    ResponseEntity<BigDecimal> getTotalRevenueByUserId(@PathVariable @Valid @Positive(message = "validation.positive") Long userId){
+        return ResponseEntity.ok(reservationService.getTotalRevenueByUserId(userId));
     }
 
     @PostMapping

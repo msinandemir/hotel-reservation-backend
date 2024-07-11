@@ -5,6 +5,7 @@ import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
 import com.tobeto.hotel_reservation.core.models.ReservationCancelEmail;
 import com.tobeto.hotel_reservation.core.models.ReservationConfirmEmail;
 import com.tobeto.hotel_reservation.entities.concretes.Reservation;
+import com.tobeto.hotel_reservation.entities.concretes.Room;
 import com.tobeto.hotel_reservation.entities.enums.ReservationStatus;
 import com.tobeto.hotel_reservation.repositories.ReservationRepository;
 import com.tobeto.hotel_reservation.services.abstracts.EmailGateway;
@@ -25,6 +26,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -93,13 +97,24 @@ public class ReservationServiceImpl implements ReservationService {
         return pagination;
     }
 
-    @CacheEvict(cacheNames = {"reservations", "reservation_id"}, allEntries = true)
+    @Cacheable(value = "reservation_total_revenue_user_id", key = "#root.methodName + #userId", unless = "#result == null")
+    @Override
+    public BigDecimal getTotalRevenueByUserId(Long userId) {
+        return reservationRepository.findTotalRevenueByOwnerId(userId);
+    }
+
+    @CacheEvict(cacheNames = {"reservations", "reservation_id", "reservation_total_revenue_user_id"}, allEntries = true)
     @Override
     public AddReservationResponse addReservation(AddReservationRequest request, String language) {
         userService.findUserById(request.getUserId(), language);
-        roomService.findRoomById(request.getRoomId(), language);
+        Room foundRoom = roomService.findRoomById(request.getRoomId(), language);
+
+        BigDecimal totalPrice = calculateTotalPrice(request.getCheckIn(), request.getCheckOut(), foundRoom);
+
         Reservation reservation = ReservationMapper.INSTANCE.reservationFromAddRequest(request);
         reservation.setStatus(ReservationStatus.PENDING);
+        reservation.setTotalPrice(totalPrice);
+
         Reservation savedReservation = reservationRepository.save(reservation);
         return ReservationMapper.INSTANCE.addResponseFromReservation(savedReservation);
     }
@@ -108,10 +123,14 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public UpdateReservationResponse updateReservationById(Long reservationId, UpdateReservationRequest request, String language) {
         userService.findUserById(request.getUserId(), language);
-        roomService.findRoomById(request.getRoomId(), language);
+        Room foundRoom = roomService.findRoomById(request.getRoomId(), language);
+
+        BigDecimal totalPrice = calculateTotalPrice(request.getCheckIn(), request.getCheckOut(), foundRoom);
+
         Reservation foundReservation = findReservationById(reservationId, language);
         Reservation updatedReservation = ReservationMapper.INSTANCE.reservationFromUpdateRequest(request);
         updatedReservation.setId(foundReservation.getId());
+        updatedReservation.setTotalPrice(totalPrice);
 
         Reservation savedReservation = reservationRepository.save(updatedReservation);
         return ReservationMapper.INSTANCE.updateResponseFromReservation(savedReservation);
@@ -151,7 +170,7 @@ public class ReservationServiceImpl implements ReservationService {
         return ReservationMapper.INSTANCE.changeStatusResponseFromReservation(savedReservation);
     }
 
-    @CacheEvict(cacheNames = {"reservations", "reservation_id"}, allEntries = true)
+    @CacheEvict(cacheNames = {"reservations", "reservation_id", "reservation_total_revenue_user_id"}, allEntries = true)
     @Override
     public void deleteReservationById(Long reservationId, String language) {
         Reservation foundReservation = findReservationById(reservationId, language);
@@ -170,11 +189,18 @@ public class ReservationServiceImpl implements ReservationService {
         emailGateway.sendReservationCancellationEmail(toManager, language);
     }
 
-    private void sendReservationConfirmEmailToUserAndManager(Reservation reservation, String language) throws MessagingException{
+    private void sendReservationConfirmEmailToUserAndManager(Reservation reservation, String language) throws MessagingException {
         ReservationConfirmEmail toUser = EmailMapper.INSTANCE.reservationConfirmEmailToUserFromReservation(reservation);
         ReservationConfirmEmail toManager = EmailMapper.INSTANCE.reservationConfirmEmailToManagerFromReservation(reservation);
 
         emailGateway.sendReservationConfirmationEmail(toUser, language);
         emailGateway.sendReservationConfirmationEmail(toManager, language);
+    }
+
+    private BigDecimal calculateTotalPrice(LocalDate checkIn, LocalDate checkOut, Room foundRoom) {
+        BigDecimal price = foundRoom.getPrice();
+        long daysBetween = ChronoUnit.DAYS.between(checkIn, checkOut);
+        BigDecimal daysBetweenBigDecimal = BigDecimal.valueOf(daysBetween);
+        return daysBetweenBigDecimal.multiply(price);
     }
 }

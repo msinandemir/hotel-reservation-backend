@@ -6,6 +6,8 @@ import com.tobeto.hotel_reservation.services.dtos.reservation.*;
 import jakarta.mail.MessagingException;
 import org.springframework.data.domain.Sort;
 
+import java.math.BigDecimal;
+
 public interface ReservationService {
     EntityWithPagination getAllReservationWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection);
 
@@ -14,6 +16,8 @@ public interface ReservationService {
     EntityWithPagination getReservationsByUserId(Long userId, int pageNumber, int pageSize, Sort.Direction sortDirection);
 
     EntityWithPagination getReservationsByHotelId(Long hotelId, int pageNumber, int pageSize, Sort.Direction sortDirection);
+
+    BigDecimal getTotalRevenueByUserId(Long userId);
 
     AddReservationResponse addReservation(AddReservationRequest request, String language);
 
