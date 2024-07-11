@@ -12,10 +12,15 @@ import java.util.List;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long> {
-    @Query("SELECT r FROM Room r WHERE r.type = :type AND r.id NOT IN (" +
+    @Query("SELECT r FROM Room r WHERE r.type = :type AND  r.availability = true AND r.id NOT IN (" +
             "SELECT res.room.id FROM Reservation res WHERE :checkIn < res.checkOut AND :checkOut > res.checkIn" +
             ")")
     List<Room> findAvailableRoomsByTypeAndDate(@Param("type") RoomType type,
                                                @Param("checkIn") LocalDate checkIn,
                                                @Param("checkOut") LocalDate checkOut);
+
+    @Query("SELECT r FROM Room r " +
+            "JOIN r.reservations res " +
+            "WHERE res.checkOut < :today AND r.availability = false")
+    List<Room> findRoomsPastCheckoutAndNotAvailable(@Param("today") LocalDate today);
 }

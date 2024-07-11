@@ -17,8 +17,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -84,6 +86,16 @@ public class RoomServiceImpl implements RoomService {
     public void deleteRoomById(Long roomId, String language) {
         Room foundRoom = findRoomById(roomId, language);
         roomRepository.deleteById(foundRoom.getId());
+    }
+
+    @Scheduled(cron = "0 0 12 * * ?")
+    @Override
+    public void updateRoomAvailability() {
+        List<Room> getRoomsPastCheckoutAndNotAvailable = roomRepository.findRoomsPastCheckoutAndNotAvailable(LocalDate.now());
+        List<Room> updatedRooms = getRoomsPastCheckoutAndNotAvailable.stream()
+                .peek(room -> room.setAvailability(true))
+                .toList();
+        roomRepository.saveAll(updatedRooms);
     }
 
     @Override

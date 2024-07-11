@@ -19,5 +19,7 @@ public interface RoomService {
 
     void deleteRoomById(Long roomId, String language);
 
+    void updateRoomAvailability();
+
     Room findRoomById(Long roomId, String language);
 }
