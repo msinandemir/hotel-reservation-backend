@@ -51,7 +51,15 @@ public class UserInfoServiceImpl implements UserInfoService {
         return UserInfoMapper.INSTANCE.getResponseFromUserInfo(foundUserInfo);
     }
 
-    @CacheEvict(cacheNames = {"user_info_id", "user_infos"}, allEntries = true)
+    @Cacheable(cacheNames = "user_info_user_id", key = "#root.methodName + #userId", unless = "#result == null")
+    @Override
+    public GetUserInfoResponse getUserInfoByUserId(Long userId, String language) {
+        userService.findUserById(userId, language);
+        UserInfo foundUserInfoByUserId = userInfoRepository.findByUserId(userId);
+        return UserInfoMapper.INSTANCE.getResponseFromUserInfo(foundUserInfoByUserId);
+    }
+
+    @CacheEvict(cacheNames = {"user_info_id", "user_infos", "user_info_user_id"}, allEntries = true)
     @Override
     public AddUserInfoResponse addUserInfo(AddUserInfoRequest request, String language) {
         userService.findUserById(request.getUserId(), language);
@@ -74,7 +82,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         return UserInfoMapper.INSTANCE.updateResponseFromUserInfo(savedUserInfo);
     }
 
-    @CacheEvict(cacheNames = {"user_info_id", "user_infos"}, allEntries = true)
+    @CacheEvict(cacheNames = {"user_info_id", "user_infos", "user_info_user_id"}, allEntries = true)
     @Override
     public void deleteUserInfoById(Long userInfoId, String language) {
         UserInfo foundUserInfo = findUserInfoById(userInfoId, language);

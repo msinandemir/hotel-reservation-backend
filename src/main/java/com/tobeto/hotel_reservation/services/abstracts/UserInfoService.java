@@ -9,6 +9,8 @@ public interface UserInfoService {
 
     GetUserInfoResponse getUserInfoById(Long userInfoId, String language);
 
+    GetUserInfoResponse getUserInfoByUserId(Long userId, String language);
+
     AddUserInfoResponse addUserInfo(AddUserInfoRequest request, String language);
 
     UpdateUserInfoResponse updateUserInfoById(Long userInfoId, UpdateUserInfoRequest request, String language);

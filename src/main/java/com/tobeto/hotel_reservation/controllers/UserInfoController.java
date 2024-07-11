@@ -29,6 +29,11 @@ public class UserInfoController {
         return ResponseEntity.ok(userInfoService.getUserInfoById(userInfoId, lang));
     }
 
+    @GetMapping("userInfoByUserId/{userId}")
+    ResponseEntity<GetUserInfoResponse> getUserInfoResponseResponseEntity(@PathVariable @Valid @Positive(message = "validation.positive") Long userId, @RequestHeader(defaultValue = "en") String lang) {
+        return ResponseEntity.ok(userInfoService.getUserInfoByUserId(userId, lang));
+    }
+
     @PostMapping
     ResponseEntity<AddUserInfoResponse> addUserInfo(@RequestBody @Valid AddUserInfoRequest request, @RequestHeader(defaultValue = "en") String lang) {
         return new ResponseEntity<>(userInfoService.addUserInfo(request, lang), HttpStatus.CREATED);
