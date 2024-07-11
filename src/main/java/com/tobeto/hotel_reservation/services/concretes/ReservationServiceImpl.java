@@ -134,6 +134,8 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setTotalPrice(totalPrice);
 
         Reservation savedReservation = reservationRepository.save(reservation);
+
+        roomService.updateRoomAvailability(foundRoom.getId(), false, language);
         return ReservationMapper.INSTANCE.addResponseFromReservation(savedReservation);
     }
 

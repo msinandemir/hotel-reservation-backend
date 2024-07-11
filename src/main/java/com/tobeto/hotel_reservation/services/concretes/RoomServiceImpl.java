@@ -90,12 +90,19 @@ public class RoomServiceImpl implements RoomService {
 
     @Scheduled(cron = "0 0 12 * * ?")
     @Override
-    public void updateRoomAvailability() {
+    public void updateRoomAvailabilityScheduled() {
         List<Room> getRoomsPastCheckoutAndNotAvailable = roomRepository.findRoomsPastCheckoutAndNotAvailable(LocalDate.now());
         List<Room> updatedRooms = getRoomsPastCheckoutAndNotAvailable.stream()
                 .peek(room -> room.setAvailability(true))
                 .toList();
         roomRepository.saveAll(updatedRooms);
+    }
+
+    @Override
+    public void updateRoomAvailability(Long roomId, boolean availability, String language) {
+        Room foundRoom = findRoomById(roomId, language);
+        foundRoom.setAvailability(availability);
+        roomRepository.save(foundRoom);
     }
 
     @Override
