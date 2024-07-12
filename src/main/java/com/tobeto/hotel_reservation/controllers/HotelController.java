@@ -7,6 +7,7 @@ import com.tobeto.hotel_reservation.services.dtos.hotel.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -27,6 +28,16 @@ public class HotelController {
     @GetMapping("{hotelId}")
     ResponseEntity<GetHotelResponse> getHotelById(@PathVariable @Valid @Positive(message = "validation.positive") Long hotelId, @RequestHeader(defaultValue = "en") String lang) {
         return ResponseEntity.ok(hotelService.getHotelById(hotelId, lang));
+    }
+
+    @GetMapping("filterHotelByStarAndCityName")
+    ResponseEntity<EntityWithPagination> getFilteredHotelsByStarAndCityNameWithPagination(@RequestParam(required = false) Integer star,
+                                                                                          @RequestParam(required = false) String cityName,
+                                                                                          @RequestParam(required = false, defaultValue = "0") int pageSize,
+                                                                                          @RequestParam(required = false, defaultValue = "16") int pageNumber,
+                                                                                          @RequestParam(required = false, defaultValue = "ASC") Sort.Direction direction,
+                                                                                          @RequestParam(required = false, defaultValue = "createdAt") String sortBy) {
+        return ResponseEntity.ok(hotelService.getFilteredHotelsByStarAndCityNameWithPagination(star, cityName, pageSize, pageNumber, direction, sortBy));
     }
 
     @PostMapping

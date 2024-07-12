@@ -3,6 +3,7 @@ package com.tobeto.hotel_reservation.services.concretes;
 import com.tobeto.hotel_reservation.core.exceptions.types.BusinessException;
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
 import com.tobeto.hotel_reservation.core.models.PaginationRequest;
+import com.tobeto.hotel_reservation.core.utils.HotelSpecifications;
 import com.tobeto.hotel_reservation.entities.concretes.Hotel;
 import com.tobeto.hotel_reservation.repositories.HotelRepository;
 import com.tobeto.hotel_reservation.services.abstracts.AddressService;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,7 +55,27 @@ public class HotelServiceImpl implements HotelService {
         return HotelMapper.INSTANCE.getResponseFromHotel(foundHotel);
     }
 
-    @CacheEvict(cacheNames = {"hotels", "hotel_id"}, allEntries = true)
+    @Cacheable(cacheNames = "hotel_filtered", key = "#root.methodName + #star + '_' + #cityName + '_' + #pageNumber + '_' + #size", unless = "#result == null")
+    @Override
+    public EntityWithPagination getFilteredHotelsByStarAndCityNameWithPagination(Integer star, String cityName, int pageSize, int pageNumber, Sort.Direction direction, String sortBy) {
+        Specification<Hotel> hotelSpecification = Specification.where(HotelSpecifications.hasStar(star))
+                .and(HotelSpecifications.hasCityName(cityName));
+
+        Sort sorting = Sort.by(direction, sortBy);
+        Pageable pageable = PageRequest.of(pageSize, pageNumber, sorting);
+        Page<Hotel> hotels = hotelRepository.findAll(hotelSpecification, pageable);
+
+        EntityWithPagination pagination = new EntityWithPagination();
+        pagination.mappedFromPageWithoutContent(hotels);
+
+        List<GetHotelResponse> responses = hotels.stream()
+                .map(HotelMapper.INSTANCE::getResponseFromHotel)
+                .toList();
+        pagination.setContent(responses);
+        return pagination;
+    }
+
+    @CacheEvict(cacheNames = {"hotels", "hotel_id", "hotel_filtered"}, allEntries = true)
     @Override
     public AddHotelResponse addHotel(AddHotelRequest request, String language) {
         userService.findUserById(request.getUserId(), language);
@@ -76,7 +98,7 @@ public class HotelServiceImpl implements HotelService {
         return HotelMapper.INSTANCE.updateResponseFromHotel(savedHotel);
     }
 
-    @CacheEvict(cacheNames = {"hotels", "hotel_id"}, allEntries = true)
+    @CacheEvict(cacheNames = {"hotels", "hotel_id", "hotel_filtered"}, allEntries = true)
     @Override
     public void deleteHotelById(Long hotelId, String language) {
         Hotel foundHotel = findHotelById(hotelId, language);
