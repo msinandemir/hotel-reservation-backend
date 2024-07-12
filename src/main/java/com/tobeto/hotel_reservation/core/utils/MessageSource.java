@@ -39,7 +39,7 @@ public final class MessageSource {
         enMessages.put("error.cityNotFound", "City not found.");
         enMessages.put("error.reservationNotFound", "Reservation not found.");
         enMessages.put("error.emailExists", "There is a user registered with this email.");
-        enMessages.put("error.availableRoom", "No available rooms found. Please select a different date or room type.");
+        enMessages.put("error.availableRoom", "No available rooms found. Please try other options.");
         enMessages.put("welcomeEmail.title", "Welcome!");
         enMessages.put("welcomeEmail.message", "Welcome to our site! We are very pleased to meet you. " +
                 "You can easily make your reservations and enjoy a pleasant stay.\n\n" +
@@ -89,7 +89,7 @@ public final class MessageSource {
         trMessages.put("error.cityNotFound", "Şehir bulunamadı.");
         trMessages.put("error.reservationNotFound", "Rezervasyon bulunamadı.");
         trMessages.put("error.emailExists", "Bu e-posta ile kayıtlı kullanıcı var.");
-        trMessages.put("error.availableRoom", "Müsait oda bulunamadı. Lütfen başka bir tarih veya oda tipi seçin.");
+        trMessages.put("error.availableRoom", "Müsait oda bulunamadı. Lütfen başka seçenekleri deneyin.");
         trMessages.put("welcomeEmail.title", "Hoş Geldiniz!");
         trMessages.put("welcomeEmail.message", "Sitemize hoş geldiniz! Sizinle tanıştığımıza çok memnunuz. " +
                 "Rezervasyon işlemlerinizi kolayca yapabilir ve keyifli bir konaklama deneyimi yaşayabilirsiniz.\n\n" +

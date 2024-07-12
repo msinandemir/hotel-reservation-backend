@@ -55,14 +55,13 @@ public class HotelServiceImpl implements HotelService {
         return HotelMapper.INSTANCE.getResponseFromHotel(foundHotel);
     }
 
-    @Cacheable(cacheNames = "hotel_filtered", key = "#root.methodName + #star + '_' + #cityName + '_' + #pageNumber + '_' + #size", unless = "#result == null")
     @Override
-    public EntityWithPagination getFilteredHotelsByStarAndCityNameWithPagination(Integer star, String cityName, int pageSize, int pageNumber, Sort.Direction direction, String sortBy) {
+    public EntityWithPagination getFilteredHotelsByStarAndCityNameWithPagination(Integer star, String cityName, int pageNumber, int pageSize, Sort.Direction direction, String sortBy) {
         Specification<Hotel> hotelSpecification = Specification.where(HotelSpecifications.hasStar(star))
                 .and(HotelSpecifications.hasCityName(cityName));
 
         Sort sorting = Sort.by(direction, sortBy);
-        Pageable pageable = PageRequest.of(pageSize, pageNumber, sorting);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
         Page<Hotel> hotels = hotelRepository.findAll(hotelSpecification, pageable);
 
         EntityWithPagination pagination = new EntityWithPagination();

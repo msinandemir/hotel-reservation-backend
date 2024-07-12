@@ -33,11 +33,11 @@ public class HotelController {
     @GetMapping("filterHotelByStarAndCityName")
     ResponseEntity<EntityWithPagination> getFilteredHotelsByStarAndCityNameWithPagination(@RequestParam(required = false) Integer star,
                                                                                           @RequestParam(required = false) String cityName,
-                                                                                          @RequestParam(required = false, defaultValue = "0") int pageSize,
-                                                                                          @RequestParam(required = false, defaultValue = "16") int pageNumber,
+                                                                                          @RequestParam(required = false, defaultValue = "0") int pageNumber,
+                                                                                          @RequestParam(required = false, defaultValue = "16") int pageSize,
                                                                                           @RequestParam(required = false, defaultValue = "ASC") Sort.Direction direction,
                                                                                           @RequestParam(required = false, defaultValue = "createdAt") String sortBy) {
-        return ResponseEntity.ok(hotelService.getFilteredHotelsByStarAndCityNameWithPagination(star, cityName, pageSize, pageNumber, direction, sortBy));
+        return ResponseEntity.ok(hotelService.getFilteredHotelsByStarAndCityNameWithPagination(star, cityName, pageNumber, pageSize, direction, sortBy));
     }
 
     @PostMapping

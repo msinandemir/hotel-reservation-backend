@@ -3,7 +3,9 @@ package com.tobeto.hotel_reservation.services.concretes;
 import com.tobeto.hotel_reservation.core.exceptions.types.BusinessException;
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
 import com.tobeto.hotel_reservation.core.models.PaginationRequest;
+import com.tobeto.hotel_reservation.core.utils.RoomSpecifications;
 import com.tobeto.hotel_reservation.entities.concretes.Room;
+import com.tobeto.hotel_reservation.entities.enums.RoomType;
 import com.tobeto.hotel_reservation.repositories.RoomRepository;
 import com.tobeto.hotel_reservation.services.abstracts.HotelService;
 import com.tobeto.hotel_reservation.services.abstracts.RoomService;
@@ -17,9 +19,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -58,6 +62,22 @@ public class RoomServiceImpl implements RoomService {
         List<Room> availableRooms = roomRepository.findAvailableRoomsByTypeAndDate(request.getType(), request.getCheckIn(), request.getCheckOut());
         Room getFirstRoom = getFirstRoomInAvailableRooms(availableRooms, language);
         return RoomMapper.INSTANCE.getResponseFromRoom(getFirstRoom);
+    }
+
+    @Override
+    public GetRoomResponse getFilteredRoom(Long hotelId, Integer capacity, BigDecimal price, Integer singleBed, Integer doubleBed, Integer bunkBed, RoomType type, String language) {
+        Specification<Room> roomSpecification = Specification.where(RoomSpecifications.hasCapacity(capacity))
+                .and(RoomSpecifications.hasPrice(price))
+                .and(RoomSpecifications.isAvailable(true))
+                .and(RoomSpecifications.hasSingleBed(singleBed))
+                .and(RoomSpecifications.hasDoubleBed(doubleBed))
+                .and(RoomSpecifications.hasBunkBed(bunkBed))
+                .and(RoomSpecifications.hasType(type))
+                .and(RoomSpecifications.hasHotelId(hotelId));
+
+        List<Room> availableRooms = roomRepository.findAll(roomSpecification);
+        Room getFirstRoom = getFirstRoomInAvailableRooms(availableRooms, language);
+        return  RoomMapper.INSTANCE.getResponseFromRoom(getFirstRoom);
     }
 
     @CacheEvict(cacheNames = {"room_id", "rooms"}, allEntries = true)

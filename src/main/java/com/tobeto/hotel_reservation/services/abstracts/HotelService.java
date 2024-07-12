@@ -11,7 +11,7 @@ public interface HotelService {
 
     GetHotelResponse getHotelById(Long hotelId, String language);
 
-    EntityWithPagination getFilteredHotelsByStarAndCityNameWithPagination(Integer star, String cityName, int pageSize, int pageNumber, Sort.Direction direction, String sortBy);
+    EntityWithPagination getFilteredHotelsByStarAndCityNameWithPagination(Integer star, String cityName, int pageNumber, int pageSize, Sort.Direction direction, String sortBy);
 
     AddHotelResponse addHotel(AddHotelRequest request, String language);
 
