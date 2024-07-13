@@ -5,10 +5,14 @@ import com.tobeto.hotel_reservation.entities.concretes.Address;
 import com.tobeto.hotel_reservation.services.dtos.address.*;
 import org.springframework.data.domain.Sort;
 
+import java.util.List;
+
 public interface AddressService {
     EntityWithPagination getAllAddressWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection, String sortBy);
 
     GetAddressResponse getAddressById(Long addressId, String language);
+
+    List<GetAddressResponse> getAddressesByUserId(Long userId);
 
     AddAddressResponse addAddress(AddAddressRequest request, String language);
 

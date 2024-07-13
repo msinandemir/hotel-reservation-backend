@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/addresses")
 @RequiredArgsConstructor
@@ -31,6 +33,11 @@ public class AddressController {
     @GetMapping("{addressId}")
     ResponseEntity<GetAddressResponse> getAddressById(@PathVariable @Valid @Positive(message = "validation.positive") Long addressId, @RequestHeader(defaultValue = "en") String lang) {
         return ResponseEntity.ok(addressService.getAddressById(addressId, lang));
+    }
+
+    @GetMapping("getAddressesByUserId/{userId}")
+    ResponseEntity<List<GetAddressResponse>> getAddressesByUserId(@PathVariable @Valid @Positive(message = "validation.positive") Long userId){
+        return ResponseEntity.ok(addressService.getAddressesByUserId(userId));
     }
 
     @PostMapping

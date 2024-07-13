@@ -19,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +51,16 @@ public class AddressServiceImpl implements AddressService {
         return AddressMapper.INSTANCE.getResponseFromAddress(foundAddress);
     }
 
-    @CacheEvict(cacheNames = {"addresses", "address_id"}, allEntries = true)
+    @Cacheable(cacheNames = "addresses_user_id", key = "#root.methodName + #userId", unless = "#result == null")
+    @Override
+    public List<GetAddressResponse> getAddressesByUserId(Long userId) {
+        List<Address> addresses = addressRepository.getAddressesByUserId(userId);
+        return addresses.stream()
+                .map(AddressMapper.INSTANCE::getResponseFromAddress)
+                .collect(Collectors.toList());
+    }
+
+    @CacheEvict(cacheNames = {"addresses", "address_id", "addresses_user_id"}, allEntries = true)
     @Override
     public AddAddressResponse addAddress(AddAddressRequest request, String language) {
         cityService.findCityById(request.getCityId(), language);
@@ -71,7 +81,7 @@ public class AddressServiceImpl implements AddressService {
         return AddressMapper.INSTANCE.updateResponseFromAddress(savedAddress);
     }
 
-    @CacheEvict(cacheNames = {"addresses", "address_id"}, allEntries = true)
+    @CacheEvict(cacheNames = {"addresses", "address_id", "addresses_user_id"}, allEntries = true)
     @Override
     public void deleteAddressById(Long addressId, String language) {
         Address foundAddress = findAddressById(addressId, language);
