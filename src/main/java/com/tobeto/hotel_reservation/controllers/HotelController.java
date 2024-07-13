@@ -1,11 +1,11 @@
 package com.tobeto.hotel_reservation.controllers;
 
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
-import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.services.abstracts.HotelService;
 import com.tobeto.hotel_reservation.services.dtos.hotel.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -21,8 +21,11 @@ public class HotelController {
     private final HotelService hotelService;
 
     @GetMapping
-    ResponseEntity<EntityWithPagination> getAllHotelsWithPagination(@RequestBody @Valid PaginationRequest paginationRequest) {
-        return ResponseEntity.ok(hotelService.getAllHotelsWithPagination(paginationRequest));
+    ResponseEntity<EntityWithPagination> getAllHotelsWithPagination(@RequestParam(defaultValue = "0") @Valid @PositiveOrZero(message = "validation.positiveOrZero") int pageNumber,
+                                                                    @RequestParam(defaultValue = "16") @Valid @PositiveOrZero(message = "validation.positiveOrZero") int pageSize,
+                                                                    @RequestParam(defaultValue = "DESC") Sort.Direction direction,
+                                                                    @RequestParam(defaultValue = "createdAt") String sortBy) {
+        return ResponseEntity.ok(hotelService.getAllHotelsWithPagination(pageNumber, pageSize, direction, sortBy));
     }
 
     @GetMapping("{hotelId}")

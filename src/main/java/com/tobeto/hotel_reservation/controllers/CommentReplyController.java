@@ -1,12 +1,13 @@
 package com.tobeto.hotel_reservation.controllers;
 
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
-import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.services.abstracts.CommentReplyService;
 import com.tobeto.hotel_reservation.services.dtos.commentReply.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,8 +21,11 @@ public class CommentReplyController {
     private final CommentReplyService commentReplyService;
 
     @GetMapping
-    ResponseEntity<EntityWithPagination> getAllCommentRepliesWithPagination(@RequestBody @Valid PaginationRequest paginationRequest) {
-        return ResponseEntity.ok(commentReplyService.getAllCommentRepliesWithPagination(paginationRequest));
+    ResponseEntity<EntityWithPagination> getAllCommentRepliesWithPagination(@RequestParam(defaultValue = "0") @Valid @PositiveOrZero(message = "validation.positiveOrZero") int pageNumber,
+                                                                            @RequestParam(defaultValue = "16") @Valid @PositiveOrZero(message = "validation.positiveOrZero") int pageSize,
+                                                                            @RequestParam(defaultValue = "DESC") Sort.Direction direction,
+                                                                            @RequestParam(defaultValue = "createdAt") String sortBy) {
+        return ResponseEntity.ok(commentReplyService.getAllCommentRepliesWithPagination(pageNumber, pageSize, direction, sortBy));
     }
 
     @GetMapping("{commentReplyId}")
@@ -30,8 +34,12 @@ public class CommentReplyController {
     }
 
     @GetMapping("commentRepliesByUserId/{userId}")
-    ResponseEntity<EntityWithPagination> getCommentRepliesByUserIdWithPagination(@PathVariable @Valid @Positive(message = "validation.positive") Long userId, @RequestBody @Valid PaginationRequest paginationRequest) {
-        return ResponseEntity.ok(commentReplyService.getCommentRepliesByUserIdWithPagination(userId, paginationRequest));
+    ResponseEntity<EntityWithPagination> getCommentRepliesByUserIdWithPagination(@PathVariable @Valid @Positive(message = "validation.positive") Long userId,
+                                                                                 @RequestParam(defaultValue = "0") @Valid @PositiveOrZero(message = "validation.positiveOrZero") int pageNumber,
+                                                                                 @RequestParam(defaultValue = "16") @Valid @PositiveOrZero(message = "validation.positiveOrZero") int pageSize,
+                                                                                 @RequestParam(defaultValue = "DESC") Sort.Direction direction,
+                                                                                 @RequestParam(defaultValue = "createdAt") String sortBy) {
+        return ResponseEntity.ok(commentReplyService.getCommentRepliesByUserIdWithPagination(userId, pageNumber, pageSize, direction, sortBy));
     }
 
     @PostMapping

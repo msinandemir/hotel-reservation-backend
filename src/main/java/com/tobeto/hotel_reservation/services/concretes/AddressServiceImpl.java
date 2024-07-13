@@ -2,7 +2,6 @@ package com.tobeto.hotel_reservation.services.concretes;
 
 import com.tobeto.hotel_reservation.core.exceptions.types.BusinessException;
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
-import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.entities.concretes.Address;
 import com.tobeto.hotel_reservation.repositories.AddressRepository;
 import com.tobeto.hotel_reservation.services.abstracts.AddressService;
@@ -27,11 +26,11 @@ public class AddressServiceImpl implements AddressService {
     private final AddressRepository addressRepository;
     private final CityService cityService;
 
-    @Cacheable(cacheNames = "addresses", key = "#root.methodName + #pageNumber + '_' + #pageSize", unless = "#result == null")
+    @Cacheable(cacheNames = "addresses", key = "#root.methodName + #pageNumber + '_' + #pageSize + '_' + #sortDirection + '_' + #sortBy", unless = "#result == null")
     @Override
-    public EntityWithPagination getAllAddressWithPagination(PaginationRequest paginationRequest) {
-        Sort sorting = Sort.by(paginationRequest.getSortDirection(), paginationRequest.getSortBy());
-        Pageable pageable = PageRequest.of(paginationRequest.getPageNumber(), paginationRequest.getPageSize(), sorting);
+    public EntityWithPagination getAllAddressWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection, String sortBy) {
+        Sort sorting = Sort.by(sortDirection, sortBy);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
         Page<Address> addresses = addressRepository.findAll(pageable);
 
         EntityWithPagination pagination = new EntityWithPagination();

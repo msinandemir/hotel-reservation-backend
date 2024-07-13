@@ -1,13 +1,13 @@
 package com.tobeto.hotel_reservation.services.abstracts;
 
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
-import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.entities.concretes.User;
 import com.tobeto.hotel_reservation.services.dtos.user.*;
 import jakarta.mail.MessagingException;
+import org.springframework.data.domain.Sort;
 
 public interface UserService {
-    EntityWithPagination getAllUsersWithPagination(PaginationRequest paginationRequest);
+    EntityWithPagination getAllUsersWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection, String sortBy);
 
     GetUserResponse getUserById(Long userId, String language);
 

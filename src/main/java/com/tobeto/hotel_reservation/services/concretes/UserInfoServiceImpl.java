@@ -2,7 +2,6 @@ package com.tobeto.hotel_reservation.services.concretes;
 
 import com.tobeto.hotel_reservation.core.exceptions.types.BusinessException;
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
-import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.entities.concretes.UserInfo;
 import com.tobeto.hotel_reservation.repositories.UserInfoRepository;
 import com.tobeto.hotel_reservation.services.abstracts.AddressService;
@@ -29,11 +28,11 @@ public class UserInfoServiceImpl implements UserInfoService {
     private final UserService userService;
     private final AddressService addressService;
 
-    @Cacheable(cacheNames = "user_infos", key = "#root.methodName + #pageNumber + '_' + #pageSize", unless = "#result == null")
+    @Cacheable(cacheNames = "user_infos", key = "#root.methodName + #pageNumber + '_' + #pageSize + '_' + #sortDirection + '_' + #sortBy", unless = "#result == null")
     @Override
-    public EntityWithPagination getAllUserInfosWithPagination(PaginationRequest paginationRequest) {
-        Sort sorting = Sort.by(paginationRequest.getSortDirection(), paginationRequest.getSortBy());
-        Pageable pageable = PageRequest.of(paginationRequest.getPageNumber(), paginationRequest.getPageSize(), sorting);
+    public EntityWithPagination getAllUserInfosWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection, String sortBy) {
+        Sort sorting = Sort.by(sortDirection, sortBy);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
         Page<UserInfo> userInfos = userInfoRepository.findAll(pageable);
 
         EntityWithPagination pagination = new EntityWithPagination();

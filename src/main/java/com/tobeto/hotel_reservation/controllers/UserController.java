@@ -1,13 +1,14 @@
 package com.tobeto.hotel_reservation.controllers;
 
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
-import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.services.abstracts.UserService;
 import com.tobeto.hotel_reservation.services.dtos.user.*;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -21,8 +22,11 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    ResponseEntity<EntityWithPagination> getAllUsersWithPagination(@RequestBody @Valid PaginationRequest paginationRequest) {
-        return ResponseEntity.ok(userService.getAllUsersWithPagination(paginationRequest));
+    ResponseEntity<EntityWithPagination> getAllUsersWithPagination(@RequestParam(defaultValue = "0") @Valid @PositiveOrZero(message = "validation.positiveOrZero") int pageNumber,
+                                                                   @RequestParam(defaultValue = "16") @Valid @PositiveOrZero(message = "validation.positiveOrZero") int pageSize,
+                                                                   @RequestParam(defaultValue = "DESC") Sort.Direction direction,
+                                                                   @RequestParam(defaultValue = "createdAt") String sortBy) {
+        return ResponseEntity.ok(userService.getAllUsersWithPagination(pageNumber, pageSize, direction, sortBy));
     }
 
     @GetMapping("{userId}")

@@ -1,12 +1,12 @@
 package com.tobeto.hotel_reservation.services.abstracts;
 
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
-import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.entities.concretes.Address;
 import com.tobeto.hotel_reservation.services.dtos.address.*;
+import org.springframework.data.domain.Sort;
 
 public interface AddressService {
-    EntityWithPagination getAllAddressWithPagination(PaginationRequest paginationRequest);
+    EntityWithPagination getAllAddressWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection, String sortBy);
 
     GetAddressResponse getAddressById(Long addressId, String language);
 

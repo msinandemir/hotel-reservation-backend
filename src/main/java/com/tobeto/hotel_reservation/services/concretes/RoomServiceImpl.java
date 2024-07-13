@@ -2,7 +2,6 @@ package com.tobeto.hotel_reservation.services.concretes;
 
 import com.tobeto.hotel_reservation.core.exceptions.types.BusinessException;
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
-import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.core.utils.RoomSpecifications;
 import com.tobeto.hotel_reservation.entities.concretes.Room;
 import com.tobeto.hotel_reservation.entities.enums.RoomType;
@@ -33,11 +32,11 @@ public class RoomServiceImpl implements RoomService {
     private final RoomRepository roomRepository;
     private final HotelService hotelService;
 
-    @Cacheable(cacheNames = "rooms", key = "#root.methodName + #pageNumber + '_' + #pageSize", unless = "#result == null")
+    @Cacheable(cacheNames = "rooms", key = "#root.methodName + #pageNumber + '_' + #pageSize + '_' + #sortDirection + '_' + #sortBy", unless = "#result == null")
     @Override
-    public EntityWithPagination getAllRoomsWithPagination(PaginationRequest paginationRequest) {
-        Sort sorting = Sort.by(paginationRequest.getSortDirection(), paginationRequest.getSortBy());
-        Pageable pageable = PageRequest.of(paginationRequest.getPageNumber(), paginationRequest.getPageSize(), sorting);
+    public EntityWithPagination getAllRoomsWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection, String sortBy) {
+        Sort sorting = Sort.by(sortDirection, sortBy);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
         Page<Room> rooms = roomRepository.findAll(pageable);
 
         EntityWithPagination pagination = new EntityWithPagination();
@@ -58,8 +57,8 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public GetRoomResponse getFindAvailableRoomsByTypeAndDate(FindAvailableRoomsByTypeAndDateRequest request, String language) {
-        List<Room> availableRooms = roomRepository.findAvailableRoomsByTypeAndDate(request.getType(), request.getCheckIn(), request.getCheckOut());
+    public GetRoomResponse getFindAvailableRoomsByTypeAndDate(RoomType type, LocalDate checkIn, LocalDate checkOut, String language) {
+        List<Room> availableRooms = roomRepository.findAvailableRoomsByTypeAndDate(type, checkIn, checkOut);
         Room getFirstRoom = getFirstRoomInAvailableRooms(availableRooms, language);
         return RoomMapper.INSTANCE.getResponseFromRoom(getFirstRoom);
     }
@@ -77,7 +76,7 @@ public class RoomServiceImpl implements RoomService {
 
         List<Room> availableRooms = roomRepository.findAll(roomSpecification);
         Room getFirstRoom = getFirstRoomInAvailableRooms(availableRooms, language);
-        return  RoomMapper.INSTANCE.getResponseFromRoom(getFirstRoom);
+        return RoomMapper.INSTANCE.getResponseFromRoom(getFirstRoom);
     }
 
     @CacheEvict(cacheNames = {"room_id", "rooms"}, allEntries = true)

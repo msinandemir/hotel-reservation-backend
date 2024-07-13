@@ -1,12 +1,13 @@
 package com.tobeto.hotel_reservation.controllers;
 
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
-import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.services.abstracts.SupportRequestService;
 import com.tobeto.hotel_reservation.services.dtos.supportRequest.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,8 +21,11 @@ public class SupportRequestController {
     private final SupportRequestService supportRequestService;
 
     @GetMapping
-    ResponseEntity<EntityWithPagination> getAllSupportRequestsWithPagination(@RequestBody @Valid PaginationRequest paginationRequest) {
-        return ResponseEntity.ok(supportRequestService.getAllSupportRequestsWithPagination(paginationRequest));
+    ResponseEntity<EntityWithPagination> getAllSupportRequestsWithPagination(@RequestParam(defaultValue = "0") @Valid @PositiveOrZero(message = "validation.positiveOrZero") int pageNumber,
+                                                                             @RequestParam(defaultValue = "16") @Valid @PositiveOrZero(message = "validation.positiveOrZero") int pageSize,
+                                                                             @RequestParam(defaultValue = "DESC") Sort.Direction direction,
+                                                                             @RequestParam(defaultValue = "createdAt") String sortBy) {
+        return ResponseEntity.ok(supportRequestService.getAllSupportRequestsWithPagination(pageNumber, pageSize, direction, sortBy));
     }
 
     @GetMapping("{supportRequestId}")
@@ -30,8 +34,12 @@ public class SupportRequestController {
     }
 
     @GetMapping("supportRequestsByUserId/{userId}")
-    ResponseEntity<EntityWithPagination> getSupportRequestByUserIdWithPagination(@PathVariable @Valid @Positive(message = "validation.positive") Long userId, @RequestBody @Valid PaginationRequest paginationRequest) {
-        return ResponseEntity.ok(supportRequestService.getSupportRequestByUserIdWithPagination(userId, paginationRequest));
+    ResponseEntity<EntityWithPagination> getSupportRequestByUserIdWithPagination(@PathVariable @Valid @Positive(message = "validation.positive") Long userId,
+                                                                                 @RequestParam(defaultValue = "0") @Valid @PositiveOrZero(message = "validation.positiveOrZero") int pageNumber,
+                                                                                 @RequestParam(defaultValue = "16") @Valid @PositiveOrZero(message = "validation.positiveOrZero") int pageSize,
+                                                                                 @RequestParam(defaultValue = "DESC") Sort.Direction direction,
+                                                                                 @RequestParam(defaultValue = "createdAt") String sortBy) {
+        return ResponseEntity.ok(supportRequestService.getSupportRequestByUserIdWithPagination(userId, pageNumber, pageSize, direction, sortBy));
     }
 
     @PostMapping

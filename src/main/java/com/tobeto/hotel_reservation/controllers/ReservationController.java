@@ -1,14 +1,15 @@
 package com.tobeto.hotel_reservation.controllers;
 
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
-import com.tobeto.hotel_reservation.core.models.PaginationRequest;
 import com.tobeto.hotel_reservation.entities.enums.ReservationStatus;
 import com.tobeto.hotel_reservation.services.abstracts.ReservationService;
 import com.tobeto.hotel_reservation.services.dtos.reservation.*;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -24,8 +25,11 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @GetMapping
-    ResponseEntity<EntityWithPagination> getAllReservationWithPagination(@RequestBody @Valid PaginationRequest paginationRequest) {
-        return ResponseEntity.ok(reservationService.getAllReservationWithPagination(paginationRequest));
+    ResponseEntity<EntityWithPagination> getAllReservationWithPagination(@RequestParam(defaultValue = "0") @Valid @PositiveOrZero(message = "validation.positiveOrZero") int pageNumber,
+                                                                         @RequestParam(defaultValue = "16") @Valid @PositiveOrZero(message = "validation.positiveOrZero") int pageSize,
+                                                                         @RequestParam(defaultValue = "DESC") Sort.Direction direction,
+                                                                         @RequestParam(defaultValue = "createdAt") String sortBy) {
+        return ResponseEntity.ok(reservationService.getAllReservationWithPagination(pageNumber, pageSize, direction, sortBy));
     }
 
     @GetMapping("{reservationId}")
@@ -34,13 +38,21 @@ public class ReservationController {
     }
 
     @GetMapping("reservationsByUserId/{userId}")
-    ResponseEntity<EntityWithPagination> getReservationsByUserId(@PathVariable @Valid @Positive(message = "validation.positive") Long userId, @RequestBody @Valid PaginationRequest paginationRequest) {
-        return ResponseEntity.ok(reservationService.getReservationsByUserId(userId, paginationRequest));
+    ResponseEntity<EntityWithPagination> getReservationsByUserId(@PathVariable @Valid @Positive(message = "validation.positive") Long userId,
+                                                                 @RequestParam(defaultValue = "0") @Valid @PositiveOrZero(message = "validation.positiveOrZero") int pageNumber,
+                                                                 @RequestParam(defaultValue = "16") @Valid @PositiveOrZero(message = "validation.positiveOrZero") int pageSize,
+                                                                 @RequestParam(defaultValue = "DESC") Sort.Direction direction,
+                                                                 @RequestParam(defaultValue = "createdAt") String sortBy) {
+        return ResponseEntity.ok(reservationService.getReservationsByUserId(userId, pageNumber, pageSize, direction, sortBy));
     }
 
     @GetMapping("reservationsByHotelId/{hotelId}")
-    ResponseEntity<EntityWithPagination> getReservationsByHotelId(@PathVariable @Valid @Positive(message = "validation.positive") Long hotelId, @RequestBody @Valid PaginationRequest paginationRequest) {
-        return ResponseEntity.ok(reservationService.getReservationsByHotelId(hotelId, paginationRequest));
+    ResponseEntity<EntityWithPagination> getReservationsByHotelId(@PathVariable @Valid @Positive(message = "validation.positive") Long hotelId,
+                                                                  @RequestParam(defaultValue = "0") @Valid @PositiveOrZero(message = "validation.positiveOrZero") int pageNumber,
+                                                                  @RequestParam(defaultValue = "16") @Valid @PositiveOrZero(message = "validation.positiveOrZero") int pageSize,
+                                                                  @RequestParam(defaultValue = "DESC") Sort.Direction direction,
+                                                                  @RequestParam(defaultValue = "createdAt") String sortBy) {
+        return ResponseEntity.ok(reservationService.getReservationsByHotelId(hotelId, pageNumber, pageSize, direction, sortBy));
     }
 
     @GetMapping("totalRevenue/{userId}")
@@ -49,8 +61,12 @@ public class ReservationController {
     }
 
     @GetMapping("pastReservations/{userId}")
-    ResponseEntity<EntityWithPagination> getPastReservationsByUserId(@PathVariable @Valid @Positive(message = "validation.positive") Long userId, @RequestBody @Valid PaginationRequest paginationRequest) {
-        return ResponseEntity.ok(reservationService.getPastReservationsByUserId(userId, paginationRequest));
+    ResponseEntity<EntityWithPagination> getPastReservationsByUserId(@PathVariable @Valid @Positive(message = "validation.positive") Long userId,
+                                                                     @RequestParam(defaultValue = "0") @Valid @PositiveOrZero(message = "validation.positiveOrZero") int pageNumber,
+                                                                     @RequestParam(defaultValue = "16") @Valid @PositiveOrZero(message = "validation.positiveOrZero") int pageSize,
+                                                                     @RequestParam(defaultValue = "DESC") Sort.Direction direction,
+                                                                     @RequestParam(defaultValue = "createdAt") String sortBy) {
+        return ResponseEntity.ok(reservationService.getPastReservationsByUserId(userId, pageNumber, pageSize, direction, sortBy));
     }
 
     @PostMapping
