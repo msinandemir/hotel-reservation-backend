@@ -21,5 +21,6 @@ public class AddCommentResponse {
     private int confortableRating;
     private int priceBalance;
     private int overallRating;
+    private String content;
     private Long userId;
 }

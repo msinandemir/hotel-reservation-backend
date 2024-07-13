@@ -34,6 +34,10 @@ public class AddCommentRequest {
     private int priceBalance;
 
     @NotNull(message = "validation.notNull")
+    @Size(min = 3, max = 255, message = "validation.size")
+    private String content;
+
+    @NotNull(message = "validation.notNull")
     @Positive(message = "validation.positive")
     private Long userId;
 }
