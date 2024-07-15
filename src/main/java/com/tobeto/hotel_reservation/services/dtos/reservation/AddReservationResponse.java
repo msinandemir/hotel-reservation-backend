@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 
@@ -18,6 +19,7 @@ public class AddReservationResponse {
     private Instant updatedAt;
     private LocalDate checkIn;
     private LocalDate checkOut;
+    private BigDecimal totalPrice;
     private Long userId;
     private Long roomId;
 }

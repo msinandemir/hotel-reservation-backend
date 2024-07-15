@@ -1,6 +1,7 @@
 package com.tobeto.hotel_reservation.services.abstracts;
 
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
+import com.tobeto.hotel_reservation.entities.concretes.Reservation;
 import com.tobeto.hotel_reservation.entities.enums.ReservationStatus;
 import com.tobeto.hotel_reservation.services.dtos.reservation.*;
 import jakarta.mail.MessagingException;
@@ -30,6 +31,8 @@ public interface ReservationService {
     ChangeReservationStatusResponse confirmReservationById(Long reservationId, String language) throws MessagingException;
 
     ChangeReservationStatusResponse cancelReservationById(Long reservationId, String language) throws MessagingException;
+
+    Reservation findReservationById(Long reservationId, String language);
 
     void deleteReservationById(Long reservationId, String language);
 }

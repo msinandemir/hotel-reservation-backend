@@ -1,5 +1,6 @@
-package com.tobeto.hotel_reservation.services.dtos.reservation;
+package com.tobeto.hotel_reservation.services.dtos.payment;
 
+import com.iyzipay.model.Currency;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,19 +8,18 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.LocalDate;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateReservationResponse {
+public class AddPaymentResponse {
     private Long id;
     private Instant createdAt;
     private Instant updatedAt;
-    private LocalDate checkIn;
-    private LocalDate checkOut;
-    private BigDecimal totalPrice;
-    private Long userId;
-    private Long roomId;
+    private Currency currency;
+    private BigDecimal price;
+    private BigDecimal paidPrice;
+    private String basketId;
+    private Long reservationId;
 }

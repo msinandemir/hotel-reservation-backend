@@ -12,7 +12,7 @@ public class IyzicoAdapter implements PaymentGateway {
     private final IyzicoService iyzicoService;
 
     @Override
-    public Payment pay(IyzicoPaymentModel paymentModel) {
-        return iyzicoService.pay(paymentModel);
+    public Payment pay(IyzicoPaymentModel paymentModel, Long reservationId, String language) {
+        return iyzicoService.pay(paymentModel, reservationId, language);
     }
 }

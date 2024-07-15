@@ -42,7 +42,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Cacheable(cacheNames = "reservations", key = "#root.methodName + #pageNumber + '_' + #pageSize + '_' + #sortDirection + '_' + #sortBy", unless = "#result == null")
     @Override
     public EntityWithPagination getAllReservationWithPagination(int pageNumber, int pageSize, Sort.Direction sortDirection, String sortBy) {
-       Sort sorting = Sort.by(sortDirection, sortBy);
+        Sort sorting = Sort.by(sortDirection, sortBy);
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
         Page<Reservation> reservations = reservationRepository.findAll(pageable);
 
@@ -66,7 +66,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Cacheable(cacheNames = "reservation_user_id", key = "#root.methodName + #userId + '_' + #pageNumber + '_' #pageSize + '_' + #sortDirection + '_' + #sortBy", unless = "#result == null")
     @Override
     public EntityWithPagination getReservationsByUserId(Long userId, int pageNumber, int pageSize, Sort.Direction sortDirection, String sortBy) {
-       Sort sorting = Sort.by(sortDirection, sortBy);
+        Sort sorting = Sort.by(sortDirection, sortBy);
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
         Page<Reservation> reservations = reservationRepository.findByUserId(userId, pageable);
 
@@ -83,7 +83,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Cacheable(cacheNames = "reservation_user_id", key = "#root.methodName + #hotelId + '_' + #pageNumber + '_' #pageSize + '_' + #sortDirection + '_' + #sortBy", unless = "#result == null")
     @Override
     public EntityWithPagination getReservationsByHotelId(Long hotelId, int pageNumber, int pageSize, Sort.Direction sortDirection, String sortBy) {
-       Sort sorting = Sort.by(sortDirection, sortBy);
+        Sort sorting = Sort.by(sortDirection, sortBy);
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
         Page<Reservation> reservations = reservationRepository.findByHotelId(hotelId, pageable);
 
@@ -106,7 +106,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Cacheable(value = "past_reservation_user_id", key = "#root.methodName + #userId + '_' + #pageNumber + '_' + #pageSize + '_' + #sortDirection + '_' + #sortBy", unless = "#result == null")
     @Override
     public EntityWithPagination getPastReservationsByUserId(Long userId, int pageNumber, int pageSize, Sort.Direction sortDirection, String sortBy) {
-       Sort sorting = Sort.by(sortDirection, sortBy);
+        Sort sorting = Sort.by(sortDirection, sortBy);
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sorting);
         Page<Reservation> reservations = reservationRepository.findPastReservationsByUserId(userId, LocalDate.now(), pageable);
 
@@ -126,7 +126,7 @@ public class ReservationServiceImpl implements ReservationService {
         userService.findUserById(request.getUserId(), language);
         Room foundRoom = roomService.findRoomById(request.getRoomId(), language);
 
-        BigDecimal totalPrice = calculateTotalPrice(request.getCheckIn(), request.getCheckOut(), foundRoom);
+        BigDecimal totalPrice = calculateTotalPrice(request.getCheckIn(), request.getCheckOut(), foundRoom, language);
 
         Reservation reservation = ReservationMapper.INSTANCE.reservationFromAddRequest(request);
         reservation.setStatus(ReservationStatus.PENDING);
@@ -144,7 +144,7 @@ public class ReservationServiceImpl implements ReservationService {
         userService.findUserById(request.getUserId(), language);
         Room foundRoom = roomService.findRoomById(request.getRoomId(), language);
 
-        BigDecimal totalPrice = calculateTotalPrice(request.getCheckIn(), request.getCheckOut(), foundRoom);
+        BigDecimal totalPrice = calculateTotalPrice(request.getCheckIn(), request.getCheckOut(), foundRoom, language);
 
         Reservation foundReservation = findReservationById(reservationId, language);
         Reservation updatedReservation = ReservationMapper.INSTANCE.reservationFromUpdateRequest(request);
@@ -196,7 +196,8 @@ public class ReservationServiceImpl implements ReservationService {
         reservationRepository.deleteById(foundReservation.getId());
     }
 
-    private Reservation findReservationById(Long reservationId, String language) {
+    @Override
+    public Reservation findReservationById(Long reservationId, String language) {
         return reservationRepository.findById(reservationId).orElseThrow(() -> new BusinessException("error.reservationNotFound", language));
     }
 
@@ -216,10 +217,21 @@ public class ReservationServiceImpl implements ReservationService {
         emailGateway.sendReservationConfirmationEmail(toManager, language);
     }
 
-    private BigDecimal calculateTotalPrice(LocalDate checkIn, LocalDate checkOut, Room foundRoom) {
+    private BigDecimal calculateTotalPrice(LocalDate checkIn, LocalDate checkOut, Room foundRoom, String language) {
+        checkDates(checkIn, checkOut, language);
         BigDecimal price = foundRoom.getPrice();
         long daysBetween = ChronoUnit.DAYS.between(checkIn, checkOut);
         BigDecimal daysBetweenBigDecimal = BigDecimal.valueOf(daysBetween);
-        return daysBetweenBigDecimal.multiply(price);
+        BigDecimal totalPrice;
+        if (daysBetween > 0)
+            totalPrice = daysBetweenBigDecimal.multiply(price);
+        else
+            totalPrice = price;
+        return totalPrice;
+    }
+
+    private void checkDates(LocalDate checkIn, LocalDate checkOut, String language) {
+        if (checkOut.isBefore(checkIn))
+            throw new BusinessException("error.runtime", language);
     }
 }
