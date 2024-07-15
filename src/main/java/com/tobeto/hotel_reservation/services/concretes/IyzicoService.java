@@ -8,8 +8,11 @@ import com.tobeto.hotel_reservation.core.models.IyzicoPaymentModel;
 import com.tobeto.hotel_reservation.core.models.IyzicoPaymentRequest;
 import com.tobeto.hotel_reservation.entities.concretes.Reservation;
 import com.tobeto.hotel_reservation.entities.enums.ReservationStatus;
+import com.tobeto.hotel_reservation.services.abstracts.PaymentService;
 import com.tobeto.hotel_reservation.services.abstracts.ReservationService;
+import com.tobeto.hotel_reservation.services.dtos.payment.AddPaymentRequest;
 import com.tobeto.hotel_reservation.services.mappers.IyzicoMapper;
+import com.tobeto.hotel_reservation.services.mappers.PaymentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,6 +25,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class IyzicoService {
     private final ReservationService reservationService;
+    private final PaymentService paymentService;
 
     @Value("${iyzico.api-key}")
     private String API_KEY;
@@ -60,11 +64,13 @@ public class IyzicoService {
         firstBasketItem.setItemType(BasketItemType.PHYSICAL.name());
         firstBasketItem.setPrice(foundReservation.getTotalPrice());
         basketItems.add(firstBasketItem);
+        request.setBasketId(UUID.randomUUID().toString());
         request.setBasketItems(basketItems);
 
         Payment payment = Payment.create(request, options);
 
         checkPaymentStatusAndChangeReservationStatus(payment.getStatus(), foundReservation, language);
+        savePayment(payment, foundReservation);
         return payment;
     }
 
@@ -97,5 +103,12 @@ public class IyzicoService {
             reservationService.changeReservationStatusById(reservation.getId(), ReservationStatus.PENDING, language);
         else
             reservationService.changeReservationStatusById(reservation.getId(), ReservationStatus.INVALID, language);
+    }
+
+    private void savePayment(Payment payment, Reservation foundReservation) {
+        com.tobeto.hotel_reservation.entities.concretes.Payment newPayment = PaymentMapper.INSTANCE.paymentFromIyzicoPayment(payment);
+        newPayment.setReservation(foundReservation);
+        AddPaymentRequest addPaymentRequest = PaymentMapper.INSTANCE.addRequestFromPayment(newPayment);
+        paymentService.addPayment(addPaymentRequest);
     }
 }

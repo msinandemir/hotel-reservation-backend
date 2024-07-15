@@ -14,7 +14,10 @@ public interface IyzicoMapper {
     IyzicoMapper INSTANCE = Mappers.getMapper(IyzicoMapper.class);
 
     CreatePaymentRequest getPaymentRequestFromIyzicoPaymentRequest(IyzicoPaymentRequest paymentRequest);
+
     PaymentCard getPaymentCardFromIyzcioPaymentCard(IyzicoPaymentCard iyzicoPaymentCard);
+
     Buyer getBuyerFromBuyer(Buyer buyer);
+
     Address getAddressFromAddress(Address address);
 }

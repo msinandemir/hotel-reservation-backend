@@ -16,4 +16,9 @@ public interface PaymentMapper {
 
     @Mapping(source = "reservation.id", target = "reservationId")
     AddPaymentResponse addResponseFromPayment(Payment payment);
+
+    com.tobeto.hotel_reservation.entities.concretes.Payment paymentFromIyzicoPayment(com.iyzipay.model.Payment payment);
+
+    @Mapping(source = "reservation.id", target = "reservationId")
+    AddPaymentRequest addRequestFromPayment(Payment payment);
 }

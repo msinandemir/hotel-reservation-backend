@@ -2,10 +2,7 @@ package com.tobeto.hotel_reservation.entities.concretes;
 
 import com.iyzipay.model.Currency;
 import com.tobeto.hotel_reservation.entities.abstracts.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +17,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Payment extends BaseEntity {
+    @Enumerated(EnumType.STRING)
     private Currency currency;
     private BigDecimal price;
     private BigDecimal paidPrice;
