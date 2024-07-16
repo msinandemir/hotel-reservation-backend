@@ -21,7 +21,7 @@ public final class MessageSource {
         enMessages.put("validation.notNull", "This field cannot be null.");
         enMessages.put("validation.positive", "This field must be a positive value.");
         enMessages.put("validation.email", "Please enter a valid email address.");
-        enMessages.put("validation.positiveOrZero","This field must be a positive value or zero.");
+        enMessages.put("validation.positiveOrZero", "This field must be a positive value or zero.");
         enMessages.put("error.runtime", "An unexpected error occurred");
         enMessages.put("email.sendError", "An error occurred while sending the email.");
         enMessages.put("error.userNotFound", "User not found.");
@@ -40,6 +40,7 @@ public final class MessageSource {
         enMessages.put("error.reservationNotFound", "Reservation not found.");
         enMessages.put("error.emailExists", "There is a user registered with this email.");
         enMessages.put("error.availableRoom", "No available rooms found. Please try other options.");
+        enMessages.put("error.invalidUser", "Invalid email or password.");
         enMessages.put("welcomeEmail.title", "Welcome!");
         enMessages.put("welcomeEmail.message", "Welcome to our site! We are very pleased to meet you. " +
                 "You can easily make your reservations and enjoy a pleasant stay.\n\n" +
@@ -90,6 +91,7 @@ public final class MessageSource {
         trMessages.put("error.reservationNotFound", "Rezervasyon bulunamadı.");
         trMessages.put("error.emailExists", "Bu e-posta ile kayıtlı kullanıcı var.");
         trMessages.put("error.availableRoom", "Müsait oda bulunamadı. Lütfen başka seçenekleri deneyin.");
+        trMessages.put("error.invalidUser", "Geçersiz email veya şifre.");
         trMessages.put("welcomeEmail.title", "Hoş Geldiniz!");
         trMessages.put("welcomeEmail.message", "Sitemize hoş geldiniz! Sizinle tanıştığımıza çok memnunuz. " +
                 "Rezervasyon işlemlerinizi kolayca yapabilir ve keyifli bir konaklama deneyimi yaşayabilirsiniz.\n\n" +
@@ -109,7 +111,7 @@ public final class MessageSource {
                 "\n" +
                 "Saygılarımızla.");
         trMessages.put("reservationConfirmEmail.title", "Otel Rezervasyonunuzun Onayı.");
-        trMessages.put("reservationConfirmEmail.message","Konaklamanız için bizi seçtiğiniz için teşekkür ederiz! Rezervasyonunuzu onaylamaktan mutluluk duyuyoruz.");
+        trMessages.put("reservationConfirmEmail.message", "Konaklamanız için bizi seçtiğiniz için teşekkür ederiz! Rezervasyonunuzu onaylamaktan mutluluk duyuyoruz.");
         trMessages.put("reservationConfirm.footerMessage", "Herhangi bir sorunuz varsa veya rezervasyonunuzla ilgili değişiklik yapmanız gerekiyorsa lütfen bizimle iletişime geçin.\n" +
                 "\n" +
                 "Sizi ağırlamayı sabırsızlıkla bekliyoruz ve harika bir konaklama geçirmenizi umuyoruz!\n" +

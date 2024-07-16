@@ -1,16 +1,19 @@
 package com.tobeto.hotel_reservation.controllers;
 
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
+import com.tobeto.hotel_reservation.entities.enums.Role;
 import com.tobeto.hotel_reservation.services.abstracts.UserService;
 import com.tobeto.hotel_reservation.services.dtos.user.*;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,6 +45,13 @@ public class UserController {
     @PutMapping("{userId}")
     ResponseEntity<UpdateUserResponse> updateUserById(@PathVariable @Valid @Positive(message = "validation.positive") Long userId, @RequestBody @Valid UpdateUserRequest request, @RequestHeader(defaultValue = "en") String lang) {
         return ResponseEntity.ok(userService.updateUserById(userId, request, lang));
+    }
+
+    @PatchMapping("{userId}")
+    ResponseEntity<ChangeUserRoleResponse> changeUserRoleById(@PathVariable @Valid @Positive(message = "validation.positive") Long userId,
+                                                              @RequestBody @Valid @NotNull(message = "validation.notNull") Role role,
+                                                              @RequestHeader(defaultValue = "en") String lang) {
+        return ResponseEntity.ok(userService.changeUserRoleById(userId, role, lang));
     }
 
     @DeleteMapping("{userId}")

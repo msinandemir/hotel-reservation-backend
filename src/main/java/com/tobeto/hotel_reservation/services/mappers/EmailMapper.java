@@ -19,13 +19,16 @@ public interface EmailMapper {
     @Mapping(target = "hotelPhoneNumber", source = "room.hotel.phoneNumber")
     ReservationCancelEmail reservationCancelEmailToUserFromReservation(Reservation reservation);
 
+    @Mapping(target = "to", source = "email")
+    @Mapping(target = "username", source = "firstName")
+    WelcomeEmail welcomeEmailFromUser(User user);
+
     @Mapping(target = "to", source = "room.hotel.user.email")
     @Mapping(target = "roomType", source = "room.type")
     @Mapping(target = "hotelName", source = "room.hotel.name")
     @Mapping(target = "hotelPhoneNumber", source = "room.hotel.phoneNumber")
     ReservationCancelEmail reservationCancelEmailToManagerFromReservation(Reservation reservation);
 
-    WelcomeEmail welcomeEmailFromUser(User user);
 
     @Mapping(target = "to", source = "user.email")
     @Mapping(target = "roomType", source = "room.type")

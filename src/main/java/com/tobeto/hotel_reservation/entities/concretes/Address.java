@@ -27,7 +27,7 @@ public class Address extends BaseEntity {
     private City city;
 
     @OneToMany(mappedBy = "address", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<UserInfo> userInfos;
+    private List<User> users;
 
     @OneToMany(mappedBy = "address", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Hotel> hotels;

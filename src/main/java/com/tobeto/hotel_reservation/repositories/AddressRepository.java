@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface AddressRepository extends JpaRepository<Address, Long> {
     @Query("SELECT a FROM Address a " +
-            "JOIN a.userInfos ui " +
-            "WHERE ui.user.id = :userId")
+            "JOIN a.users u " +
+            "WHERE u.id = :userId")
     List<Address> getAddressesByUserId(@Param("userId") Long userId);
 }

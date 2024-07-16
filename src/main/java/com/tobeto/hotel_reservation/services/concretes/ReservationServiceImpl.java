@@ -120,7 +120,7 @@ public class ReservationServiceImpl implements ReservationService {
         return pagination;
     }
 
-    @CacheEvict(cacheNames = {"reservations", "reservation_id", "reservation_total_revenue_user_id", "past_reservation_user_id"}, allEntries = true)
+    @CacheEvict(cacheNames = {"reservations","reservation_id","reservation_user_id","reservation_user_id","reservation_total_revenue_user_id", "past_reservation_user_id"}, allEntries = true)
     @Override
     public AddReservationResponse addReservation(AddReservationRequest request, String language) {
         userService.findUserById(request.getUserId(), language);
@@ -189,7 +189,7 @@ public class ReservationServiceImpl implements ReservationService {
         return ReservationMapper.INSTANCE.changeStatusResponseFromReservation(savedReservation);
     }
 
-    @CacheEvict(cacheNames = {"reservations", "reservation_id", "reservation_total_revenue_user_id", "past_reservation_user_id"}, allEntries = true)
+    @CacheEvict(cacheNames = {"reservations","reservation_id","reservation_user_id","reservation_user_id","reservation_total_revenue_user_id", "past_reservation_user_id"}, allEntries = true)
     @Override
     public void deleteReservationById(Long reservationId, String language) {
         Reservation foundReservation = findReservationById(reservationId, language);

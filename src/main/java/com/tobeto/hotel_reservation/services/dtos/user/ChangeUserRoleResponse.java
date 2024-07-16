@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateUserResponse {
+public class ChangeUserRoleResponse {
     private Long id;
     private Instant createdAt;
     private Instant updatedAt;

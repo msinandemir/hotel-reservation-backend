@@ -7,12 +7,15 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper
 public interface CountryMapper {
-
     CountryMapper INSTANCE = Mappers.getMapper(CountryMapper.class);
 
     GetCountryResponse getResponseFromCountry(Country country);
+
     Country countryFromAddRequest(AddCountryRequest request);
+
     AddCountryResponse addResponseFromCountry(Country country);
+
     Country countryFromUpdateRequest(UpdateCountryRequest request);
+
     UpdateCountryResponse updateResponseFromCountry(Country country);
 }

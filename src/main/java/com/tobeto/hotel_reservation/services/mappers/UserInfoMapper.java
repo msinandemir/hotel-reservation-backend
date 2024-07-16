@@ -11,22 +11,17 @@ public interface UserInfoMapper {
     UserInfoMapper INSTANCE = Mappers.getMapper(UserInfoMapper.class);
 
     @Mapping(source = "user.id", target = "userId")
-    @Mapping(source = "address.id", target = "addressId")
     GetUserInfoResponse getResponseFromUserInfo(UserInfo userInfo);
 
     @Mapping(target = "user.id", source = "userId")
-    @Mapping(target = "address.id", source = "addressId")
     UserInfo userInfoFromAddRequest(AddUserInfoRequest request);
 
     @Mapping(source = "user.id", target = "userId")
-    @Mapping(source = "address.id", target = "addressId")
     AddUserInfoResponse addResponseFromUserInfo(UserInfo userInfo);
 
     @Mapping(target = "user.id", source = "userId")
-    @Mapping(target = "address.id", source = "addressId")
     UserInfo userInfoFromUpdateRequest(UpdateUserInfoRequest request);
 
     @Mapping(source = "user.id", target = "userId")
-    @Mapping(source = "address.id", target = "addressId")
     UpdateUserInfoResponse updateResponseFromUserInfo(UserInfo userInfo);
 }
