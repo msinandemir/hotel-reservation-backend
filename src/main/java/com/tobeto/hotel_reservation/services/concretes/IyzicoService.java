@@ -6,10 +6,14 @@ import com.iyzipay.request.CreatePaymentRequest;
 import com.tobeto.hotel_reservation.core.models.IyzicoPaymentCard;
 import com.tobeto.hotel_reservation.core.models.IyzicoPaymentModel;
 import com.tobeto.hotel_reservation.core.models.IyzicoPaymentRequest;
+import com.tobeto.hotel_reservation.entities.concretes.Hotel;
 import com.tobeto.hotel_reservation.entities.concretes.Reservation;
+import com.tobeto.hotel_reservation.entities.concretes.User;
 import com.tobeto.hotel_reservation.entities.enums.ReservationStatus;
+import com.tobeto.hotel_reservation.services.abstracts.HotelService;
 import com.tobeto.hotel_reservation.services.abstracts.PaymentService;
 import com.tobeto.hotel_reservation.services.abstracts.ReservationService;
+import com.tobeto.hotel_reservation.services.abstracts.UserService;
 import com.tobeto.hotel_reservation.services.dtos.payment.AddPaymentRequest;
 import com.tobeto.hotel_reservation.services.mappers.IyzicoMapper;
 import com.tobeto.hotel_reservation.services.mappers.PaymentMapper;
@@ -26,6 +30,8 @@ import java.util.UUID;
 public class IyzicoService {
     private final ReservationService reservationService;
     private final PaymentService paymentService;
+    private final UserService userService;
+    private final HotelService hotelService;
 
     @Value("${iyzico.api-key}")
     private String API_KEY;
@@ -47,13 +53,13 @@ public class IyzicoService {
         PaymentCard card = createPaymentCard(paymentModel.getPaymentCard());
         request.setPaymentCard(card);
 
-        Buyer buyer = createBuyer(paymentModel.getBuyer());
+        Buyer buyer = createBuyer(paymentModel, language);
         request.setBuyer(buyer);
 
-        Address shippingAddress = createAddress(paymentModel.getShippingAddress());
+        Address shippingAddress = createShippingAddress(paymentModel, language);
         request.setShippingAddress(shippingAddress);
 
-        Address billingAddress = createAddress(paymentModel.getBillingAddress());
+        Address billingAddress = createBillingAddress(paymentModel, language);
         request.setBillingAddress(billingAddress);
 
         List<BasketItem> basketItems = new ArrayList<>();
@@ -90,12 +96,24 @@ public class IyzicoService {
         return IyzicoMapper.INSTANCE.getPaymentCardFromIyzcioPaymentCard(iyzicoPaymentCard);
     }
 
-    private Buyer createBuyer(Buyer buyer) {
-        return IyzicoMapper.INSTANCE.getBuyerFromBuyer(buyer);
+    private Buyer createBuyer(IyzicoPaymentModel paymentModel, String language) {
+        User foundUser = userService.findUserById(paymentModel.getUserId(), language);
+        Buyer buyer = IyzicoMapper.INSTANCE.getBuyerFromUserAndPaymentModel(foundUser, paymentModel);
+        buyer.setGsmNumber(paymentModel.getPhoneNumber());
+        return buyer;
     }
 
-    private Address createAddress(Address address) {
-        return IyzicoMapper.INSTANCE.getAddressFromAddress(address);
+    private Address createShippingAddress(IyzicoPaymentModel paymentModel, String language) {
+        User foundUser = userService.findUserById(paymentModel.getUserId(), language);
+        Address address = IyzicoMapper.INSTANCE.getShippingAddressFromUser(foundUser);;
+        address.setContactName(foundUser.getFirstName() + " " + foundUser.getLastName());
+        return address;
+    }
+    private Address createBillingAddress(IyzicoPaymentModel paymentModel, String language) {
+        Hotel foundHotel = hotelService.findHotelById(paymentModel.getHotelId(), language);
+        Address address = IyzicoMapper.INSTANCE.getBillingAddressFromUser(foundHotel);
+        address.setContactName(foundHotel.getUser().getFirstName() + " " + foundHotel.getUser().getLastName());
+        return address;
     }
 
     private void checkPaymentStatusAndChangeReservationStatus(String status, Reservation reservation, String language) {

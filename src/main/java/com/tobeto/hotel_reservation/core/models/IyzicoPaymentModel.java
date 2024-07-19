@@ -1,7 +1,5 @@
 package com.tobeto.hotel_reservation.core.models;
 
-import com.iyzipay.model.Address;
-import com.iyzipay.model.Buyer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +12,9 @@ import lombok.Setter;
 public class IyzicoPaymentModel {
     private IyzicoPaymentRequest request;
     private IyzicoPaymentCard paymentCard;
-    private Buyer buyer;
-    private Address shippingAddress;
-    private Address billingAddress;
+    private Long userId;
+    private Long hotelId;
+    private String identityNumber;
+    private String phoneNumber;
+    private String ip;
 }
