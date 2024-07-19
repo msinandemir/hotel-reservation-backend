@@ -1,5 +1,6 @@
 package com.tobeto.hotel_reservation.services.dtos.reservation;
 
+import com.tobeto.hotel_reservation.entities.enums.ReservationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ public class AddReservationResponse {
     private LocalDate checkIn;
     private LocalDate checkOut;
     private BigDecimal totalPrice;
+    private ReservationStatus status;
     private Long userId;
     private Long roomId;
 }
