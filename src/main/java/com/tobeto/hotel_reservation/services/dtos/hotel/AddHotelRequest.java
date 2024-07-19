@@ -1,9 +1,7 @@
 package com.tobeto.hotel_reservation.services.dtos.hotel;
 
 import com.tobeto.hotel_reservation.entities.concretes.Address;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +17,8 @@ public class AddHotelRequest {
     private String name;
 
     @NotNull(message = "validation.notNull")
-    @Size(min = 1, max = 5, message = "validation.size")
+    @Min(value = 1, message = "validation.size")
+    @Max(value = 5, message = "validation.size")
     private int star;
 
     @NotNull(message = "validation.notNull")
