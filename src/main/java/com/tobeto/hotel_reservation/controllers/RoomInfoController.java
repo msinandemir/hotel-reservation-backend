@@ -33,6 +33,12 @@ public class RoomInfoController {
         return ResponseEntity.ok(roomInfoService.getRoomInfoById(roomInfoId, lang));
     }
 
+    @GetMapping("getRoomInfoByRoomId/{roomId}")
+    ResponseEntity<GetRoomInfoResponse> getRoomInfoByRoomId(@PathVariable @Valid @Positive(message = "validation.positive") Long roomId,
+                                                            @RequestHeader(defaultValue = "en") String lang) {
+        return ResponseEntity.ok(roomInfoService.getRoomInfoByRoomId(roomId, lang));
+    }
+
     @PostMapping
     ResponseEntity<AddRoomInfoResponse> addRoomInfo(@RequestBody @Valid AddRoomInfoRequest request, @RequestHeader(defaultValue = "en") String lang) {
         return new ResponseEntity<>(roomInfoService.addRoomInfo(request, lang), HttpStatus.CREATED);

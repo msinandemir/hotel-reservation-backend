@@ -9,6 +9,8 @@ public interface RoomInfoService {
 
     GetRoomInfoResponse getRoomInfoById(Long roomInfoId, String language);
 
+    GetRoomInfoResponse getRoomInfoByRoomId(Long roomId, String language);
+
     AddRoomInfoResponse addRoomInfo(AddRoomInfoRequest request, String language);
 
     UpdateRoomInfoResponse updateRoomInfoById(Long roomInfoId, UpdateRoomInfoRequest request, String language);

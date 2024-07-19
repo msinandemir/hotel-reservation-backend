@@ -50,6 +50,12 @@ public class RoomInfoServiceImpl implements RoomInfoService {
         return RoomInfoMapper.INSTANCE.getResponseFromRoomInfo(foundRoomInfo);
     }
 
+    @Override
+    public GetRoomInfoResponse getRoomInfoByRoomId(Long roomId, String language) {
+        RoomInfo foundRoomInfo = roomInfoRepository.findByRoomId(roomId).orElseThrow(() -> new BusinessException("error.roomInfoNotFound", language));
+        return RoomInfoMapper.INSTANCE.getResponseFromRoomInfo(foundRoomInfo);
+    }
+
     @CacheEvict(cacheNames = {"room_info_id", "room_infos"}, allEntries = true)
     @Override
     public AddRoomInfoResponse addRoomInfo(AddRoomInfoRequest request, String language) {
