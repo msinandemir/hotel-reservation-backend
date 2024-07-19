@@ -25,6 +25,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<EntityWithPagination> getAllUsersWithPagination(@RequestParam(defaultValue = "0") @Valid @PositiveOrZero(message = "validation.positiveOrZero") int pageNumber,
                                                                    @RequestParam(defaultValue = "16") @Valid @PositiveOrZero(message = "validation.positiveOrZero") int pageSize,
                                                                    @RequestParam(defaultValue = "DESC") Sort.Direction direction,
@@ -33,21 +34,25 @@ public class UserController {
     }
 
     @GetMapping("{userId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER', 'MANAGER')")
     ResponseEntity<GetUserResponse> getUserById(@PathVariable @Valid @Positive(message = "validation.positive") Long userId, @RequestHeader(defaultValue = "en") String lang) {
         return ResponseEntity.ok(userService.getUserById(userId, lang));
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<AddUserResponse> addUser(@RequestBody @Valid AddUserRequest request, @RequestHeader(defaultValue = "en") String lang) throws MessagingException {
         return new ResponseEntity<>(userService.addUser(request, lang), HttpStatus.CREATED);
     }
 
     @PutMapping("{userId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER', 'MANAGER')")
     ResponseEntity<UpdateUserResponse> updateUserById(@PathVariable @Valid @Positive(message = "validation.positive") Long userId, @RequestBody @Valid UpdateUserRequest request, @RequestHeader(defaultValue = "en") String lang) {
         return ResponseEntity.ok(userService.updateUserById(userId, request, lang));
     }
 
     @PatchMapping("{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<ChangeUserRoleResponse> changeUserRoleById(@PathVariable @Valid @Positive(message = "validation.positive") Long userId,
                                                               @RequestBody @Valid @NotNull(message = "validation.notNull") Role role,
                                                               @RequestHeader(defaultValue = "en") String lang) {
@@ -55,6 +60,7 @@ public class UserController {
     }
 
     @DeleteMapping("{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
     void deleteUserById(@PathVariable @Valid @Positive(message = "validation.positive") Long userId, @RequestHeader(defaultValue = "en") String lang) {
         userService.deleteUserById(userId, lang);
     }
