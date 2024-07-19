@@ -50,6 +50,13 @@ public class HotelInfoServiceImpl implements HotelInfoService {
         return HotelInfoMapper.INSTANCE.getResponseFromHotelInfo(foundHotelInfo);
     }
 
+    @Override
+    public GetHotelInfoResponse getHotelInfoByHotelId(Long hotelId, String language) {
+        HotelInfo foundHotelInfo = hotelInfoRepository.findByHotelId(hotelId)
+                .orElseThrow(() -> new BusinessException("error.hotelInfoNotFound", language));
+        return HotelInfoMapper.INSTANCE.getResponseFromHotelInfo(foundHotelInfo);
+    }
+
     @CacheEvict(cacheNames = {"hotel_infos", "hotel_info_id"}, allEntries = true)
     @Override
     public AddHotelInfoResponse addHotelInfo(AddHotelInfoRequest request, String language) {

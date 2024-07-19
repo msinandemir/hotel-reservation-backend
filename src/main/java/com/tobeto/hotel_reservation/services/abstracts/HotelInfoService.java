@@ -9,6 +9,8 @@ public interface HotelInfoService {
 
     GetHotelInfoResponse getHotelInfoById(Long hotelInfoId, String language);
 
+    GetHotelInfoResponse getHotelInfoByHotelId(Long hotelId, String language);
+
     AddHotelInfoResponse addHotelInfo(AddHotelInfoRequest request, String language);
 
     UpdateHotelInfoResponse updateHotelInfoById(Long hotelInfoId, UpdateHotelInfoRequest request, String language);

@@ -33,6 +33,12 @@ public class HotelInfoController {
         return ResponseEntity.ok(hotelInfoService.getHotelInfoById(hotelInfoId, lang));
     }
 
+    @GetMapping("getHotelInfoByHotelId/{hotelId}")
+    ResponseEntity<GetHotelInfoResponse> getHotelInfoByHotelId(@PathVariable @Valid @Positive(message = "validation.positive") Long hotelId,
+                                                               @RequestHeader(defaultValue = "en") String lang) {
+        return ResponseEntity.ok(hotelInfoService.getHotelInfoByHotelId(hotelId, lang));
+    }
+
     @PostMapping
     ResponseEntity<AddHotelInfoResponse> addHotelInfo(@RequestBody @Valid AddHotelInfoRequest request, @RequestHeader(defaultValue = "en") String lang) {
         return new ResponseEntity<>(hotelInfoService.addHotelInfo(request, lang), HttpStatus.CREATED);
