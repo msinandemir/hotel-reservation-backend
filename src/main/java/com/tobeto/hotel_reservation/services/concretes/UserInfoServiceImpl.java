@@ -4,7 +4,6 @@ import com.tobeto.hotel_reservation.core.exceptions.types.BusinessException;
 import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
 import com.tobeto.hotel_reservation.entities.concretes.UserInfo;
 import com.tobeto.hotel_reservation.repositories.UserInfoRepository;
-import com.tobeto.hotel_reservation.services.abstracts.AddressService;
 import com.tobeto.hotel_reservation.services.abstracts.UserInfoService;
 import com.tobeto.hotel_reservation.services.abstracts.UserService;
 import com.tobeto.hotel_reservation.services.dtos.userInfo.*;
@@ -26,7 +25,6 @@ import java.util.List;
 public class UserInfoServiceImpl implements UserInfoService {
     private final UserInfoRepository userInfoRepository;
     private final UserService userService;
-    private final AddressService addressService;
 
     @Cacheable(cacheNames = "user_infos", key = "#root.methodName + #pageNumber + '_' + #pageSize + '_' + #sortDirection + '_' + #sortBy", unless = "#result == null")
     @Override
@@ -62,7 +60,6 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public AddUserInfoResponse addUserInfo(AddUserInfoRequest request, String language) {
         userService.findUserById(request.getUserId(), language);
-        addressService.findAddressById(request.getAddressId(), language);
         UserInfo userInfo = UserInfoMapper.INSTANCE.userInfoFromAddRequest(request);
         UserInfo savedUserInfo = userInfoRepository.save(userInfo);
         return UserInfoMapper.INSTANCE.addResponseFromUserInfo(savedUserInfo);
@@ -72,7 +69,6 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public UpdateUserInfoResponse updateUserInfoById(Long userInfoId, UpdateUserInfoRequest request, String language) {
         userService.findUserById(request.getUserId(), language);
-        addressService.findAddressById(request.getAddressId(), language);
         UserInfo foundUserInfo = findUserInfoById(userInfoId, language);
         UserInfo updatedUserInfo = UserInfoMapper.INSTANCE.userInfoFromUpdateRequest(request);
         updatedUserInfo.setId(foundUserInfo.getId());
