@@ -4,7 +4,6 @@ import com.tobeto.hotel_reservation.core.models.EntityWithPagination;
 import com.tobeto.hotel_reservation.services.abstracts.PhotoService;
 import com.tobeto.hotel_reservation.services.dtos.photo.*;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -44,8 +42,8 @@ public class PhotoController {
     }
 
     @PostMapping
-    ResponseEntity<AddPhotoResponse> addPhoto(@RequestBody @Valid AddPhotoRequest request, @RequestPart @NotNull(message = "validation.notNull") MultipartFile file, @RequestHeader(defaultValue = "en") String lang) throws IOException {
-        return new ResponseEntity<>(photoService.addPhoto(request, file, lang), HttpStatus.CREATED);
+    ResponseEntity<AddPhotoResponse> addPhoto(@RequestBody @Valid AddPhotoRequest request, @RequestHeader(defaultValue = "en") String lang) throws IOException {
+        return new ResponseEntity<>(photoService.addPhoto(request, lang), HttpStatus.CREATED);
     }
 
     @PutMapping("{photoId}")

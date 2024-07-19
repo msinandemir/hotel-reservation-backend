@@ -18,7 +18,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -66,9 +65,9 @@ public class PhotoServiceImpl implements PhotoService {
 
     @CacheEvict(cacheNames = {"photo_id", "photos_hotel_id"}, allEntries = true)
     @Override
-    public AddPhotoResponse addPhoto(AddPhotoRequest request, MultipartFile file, String language) throws IOException {
+    public AddPhotoResponse addPhoto(AddPhotoRequest request, String language) throws IOException {
         hotelService.findHotelById(request.getHotelId(), language);
-        String url = cloudinaryService.saveImage(file, language);
+        String url = cloudinaryService.saveImage(request.getFile(), language);
         Photo photo = PhotoMapper.INSTANCE.photoFromAddRequest(request);
         photo.setUrl(url);
 
