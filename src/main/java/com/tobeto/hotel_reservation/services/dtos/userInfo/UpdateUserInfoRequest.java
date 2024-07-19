@@ -24,8 +24,4 @@ public class UpdateUserInfoRequest {
     @NotNull(message = "validation.notNull")
     @Positive(message = "validation.positive")
     private Long userId;
-
-    @NotNull(message = "validation.notNull")
-    @Positive(message = "validation.positive")
-    private Long addressId;
 }
